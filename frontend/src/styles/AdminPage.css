@@ -1,0 +1,55 @@
+.content-space-support
+{
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin: 30px;
+}
+
+.support-pick
+{
+    width: 25%;
+    height: 40%;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 1em;
+    overflow: hidden;
+}
+
+.support-pick a
+{
+    width: 90%;
+    height: 90%;
+    top-margin: 0;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.support-pick a > svg
+{
+    width: 45%;
+    height: 45%;
+    color: #211f1f;
+}
+
+.support-pick p
+{
+    position: absolute;
+    background-color: #0091D0;
+    color: white;
+    width: 100%;
+    height: 20%;
+    margin-bottom: 0;
+    font-size: calc(5px + 2vw);
+    bottom: 0;
+    text-align: center;
+    align-content: center;
+}

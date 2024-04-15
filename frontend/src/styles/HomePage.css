@@ -1,0 +1,37 @@
+.content-space-home
+{
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.vehicle-pick
+{
+    width: 25%;
+    height: 40%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 1em;
+}
+
+.vehicle-pick a
+{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vehicle-pick a > svg
+{
+    width: 50%;
+    height: 50%;
+    color: #211f1f;
+}

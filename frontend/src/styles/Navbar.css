@@ -1,0 +1,110 @@
+.title a
+{
+    color: white;
+    margin-left: 0.2em;
+    min-width: 50px;
+    font-size:calc(12px + 1.5vw);
+    width: 4vw;
+    text-decoration: none;
+}
+
+
+.navbar div
+{
+}
+
+.signUp
+{
+    margin: 0.6em !important;
+    padding: 0 !important;
+    font-size: 110% !important;
+    min-width: 80px !important;
+    width: 5vw !important;
+    height: 80% !important;
+}
+
+.buttons
+{
+    display: flex;
+    margin-left: auto;
+    margin-right: 0.5em;
+    gap: 3vw;
+    flex-direction: row;
+    align-items: center;
+}
+
+.page-link
+{
+    display: flex;
+    justify-content: center;
+}
+
+.page-link h1
+{
+    font-size: 140%;
+    display: flex;
+    align-items: center;
+}
+
+.page-link a
+{
+    text-decoration: none;
+    color: white;
+    font-size: calc(4px + 1.4vw);
+}
+
+
+.page-link h1, .title:hover
+{
+    cursor: pointer;
+}
+
+.user
+{
+    max-height: 40px;
+    max-width: 40px;
+    width: 5vw;
+    height: 5vw;
+    display: flex;
+    justify-content: center;
+    margin-right: 15px;
+    background-color: #0091D0;
+    border: 0;
+}
+
+.user-icon
+{
+    width: 100%;
+    height: 100%;
+}
+
+.user-button
+{
+    background-color: #0091D0;
+    border: 0;
+}
+
+.user-icon:hover
+{
+    cursor: pointer;
+}
+
+.menu-item
+{
+    font-size: calc(4px + 1vw);
+    text-decoration: none;
+    color: black;
+}
+
+.menu-item:hover
+{
+    cursor: pointer;
+    background-color: #0091D0;
+    color: white;
+}
+
+ul.MuiList-root.MuiList-padding.MuiMenu-list.css-6hp17o-MuiList-root-MuiMenu-list
+{
+    display: flex;
+    flex-direction: column;
+}

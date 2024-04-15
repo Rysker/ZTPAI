@@ -1,0 +1,76 @@
+.content-space-reports
+{
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.reports-place
+{
+    width: 80%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    align-items: center;
+    gap: 20px;
+}
+
+.reports-place p
+{
+    font-size: calc(4px + 1.5vw);
+    display:flex;
+    align-items: center;
+}
+
+.report-entity
+{
+    border: 1px solid black;
+    width: 60%;
+    height: 25%;
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.report-entity-desc
+{
+    height: 60%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    gap: 5%;
+}
+
+.report-entity-content
+{
+    height: 40%;
+    width: 100%;
+    text-align: center;
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.report-entity-buttons
+{
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-left: 5px;
+}
+
+.report-entity-buttons svg
+{
+    width: calc(2px + 1.7vw);
+    height: auto;
+}

@@ -1,0 +1,189 @@
+.profile
+{
+    width: 100%;
+    height: 90%;
+    margin-top: 20px;
+    border: 1px solid black;
+    border-radius: 1em;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.profile-header
+{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 25%;
+}
+
+.profile-header-avatar
+{
+    width: 20%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-header-avatar .MuiAvatar-root.MuiAvatar-circular.profile-header-avatar-entity.MuiAvatar-colorDefault
+{
+    width: calc(5px + 6vw);
+    height: calc(5px + 6vw);
+}
+
+.profile-header-description
+{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.profile-header-description-top
+{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 35%;
+    align-items: center;
+}
+
+.profile-header-description-bottom
+{
+    width: 100%;
+    height: 100%;
+}
+
+#user-profile-description
+{
+    font-size: calc(5px + 1vw);
+}
+
+.profile-header-description-top button
+{
+    background-color: black;
+    color: white;
+    margin: auto;
+    width: 20%;
+    height: 70%;
+    font-size: calc(4px + 1.5vw);
+    align-self: flex-end;
+    margin-right: 10px;
+}
+
+.profile-header-description-top button:hover
+{
+    background-color: #0091D0;
+    color: white;
+}
+
+h1#user-profile-name
+{
+    font-size: calc(3px + 2vw);
+}
+
+.profile-desc
+{
+    width: 100%;
+    height: 75%;
+    display: flex;
+}
+
+.profile-desc-collection
+{
+    width: 75%;
+    height: 100%;
+    margin: 20px;
+
+}
+.profile-desc-collection h1
+{
+    font-size: calc(4px + 1.5vw);
+}
+
+.profile-desc-collection-gallery
+{
+    width: 98%;
+    height: 20vh;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    flex-shrink: 0;
+}
+
+.profile-desc-collection-entity
+{
+    position: relative;
+    width: 20%;
+    height: 90%;
+    border: 1px solid black;
+    border-radius: 1em;
+    display: flex;
+    overflow: hidden;
+}
+
+.profile-desc-collection-entity img
+{
+    position: absolute;
+    background: center/cover no-repeat;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-desc-collection-entity-bar
+{
+    position: absolute;
+    width: 100%;
+    height: 20%;
+    bottom: 0;
+    font-size: calc(3px + 1.1vw);
+    color: white;
+    background-color: #0091D0;
+    text-align: center;
+}
+
+.profile-desc-collection h2
+{
+    color: blue;
+    font-size: calc(5px + 1.2vw);
+}
+
+.profile-desc-collection h2:hover
+{
+    cursor: pointer;
+}
+
+.profile-desc-stats
+{
+    height: 100%;
+    width: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-desc-stats-container
+{
+    width: 80%;
+    height: 80%;
+    border: 1px solid black;
+    border-radius: 1em;
+}
+
+.profile-desc-stats-container h1
+{
+    font-size: calc(4px + 1.2vw);
+    margin-left: 5px;
+}
+
+.profile-header-avatar-container
+{
+    border: 1px solid black;
+    border-radius: 1em;
+    width: 60%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

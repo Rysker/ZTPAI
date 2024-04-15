@@ -1,0 +1,22 @@
+.navbar
+{
+    width: 100vw;
+    height: 10vh;
+    background-color: #0091D0;
+    display: flex;
+    align-items: center;
+}
+
+.content-space
+{
+    width: 100vw;
+    height: 90vh;
+    align-items: center;
+}
+
+.webpage
+{
+    width: 100vw;
+    height: 100vh;
+}
+

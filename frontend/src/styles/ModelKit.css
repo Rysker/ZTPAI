@@ -1,0 +1,339 @@
+.content-space-info-display-row
+{
+    height: 100%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 1em;
+    overflow: hidden;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.kit
+{
+    width: 98%;
+    border: 1px black solid;
+    border-radius: 1em;
+    height: 30vh;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+    margin-top: 2em;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.kit-img
+{
+    width: 25vw;
+    background-color: red;
+    display: flex;
+    flex-direction: column;
+}
+
+.kit-description
+{
+    width: 30vw;
+    margin: 0.2em;
+    display: flex;
+    flex-direction: column;
+}
+
+.kit-description-title
+{
+    font-size: calc(4px + 1.2vw);
+    font-weight: bold;
+}
+
+.kit-description-details
+{
+    font-size: calc(4px + 1.2vw);
+    margin-left: 4px;
+}
+
+.kit-description-details-elements p
+{
+    margin: 0;
+    margin-bottom: 6px;
+}
+
+.kit-info
+{
+    width: 20vw;
+    display:flex;
+    flex-direction:column;
+    margin: 0.2em;
+    flex:1;
+}
+
+.kit-info-controls
+{
+    gap: 10px;
+    height: 20%;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 1em;
+}
+
+.kit-info-controls .info-icon
+{
+    height: calc(5px + 1.6vw);
+    width: auto;
+}
+
+.kit-info-reviews
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    margin-right: 1em;
+    margin-top: auto;
+    align-self: flex-end;
+}
+
+.kit-info-reviews span
+{
+    font-size: calc(5px + 1.25vw);
+}
+
+.kit-info-reviews #rating-number
+{
+    font-size: calc(5px + 1vw);
+}
+
+.kit-description button
+{
+    background-color: black;
+    color: white;
+    margin-top: auto;
+    height: auto;
+    margin-bottom: auto;
+    font-size: calc(4px + 1vw);
+}
+
+.content-space-gallery
+{
+    width: 98%;
+    height: 20vh;
+    display: flex;
+    flex-direction: row;
+    gap: 7px;
+    flex-shrink: 0;
+}
+
+.content-space-gallery-entity
+{
+    width: 20%;
+    height: 100%;
+    border: 1px solid black;
+    border-radius: 1em;
+    display: flex;
+    overflow: hidden;
+}
+
+.kit img
+{
+    width: 30%;
+}
+
+.content-space-gallery-entity img
+{
+    background: center/cover no-repeat;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.content-space-reviews
+{
+    width: 100%;
+    height: auto;
+    display: flex;
+    gap: 7px;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.reviews-header
+{
+    width: 100%;
+    height: 10vh;
+}
+
+.review-entity
+{
+    width: 100%;
+    height: 20vh;
+    display: flex;
+    flex-direction: row;
+    align-self: flex-end;
+}
+
+.review-entity-description
+{
+    margin: 2px;
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.review-entity-description span.MuiRating-root.MuiRating-sizeMedium.Mui-readOnly.info-rating.MuiRating-readOnly.css-15befwp-MuiRating-root
+{
+    font-size: calc(4px + 1.5vw);
+}
+
+.review-entity-description h1, h2
+{
+    margin: 0 auto;
+}
+
+.review-entity-description h1
+{
+    font-size: calc(5px + 1.4vw);
+}
+
+.review-entity-description h2
+{
+    font-size: calc(5px + 1.2vw);
+    color: #bebdbd;
+}
+
+.review-entity-text
+{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    flex-shrink: 0;
+}
+
+#review-title
+{
+    color: #0091D0;
+    font-size: calc(5px + 1.8vw);
+    margin: 0;
+    font-weight: bold;
+}
+
+#review-description
+{
+    font-size: calc(4px + 0.9vw);
+    font-weight: normal;
+}
+
+.review-entity-actions
+{
+    width: 20%;
+    height: 100%;
+    justify-content: flex-end;
+    display: flex;
+    flex-direction: column;
+}
+
+.vehicle-kit-info-controls
+{
+    font-size: calc(7px + 1.4vw);
+    margin: 2px;
+    height: auto;
+}
+
+.vehicle-kit-info-reviews
+{
+    justify-content: flex-end;
+    width: 100%;
+    flex-grow: unset;
+    margin-left: auto;
+    gap: 30px;
+    display: flex;
+    flex-direction: row;
+}
+
+.thumbs
+{
+    font-size: calc(5px + 1.3vw);
+}
+
+.reviews-header
+{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 20%;
+    gap: 30px;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.reviews-header-title
+{
+    font-size: calc(5px + 1.7vw);
+    font-weight: bold;
+}
+
+.reviews-header span.MuiRating-root.MuiRating-sizeMedium.Mui-readOnly.info-rating.MuiRating-readOnly.css-15befwp-MuiRating-root
+{
+    font-size: calc(5px + 1.7vw);
+}
+
+.reviews-header span
+{
+    font-size: calc(5px + 1.7vw);
+}
+
+.write-review
+{
+    width: 98%;
+    height: 30vh;
+    border: 2px solid gray;
+    border-radius: 1em;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
+.write-review-inputs
+{
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    width: 70%;
+    gap: 10px;
+}
+
+.write-review-buttons
+{
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-right: 10px;
+}
+
+#submit-review
+{
+    justify-content: flex-end;
+    background-color: black;
+    color: white;
+    margin-top: auto;
+    margin-bottom: 10px;
+}
+
+#kit-add
+{
+    width: 50%;
+}
+
+#kit-add:hover, #submit-review:hover
+{
+    background-color: #0091D0;
+    color: white;
+}
+
+

@@ -1,0 +1,63 @@
+.buttons .MuiButton-text
+{
+    font-size: calc(5px + 1.5vw);
+    background-color: #606060;
+    color: white;
+}
+
+.buttons .MuiButton-text:hover
+{
+    font-size: calc(5px + 1.5vw);
+    background-color: black;
+}
+
+.title
+{
+    position: relative;
+    z-index: 2;
+}
+
+.main-webpage
+{
+    background: url('../../public/images/jetFighter.jpg') center/cover no-repeat, #0091D0;
+    box-shadow: inset 0 0 0 1000px rgba(0,0,0,.2);
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+
+.main-webpage::before
+{
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 145, 208, 0.4);
+}
+
+.webpage-body
+{
+    display: flex;
+    font-size: calc(10px + 5vw);
+    position: relative;
+    z-index: 3;
+    height: 90vh;
+    align-items: center;
+    justify-content: center
+}
+
+.webpage-body p > a
+{
+    color: #f3e7e7;
+    text-decoration: none;
+}
+
+.webpage-body p > a:hover
+{
+    cursor: pointer;
+    color: #eedd06;
+}

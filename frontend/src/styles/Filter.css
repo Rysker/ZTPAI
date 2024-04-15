@@ -1,0 +1,47 @@
+.filter
+{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 90%;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 1em;
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.filter-title
+{
+    text-align: center;
+    font-size:calc(12px + 1.5vw);
+    font-weight: bold;
+    background-color: #0091D0;
+    color: white;
+}
+
+.filter-content
+{
+    display: flex;
+    margin-left: 2px;
+    flex-shrink: 0;
+    flex-direction: column;
+}
+
+.filter-content-option-title
+{
+    font-size: calc(4px + 1.3vw);
+    margin-bottom: 4px;
+}
+
+.filter-content-option label.MuiFormControlLabel-root
+{
+    display: flex;
+    flex-shrink: 0;
+}
+
+.filter-content-option span.MuiTypography-root.MuiFormControlLabel-label.MuiTypography-body1
+{
+    font-size: calc(3px + 1.1vw);
+}
