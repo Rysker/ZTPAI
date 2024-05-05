@@ -1,7 +1,7 @@
 import LoginPage from "./pages/LoginPage";
 import Vehicles from "./pages/Vehicles";
 import VehicleDetails from "./pages/VehicleDetails";
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import "./App.css"
 import ModelKit from "./pages/ModelKit";
 import RegisterPage from "./pages/RegisterPage";
@@ -12,22 +12,27 @@ import HomePage from "./pages/HomePage";
 import AdminPage from "./pages/AdminPage";
 import Reports from "./pages/Reports";
 
+const PrivateRoute = ({ children }) =>
+{
+    const isAuthenticated = sessionStorage.getItem('token');
+    return isAuthenticated ? children : <Navigate to="/login" />;
+};
 function App ()
 {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path ='/' element = { <MainPage/>  }></Route>
-                <Route path ='/login' element = { <LoginPage/> }></Route>
-                <Route path ='/register' element = { <RegisterPage/> }></Route>
-                <Route path ='/home' element = { <HomePage/>  }></Route>
-                <Route path ='/vehicles' element = { <Vehicles/> }></Route>
-                <Route path ='/vehicles/:id' element={<VehicleDetails />} />
-                <Route path ='/vehicles/:id/:id' element={<ModelKit/>} />
-                <Route path ='/collection/:id' element={<MyCollection/>} />
-                <Route path ='/profile/:id' element={<Profile/>} />
-                <Route path ='/admin' element={<AdminPage/>} />
-                <Route path ='/admin/reports' element={<Reports/>} />
+                <Route path ='/' element = { <MainPage/>  } />
+                <Route path ='/login' element = { <LoginPage/> } />
+                <Route path ='/register' element = { <RegisterPage/> } />
+                <Route path ='/home' element = {<PrivateRoute> <HomePage/> </PrivateRoute>} />
+                <Route path ='/vehicles' element = {<PrivateRoute> <Vehicles/> </PrivateRoute>} />
+                <Route path ='/vehicles/:vehicle_name' element={<PrivateRoute> <VehicleDetails /> </PrivateRoute>} />
+                <Route path ='/vehicles/:id/:id' element={<PrivateRoute> <ModelKit/> </PrivateRoute>} />
+                <Route path ='/collection/:id' element={<PrivateRoute> <MyCollection/> </PrivateRoute>} />
+                <Route path ='/profile/:id' element={<PrivateRoute> <Profile/> </PrivateRoute>} />
+                <Route path ='/admin' element={<PrivateRoute> <AdminPage/> </PrivateRoute>} />
+                <Route path ='/admin/reports' element={<PrivateRoute> <Reports/> </PrivateRoute>} />
             </Routes>
         </BrowserRouter>
     )

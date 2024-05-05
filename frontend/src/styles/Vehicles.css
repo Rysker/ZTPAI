@@ -11,6 +11,19 @@
     flex-direction: row;
 }
 
+.vehicle-representation > a
+{
+    display: block;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+.vehicle-representation > a:hover
+{
+    cursor: pointer;
+}
+
 .content-space-info-filter
 {
     height: 100%;
@@ -47,7 +60,7 @@
     border-radius: 1em;
     overflow: hidden;
     background-color: rgba(0, 0 , 0 , 0);
-    z-index: -100;
+    z-index: 1
 }
 
 .vehicle-representation img

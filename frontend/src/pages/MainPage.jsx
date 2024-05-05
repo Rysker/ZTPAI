@@ -5,15 +5,6 @@ import Button from "@material-ui/core/Button";
 
 function MainPage ()
 {
-    const [message, setMessage] = useState("");
-
-    useEffect(() => {
-        fetch('/hello')
-            .then(response => response.text())
-            .then(message => {
-                setMessage(message);
-            });
-    },[])
     return (
         <div className="main-webpage">
             <div className="navbar">
@@ -24,7 +15,7 @@ function MainPage ()
                 </div>
             </div>
             <div className="webpage-body">
-                <p><a href="/register">Join Us!</a></p>
+                <p><a href="/login">Join Us!</a></p>
             </div>
         </div>
     )

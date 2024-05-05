@@ -9,12 +9,19 @@ export default function BasicMenu()
 {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
-    setAnchorEl(null);
+      setAnchorEl(null);
   };
+
+    const handleLogout = () =>
+    {
+        sessionStorage.removeItem('token');
+        window.location.href = '/';
+    };
 
   return(
     <div className="user">
@@ -38,7 +45,7 @@ export default function BasicMenu()
       >
         <MenuItem class="menu-item" component={Link} to="/profile/1" onClick={handleClose}>Profile</MenuItem>
         <MenuItem class="menu-item" component={Link} to="/admin" onClick={handleClose}>Admin</MenuItem>
-        <MenuItem class="menu-item" component={Link} to="/" onClick={handleClose}>Logout</MenuItem>
+        <MenuItem class="menu-item" component={Link} to="/" onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
   );

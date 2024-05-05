@@ -1,43 +1,43 @@
 import React from "react";
 import "../styles/Filter.css";
-import {Checkbox, FormControlLabel, Divider} from "@material-ui/core";
+import { Divider, FormControlLabel, Checkbox } from "@material-ui/core";
 
-export function Filter({title})
+function Filter({ title, filters, onCheckboxChange })
 {
+    const handleCheckboxChange = (filterTitle, option) =>
+    {
+        onCheckboxChange(filterTitle, option);
+    };
+
     return (
         <div className="filter">
-            <div className="filter-title">
-                {title}
-            </div>
-            <Divider orientation="horizontal"/>
+            <div className="filter-title">{title}</div>
+            <Divider orientation="horizontal" />
             <div className="filter-content">
-                <div className="filter-content-option">
-                    <h1 className="filter-content-option-title">Scale</h1>
-                    <FormControlLabel control={<Checkbox />} label="1:32" />
-                    <FormControlLabel control={<Checkbox />} label="1:16" />
-                    <FormControlLabel control={<Checkbox />} label="1:64" />
-                    <FormControlLabel control={<Checkbox />} label="1:52" />
-                    <FormControlLabel control={<Checkbox />} label="1:72" />
-                </div>
-                <div className="filter-content-option">
-                    <h1 className="filter-content-option-title">Generation</h1>
-                    <FormControlLabel control={<Checkbox />} label="<I" />
-                    <FormControlLabel control={<Checkbox />} label="I" />
-                    <FormControlLabel control={<Checkbox />} label="II" />
-                    <FormControlLabel control={<Checkbox />} label="III" />
-                    <FormControlLabel control={<Checkbox />} label="IV" />
-                </div>
-                <div className="filter-content-option">
-                    <h1 className="filter-content-option-title">Country</h1>
-                    <FormControlLabel control={<Checkbox />} label="Germany" />
-                    <FormControlLabel control={<Checkbox />} label="Russia" />
-                    <FormControlLabel control={<Checkbox />} label="USA" />
-                    <FormControlLabel control={<Checkbox />} label="France" />
-                    <FormControlLabel control={<Checkbox />} label="United Kingdom" />
-                </div>
+                {filters.map((filter, index) => (
+                    <div key={index} className="filter-content-option">
+                        <h1 className="filter-content-option-title">{capitalizeFirstLetter(filter.title)}</h1>
+                        {filter.options.map((option, optionIndex) => (
+                            <FormControlLabel
+                                key={optionIndex}
+                                control={
+                                    <Checkbox
+                                        onChange={() => handleCheckboxChange(filter.title, option)}
+                                    />
+                                }
+                                label={option}
+                            />
+                        ))}
+                    </div>
+                ))}
             </div>
         </div>
-    )
+    );
+}
+
+function capitalizeFirstLetter(string)
+{
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 export default Filter;
