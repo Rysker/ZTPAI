@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/LoginPage.css';
 import RegisterForm from '../components/RegisterForm';
 import {Alert} from "@mui/material";
+import axios from "axios";
 
 function RegisterPage()
 {
@@ -13,20 +14,21 @@ function RegisterPage()
     {
         try
         {
-            const response = await fetch('/api/v1/auth/signup', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
+            const response = await axios.post('/api/v1/auth/signup', formData,
+                {
+                    headers:
+                        {
+                            'Content-Type': 'application/json',
+                        }
+                });
 
-            const responseData = await response.text();
+            const responseData = response.data;
 
-            if (!response.ok || responseData !== "User registered successfully!")
+            if (response.status !== 200 || responseData !== "User registered successfully!")
             {
                 setError(responseData);
-                setTimeout(() => {
+                setTimeout(() =>
+                {
                     setError(null);
                 }, 3000);
             }
@@ -34,7 +36,8 @@ function RegisterPage()
             {
                 setSuccess(true);
                 setMessage(responseData);
-                setTimeout(() => {
+                setTimeout(() =>
+                {
                     window.location.href = '/login';
                 }, 2000);
             }

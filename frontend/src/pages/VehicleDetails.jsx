@@ -6,6 +6,7 @@ import { DefaultNavbar } from "../components/DefaultNavbar";
 import Filter from "../components/Filter";
 import RatingInformation from "../components/RatingInformation";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 function VehicleDetails()
 {
@@ -14,37 +15,18 @@ function VehicleDetails()
     const [selectedFilters, setSelectedFilters] = useState([]);
     const { vehicle_name } = useParams();
 
-    useEffect(() => {
-        const token = sessionStorage.getItem('token');
-
+    useEffect(() =>
+    {
         const fetchData = async () =>
         {
             try
             {
-                console.log(`/api/v1/vehicle/models/${vehicle_name}`);
                 const [kitsResponse, filtersResponse] = await Promise.all([
-                    fetch(`/api/v1/vehicle/models/${vehicle_name}`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    }),
-                    fetch(`/api/v1/filters/vehicles/${vehicle_name}`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    })
+                    axios.get(`/api/v1/vehicle/models/${vehicle_name}`),
+                    axios.get(`/api/v1/filters/vehicles/${vehicle_name}`)
                 ]);
-
-                if (!kitsResponse.ok || !filtersResponse.ok)
-                    throw new Error('Failed to fetch data');
-
-                const [kitsData, filtersData] = await Promise.all([
-                    kitsResponse.json(),
-                    filtersResponse.json()
-                ]);
-
-                setVehicleKits(kitsData);
-                setFilters(filtersData);
+                setVehicleKits(kitsResponse.data);
+                setFilters(filtersResponse.data);
             }
             catch (error)
             {
@@ -55,13 +37,13 @@ function VehicleDetails()
         fetchData();
     }, [vehicle_name]);
 
-    const handleCheckboxChange = (filterTitle, option) => {
+    const handleCheckboxChange = (filterTitle, option) =>
+    {
         const isSelected = selectedFilters.some(filter => filter.title === filterTitle && filter.option === option);
-        if (isSelected) {
+        if (isSelected)
             setSelectedFilters(selectedFilters.filter(filter => !(filter.title === filterTitle && filter.option === option)));
-        } else {
+        else
             setSelectedFilters([...selectedFilters, { title: filterTitle, option }]);
-        }
     };
 
     const filteredKits = () => {

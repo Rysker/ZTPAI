@@ -1,7 +1,7 @@
 import LoginPage from "./pages/LoginPage";
 import Vehicles from "./pages/Vehicles";
 import VehicleDetails from "./pages/VehicleDetails";
-import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import {BrowserRouter, Routes, Route} from "react-router-dom";
 import "./App.css"
 import ModelKit from "./pages/ModelKit";
 import RegisterPage from "./pages/RegisterPage";
@@ -11,12 +11,8 @@ import MainPage from "./pages/MainPage";
 import HomePage from "./pages/HomePage";
 import AdminPage from "./pages/AdminPage";
 import Reports from "./pages/Reports";
+import PrivateRoute from "./components/PrivateRoute";
 
-const PrivateRoute = ({ children }) =>
-{
-    const isAuthenticated = sessionStorage.getItem('token');
-    return isAuthenticated ? children : <Navigate to="/login" />;
-};
 function App ()
 {
     return (

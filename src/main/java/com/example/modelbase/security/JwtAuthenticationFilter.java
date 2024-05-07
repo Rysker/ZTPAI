@@ -7,16 +7,15 @@ import com.example.modelbase.service.UserService;
 import java.io.IOException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContext;
 
@@ -27,34 +26,43 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
     private final JwtService jwtService;
     private final UserService userService;
     @Override
-    protected void doFilterInternal(@NonNull HttpServletRequest request,
-                                    @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
-            throws ServletException, IOException
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException
     {
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
-        final String userEmail;
-        if (StringUtils.isEmpty(authHeader) || ! StringUtils.startsWith(authHeader, "Bearer "))
-        {
-            filterChain.doFilter(request, response);
-            return;
-        }
+        String jwt = null;
+        String userEmail = null;
 
-        jwt = authHeader.substring(7);
-        userEmail = jwtService.extractEmail(jwt);
-        if (StringUtils.isNotEmpty(userEmail) && SecurityContextHolder.getContext().getAuthentication() == null)
+        // Extract JWT token from cookie
+        if (request.getCookies() != null)
         {
-            UserDetails userDetails = userService.loadUserByUsername(userEmail);
-            if (jwtService.isTokenValid(jwt, userDetails))
+            for (Cookie cookie : request.getCookies())
             {
-                SecurityContext context = SecurityContextHolder.createEmptyContext();
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                context.setAuthentication(authToken);
-                SecurityContextHolder.setContext(context);
+                if ("jwtCookie".equals(cookie.getName()))
+                {
+                    jwt = cookie.getValue();
+                    break;
+                }
             }
         }
+
+        // Validate JWT token
+        if (!StringUtils.isEmpty(jwt))
+        {
+            userEmail = jwtService.extractEmail(jwt);
+            if (userEmail != null)
+            {
+                UserDetails userDetails = userService.loadUserByUsername(userEmail);
+                if (jwtService.isTokenValid(jwt, userDetails))
+                {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities());
+                    authToken.setDetails(userDetails);
+                    SecurityContext context = SecurityContextHolder.createEmptyContext();
+                    context.setAuthentication(authToken);
+                    SecurityContextHolder.setContext(context);
+                }
+            }
+        }
+        // Proceed with the filter chain
         filterChain.doFilter(request, response);
     }
 }

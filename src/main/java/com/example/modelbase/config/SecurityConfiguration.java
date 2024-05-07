@@ -3,7 +3,6 @@ package com.example.modelbase.config;
 import com.example.modelbase.security.JwtAuthenticationFilter;
 import com.example.modelbase.service.UserService;
 
-
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 import org.springframework.context.annotation.Bean;
@@ -31,7 +30,6 @@ public class SecurityConfiguration
 {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserService userService;
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
     {
@@ -64,4 +62,5 @@ public class SecurityConfiguration
     {
         return config.getAuthenticationManager();
     }
+
 }

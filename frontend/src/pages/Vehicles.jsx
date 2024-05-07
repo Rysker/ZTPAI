@@ -4,6 +4,7 @@ import "../styles/Vehicles.css";
 import { DefaultNavbar } from "../components/DefaultNavbar";
 import Filter from "../components/Filter";
 import {useLocation} from "react-router-dom";
+import axios from "axios";
 
 function Vehicles()
 {
@@ -18,34 +19,13 @@ function Vehicles()
     useEffect(() =>
     {
         setLoading(true);
-        const token = sessionStorage.getItem('token');
 
         const fetchVehicles = async () =>
         {
             try
             {
-                let response;
-                if (!type || type === "Vehicles")
-                {
-                    response = await fetch(`/api/v1/vehicle/all`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-                }
-                else
-                {
-                    const tmp = type.slice(0, -1);
-                    response = await fetch(`/api/v1/vehicle/type?type=${tmp}`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-                }
-                if (!response.ok)
-                    throw new Error('Failed to fetch vehicles');
-                const data = await response.json();
-                setVehicles(data);
+                const response = await axios.get(`/api/v1/vehicle/all`);
+                setVehicles(response.data);
             }
             catch (error)
             {
@@ -61,15 +41,8 @@ function Vehicles()
         {
             try
             {
-                const response = await fetch(`/api/v1/filters/vehicles`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-                if (!response.ok)
-                    throw new Error("Failed to fetch filter options");
-                const data = await response.json();
-                setFilters(data);
+                const response = await axios.get(`/api/v1/filters/vehicles`);
+                setFilters(response.data);
             }
             catch (error)
             {

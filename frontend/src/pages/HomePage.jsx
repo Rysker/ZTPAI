@@ -1,4 +1,3 @@
-import React, {useState, useEffect} from 'react';
 import { TbTank } from "react-icons/tb";
 import { FaFighterJet } from "react-icons/fa";
 import { GiBattleship } from "react-icons/gi";

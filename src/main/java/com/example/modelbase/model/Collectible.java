@@ -12,7 +12,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "collectible", schema = "public")
-public class Collectible {
+public class Collectible
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "collectible_id", nullable = false)
