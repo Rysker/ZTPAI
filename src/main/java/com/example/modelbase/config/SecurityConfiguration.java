@@ -4,7 +4,6 @@ import com.example.modelbase.security.JwtAuthenticationFilter;
 import com.example.modelbase.service.UserService;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;

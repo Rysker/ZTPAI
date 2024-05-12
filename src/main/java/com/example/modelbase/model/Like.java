@@ -1,12 +1,17 @@
 package com.example.modelbase.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "likes", schema = "public")
-public class Like {
+public class Like
+{
     @EmbeddedId
-    private LikeId id;
+    private LikeId id = new LikeId();
 
     @MapsId("userId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -20,37 +25,5 @@ public class Like {
 
     @Column(name = "is_like", nullable = false)
     private Boolean isLike = false;
-
-    public LikeId getId() {
-        return id;
-    }
-
-    public void setId(LikeId id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Review getReview() {
-        return review;
-    }
-
-    public void setReview(Review review) {
-        this.review = review;
-    }
-
-    public Boolean getIsLike() {
-        return isLike;
-    }
-
-    public void setIsLike(Boolean isLike) {
-        this.isLike = isLike;
-    }
 
 }

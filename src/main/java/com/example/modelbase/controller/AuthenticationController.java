@@ -9,12 +9,9 @@ import com.example.modelbase.service.JwtService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import lombok.RequiredArgsConstructor;
@@ -53,21 +50,38 @@ public class AuthenticationController
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<JwtAuthenticationResponse> signin(@RequestBody SignInRequest request, HttpServletResponse res)
+    public String signin(@RequestBody SignInRequest request, HttpServletResponse res)
     {
-        JwtAuthenticationResponse token = authenticationService.signIn(request);
-        Cookie jwtCookie = new Cookie("jwtCookie", token.getToken());
-        jwtCookie.setPath("/");
-        jwtCookie.setHttpOnly(true);
-        jwtCookie.setMaxAge(36000);
-        res.addCookie(jwtCookie);
-        return ResponseEntity.ok(authenticationService.signIn(request));
+        try
+        {
+            JwtAuthenticationResponse token = authenticationService.signIn(request);
+            Cookie jwtCookie = new Cookie("jwtCookie", token.getToken());
+            jwtCookie.setPath("/");
+            jwtCookie.setHttpOnly(true);
+            jwtCookie.setMaxAge(3600);
+            res.addCookie(jwtCookie);
+            return "Success";
+        }
+        catch(Exception e)
+        {
+            return "Error";
+        }
+
     }
 
     @GetMapping("/check")
-    public ResponseEntity<Boolean> checkAuthentication()
+    public ResponseEntity<Boolean> checkAuthentication(@CookieValue("jwtCookie") String jwtToken)
     {
-        boolean isAuthenticated = jwtService.checkAuthenticationStatus();
-        return ResponseEntity.ok(isAuthenticated);
+        boolean isAuthenticated = jwtService.checkAuthenticationStatus(jwtToken);
+        return isAuthenticated ? ResponseEntity.ok(isAuthenticated) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PostMapping("/logout")
+    public void logout(HttpServletResponse response)
+    {
+        Cookie authCookie = new Cookie("jwtCookie", null);
+        authCookie.setPath("/");
+        authCookie.setMaxAge(0);
+        response.addCookie(authCookie);
     }
 }

@@ -10,7 +10,8 @@ import lombok.Setter;
 @Table(name = "progress", schema = "public", indexes = {
         @Index(name = "progress_name_name1_key", columnList = "name", unique = true)
 })
-public class Progress {
+public class Progress
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "progress_id", nullable = false)

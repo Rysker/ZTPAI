@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {FaBinoculars, FaCheck, FaFlag, FaThumbsDown, FaThumbsUp} from "react-icons/fa";
+import {FaFlag, FaThumbsDown, FaThumbsUp} from "react-icons/fa";
 import '../App.css';
 import '../styles/ModelKit.css'
 import  "../styles/VehicleDetails.css";
@@ -9,78 +9,64 @@ import Button from "@material-ui/core/Button";
 import {Divider} from "@material-ui/core";
 import {TextField} from "@mui/material";
 import ClickableRating from "../components/ClickableRating";
+import axios from "axios";
+import {useParams} from "react-router-dom";
+import VehicleKit from "../components/VehicleKit";
+
 
 function ModelKit()
 {
-    const [message, setMessage] = useState("");
-    let photo = "/images/signupBackground.jpg";
-    useEffect(() => {
-        fetch('/hello')
-            .then(response => response.text())
-            .then(message => {
-                setMessage(message);
-            });
-    },[])
+    const [vehicleKit, setVehicleKit] = useState([]);
+    const [reviews, setReviews] = useState([])
+    const { vehicle_name, id } = useParams();
+    const [error, setError] = useState(null);
+
+    useEffect(() =>
+    {
+        const fetchData = async () =>
+        {
+            try
+            {
+                const response = await axios.get(`/api/v1/models/${vehicle_name}/${id}`);
+                setVehicleKit(response.data);
+                setReviews(response.data.reviews);
+            }
+            catch (error)
+            {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    }, [vehicle_name]);
+
+    const changeObserved = async (id) =>
+    {
+        const response = await axios.post(`/api/v1/watchlist/change/${id}`);
+        if(response.status !== 200)
+            setError('Failed to change observed status.');
+    };
+
+    const addCollectible = async (event) =>
+    {
+        const response = await axios.post(`/api/v1/collection/add/${id}`);
+        if(response.status !== 200)
+            setError('Failed to change observed status.');
+    };
+
     return (
         <div className="webpage">
-            <DefaultNavbar></DefaultNavbar>
+            <DefaultNavbar/>
             <div className="content-space">
                 <div className="content-space-info">
                     <div className="content-space-info-display-row">
-                        <Kit name="Leopard 1" photo={photo}></Kit>
-                        <div className="content-space-gallery">
-                            <div className="content-space-gallery-entity">
-                                <img src={photo}/>
-                            </div>
-                            <div className="content-space-gallery-entity">
-                                <img src={photo} />
-                            </div>
-                            <div className="content-space-gallery-entity">
-                                <img src={photo} />
-                            </div>
-                        </div>
+                        <VehicleKit key={id} kit={vehicleKit} changeObserved={changeObserved} addCollectible={addCollectible}/>
+                        <PhotoGallery kit={vehicleKit}/>
                         <div className="content-space-reviews">
-                            <div className="write-review">
-                                <div className="write-review-inputs">
-                                    <TextField
-                                        id="write-review-title"
-                                        label="Title"
-                                        variant="outlined"
-                                        sx={{
-                                            width: '40%',
-                                            height: '35%'
-                                        }}
-                                    />
-                                    <TextField
-                                        id="write-review-content"
-                                        label="Review text"
-                                        variant="outlined"
-                                        maxRows={3}
-                                        multiline
-                                        sx={{width: '70%', height: '55%'}}
-                                    />
-                                </div>
-                                <div className="write-review-buttons">
-                                    <ClickableRating></ClickableRating>
-                                    <Button
-                                        id="submit-review"
-                                        sx={{width:'auto'}}
-                                    >
-                                        Add review
-                                    </Button>
-                                </div>
-                            </div>
-                            <div className="reviews-header">
-                                <div className="reviews-header-title">Reviews</div>
-                                <RatingInformation value="4.5"></RatingInformation>
-                                <span>(19)</span>
-                            </div>
-                            <Review value="4.3" user="User 1" date="19.02.2024" title="One of the best!" description="One of the best products you can buy! Definitely recommend it." sum="254"></Review>
-                            <Divider orientation="horizontal" variant="middle"/>
-                            <Review value="4.3" user="User 1" date="19.02.2024" title="One of the best!" description="One of the best products you can buy! Definitely recommend it." sum="254"></Review>
-                            <Divider orientation="horizontal" variant="middle"/>
-                            <Review value="4.3" user="User 1" date="19.02.2024" title="One of the best!" description="One of the best products you can buy! Definitely recommend it." sum="254"></Review>
-                            <Divider orientation="horizontal" variant="middle"/>
+                            <WriteReview/>
+                            {reviews.map((review, index) => (
+                                <Review key={index} review={review} />
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -89,65 +75,161 @@ function ModelKit()
     )
 }
 
-function Kit({name, photo})
+function WriteReview()
 {
     return(
-        <div className="kit">
-            <img src={photo} alt={name + " photo"} />
-            <div className="kit-description">
-                <div className="kit-description-title">
-                    German Leopard 1 Main Battle Tank
-                </div>
-                <div className="kit-description-details">
-                    <div className="kit-description-details-elements">
-                        <p>Scale: 1:35</p>
-                        <p>Scale: 1:35</p>
-                        <p>Scale: 1:35</p>
-                        <p>Scale: 1:35</p>
-                    </div>
-                </div>
-                <Button id="kit-add">Add to collection</Button>
+        <div className="write-review">
+            <div className="write-review-inputs">
+                <TextField
+                    id="write-review-title"
+                    label="Title"
+                    variant="outlined"
+                    sx={{
+                        width: '40%',
+                        height: '35%'
+                    }}
+                />
+                <TextField
+                    id="write-review-content"
+                    label="Review text"
+                    variant="outlined"
+                    maxRows={3}
+                    multiline
+                    sx={{width: '70%', height: '55%'}}
+                />
             </div>
-            <div className="kit-info">
-                <div className="kit-info-controls">
-                    <FaCheck className="info-icon"></FaCheck>
-                    <FaBinoculars className="info-icon"></FaBinoculars>
-                </div>
-                <div className="kit-info-reviews">
-                    <RatingInformation value="4.6"></RatingInformation>
-                    <p>(19)</p>
-                </div>
+            <div className="write-review-buttons">
+                <ClickableRating></ClickableRating>
+                <Button
+                    id="submit-review"
+                    sx={{width:'auto'}}
+                >
+                    Add review
+                </Button>
             </div>
         </div>
     )
 }
 
-function Review({user, date, title, description, value, sum})
+function Review({review})
+{
+    const [liked, setLiked] = React.useState(review.userLike === "true");
+    const [disliked, setDisliked] = React.useState(review.userLike === "false");
+    const reviewLike = async (isLiked) =>
+    {
+        try
+        {
+            if ((isLiked && liked) || (!isLiked && disliked))
+            {
+                const score = review.score;
+                const previousState = isLiked;
+                const response = await axios.delete(`/api/v1/review/like/${review.reviewId}`);
+                if (response.status === 200)
+                {
+                    setLiked(false);
+                    setDisliked(false);
+                    if(previousState)
+                        review.score -= 1;
+                    else
+                        review.score += 1;
+                }
+            }
+            else if((disliked && isLiked) || (liked && !isLiked))
+            {
+                const previousState = isLiked
+                const response = await axios.post(`/api/v1/review/like/swap/${review.reviewId}`);
+                if (response.status === 200)
+                {
+                    setLiked(isLiked);
+                    setDisliked(!isLiked);
+                    if(previousState)
+                        review.score += 2;
+                    else
+                        review.score -= 2;
+                }
+            }
+            else
+            {
+                const response = await axios.post(`/api/v1/review/like/${review.reviewId}`, { liked: isLiked });
+                if (response.status === 200)
+                {
+                    setLiked(false);
+                    setDisliked(false);
+                    isLiked ? setLiked(true) : setDisliked(true);
+                    if(isLiked)
+                        review.score += 1;
+                    else
+                        review.score -= 1;
+                }
+            }
+        }
+        catch (error)
+        {
+            console.error('Error liking review:', error);
+        }
+    };
+    return(
+        <div>
+            <div className="review-entity">
+                <div className="review-entity-description">
+                    <RatingInformation value={review.rating}></RatingInformation>
+                    <h1>{review.username}</h1>
+                    <h2>{review.writeDate}</h2>
+                </div>
+                <Divider orientation="vertical" variant="middle" flexItem />
+                <div className="review-entity-text">
+                    <p id="review-title">{review.title}</p>
+                    <h1 id="review-description">{review.content}</h1>
+                </div>
+                <div className="review-entity-actions">
+                    <div className="vehicle-kit-info-controls">
+                        <FaFlag className="info-icon"></FaFlag>
+                    </div>
+                    <div className="vehicle-kit-info-reviews">
+                        <FaThumbsUp
+                            className={`thumbs ${liked ? 'liked' : ''}`}
+                            onClick={() => reviewLike(true)}/>
+                        <FaThumbsDown
+                            className={`thumbs ${disliked ? 'disliked' : ''}`}
+                            onClick={() => reviewLike(false)}/>
+                        <span>{review.score}</span>
+                    </div>
+                </div>
+            </div>
+            <Divider orientation="horizontal" variant="middle"/>
+        </div>
+    )
+}
+
+function PhotoGallery({kit})
+{
+    let photos = kit.photos;
+    let arr = [];
+    if(typeof(photos) == "object" && photos.length > 0)
+    {
+        for(const photo of photos)
+            arr.push(photo);
+    }
+
+    return(
+        <div className="content-space-gallery">
+            {arr.map((photo, index) => (
+                <div className="content-space-gallery-entity" key={index}>
+                    <img src={photo} alt={`Photo ${index + 1}`} />
+                </div>
+            ))}
+        </div>
+    );
+}
+
+function ReviewHeader({kit})
 {
     return(
-        <div className="review-entity">
-            <div className="review-entity-description">
-                <RatingInformation value={value}></RatingInformation>
-                <h1>{user}</h1>
-                <h2>{date}</h2>
-            </div>
-            <Divider orientation="vertical" variant="middle" flexItem />
-            <div className="review-entity-text">
-                <p id="review-title">{title}</p>
-                <h1 id="review-description">{description}</h1>
-            </div>
-            <div className="review-entity-actions">
-                <div className="vehicle-kit-info-controls">
-                    <FaFlag className="info-icon"></FaFlag>
-                </div>
-                <div className="vehicle-kit-info-reviews">
-                    <FaThumbsUp className= "thumbs"></FaThumbsUp>
-                    <FaThumbsDown className= "thumbs"></FaThumbsDown>
-                    <span>{sum}</span>
-                </div>
-            </div>
+        <div className="reviews-header">
+            <div className="reviews-header-title">Reviews</div>
+            <RatingInformation value={Number(kit.reviewsAverage)}></RatingInformation>
+            <span>({kit.reviewsCount})</span>
         </div>
-
     )
 }
 export default ModelKit;

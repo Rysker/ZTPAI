@@ -20,12 +20,21 @@ function Vehicles()
     {
         setLoading(true);
 
-        const fetchVehicles = async () =>
+        const fetchData = async () =>
         {
             try
             {
-                const response = await axios.get(`/api/v1/vehicle/all`);
-                setVehicles(response.data);
+                let vehicles;
+                if(type === null)
+                    vehicles = await axios.get(`/api/v1/vehicle/all`);
+                else
+                {
+                    const typeWithoutLastChar = type.slice(0, -1);
+                    vehicles = await axios.get(`/api/v1/vehicle/type?type=${typeWithoutLastChar}`);
+                }
+                const filters = await axios.get(`/api/v1/filters/vehicles`);
+                setVehicles(vehicles.data);
+                setFilters(filters.data);
             }
             catch (error)
             {
@@ -37,21 +46,7 @@ function Vehicles()
             }
         };
 
-        const fetchFilters = async () =>
-        {
-            try
-            {
-                const response = await axios.get(`/api/v1/filters/vehicles`);
-                setFilters(response.data);
-            }
-            catch (error)
-            {
-                console.error("Error fetching filter options:", error);
-            }
-        };
-
-        fetchFilters();
-        fetchVehicles();
+        fetchData();
     }, [type]);
 
     const handleCheckboxChange = (filterTitle, option) =>

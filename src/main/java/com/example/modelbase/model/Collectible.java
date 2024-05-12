@@ -1,14 +1,14 @@
 package com.example.modelbase.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "collectible", schema = "public")
@@ -39,61 +39,5 @@ public class Collectible
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "collection_id", nullable = false)
     private Collection collection;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public ModelKit getModelKit() {
-        return modelKit;
-    }
-
-    public void setModelKit(ModelKit modelKit) {
-        this.modelKit = modelKit;
-    }
-
-    public Progress getProgress() {
-        return progress;
-    }
-
-    public void setProgress(Progress progress) {
-        this.progress = progress;
-    }
-
-    public Boolean getIsPublic() {
-        return isPublic;
-    }
-
-    public void setIsPublic(Boolean isPublic) {
-        this.isPublic = isPublic;
-    }
-
-    public LocalDate getCompletionDate() {
-        return completionDate;
-    }
-
-    public void setCompletionDate(LocalDate completionDate) {
-        this.completionDate = completionDate;
-    }
-
-    public Integer getListOrder() {
-        return listOrder;
-    }
-
-    public void setListOrder(Integer listOrder) {
-        this.listOrder = listOrder;
-    }
-
-    public Collection getCollection() {
-        return collection;
-    }
-
-    public void setCollection(Collection collection) {
-        this.collection = collection;
-    }
 
 }

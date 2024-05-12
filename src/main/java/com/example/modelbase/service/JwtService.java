@@ -80,9 +80,11 @@ public class JwtService
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public boolean checkAuthenticationStatus()
+    public boolean checkAuthenticationStatus(String jwtToken)
     {
-        return SecurityContextHolder.getContext().getAuthentication() != null
-                && SecurityContextHolder.getContext().getAuthentication().isAuthenticated();
+        Claims claims = this.extractAllClaims(jwtToken);
+        if (claims.getExpiration().before(new Date()))
+            return false;
+        return true;
     }
 }

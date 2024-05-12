@@ -25,7 +25,7 @@ function LoginPage ()
         try
         {
                 const response = await axios.post('/api/v1/auth/signin', credentials, { withCredentials: true });
-                if (response.status === 200)
+                if (response.data === "Success")
                 {
                     setSuccess(true);
                     setTimeout(() =>

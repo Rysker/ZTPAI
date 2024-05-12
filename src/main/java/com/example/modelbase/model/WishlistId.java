@@ -2,6 +2,7 @@ package com.example.modelbase.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
@@ -12,7 +13,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
-public class WishlistId implements Serializable {
+public class WishlistId implements Serializable
+{
     private static final long serialVersionUID = 3533206335567828925L;
     @Column(name = "model_kit_id", nullable = false)
     private Integer modelKitId;
@@ -21,7 +23,8 @@ public class WishlistId implements Serializable {
     private Integer userId;
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o)
+    {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         WishlistId entity = (WishlistId) o;

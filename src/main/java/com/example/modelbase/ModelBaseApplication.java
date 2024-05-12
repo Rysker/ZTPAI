@@ -10,5 +10,4 @@ public class ModelBaseApplication
 	{
 		SpringApplication.run(ModelBaseApplication.class, args);
 	}
-
 }

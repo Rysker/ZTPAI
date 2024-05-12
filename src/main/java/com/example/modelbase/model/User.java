@@ -39,8 +39,13 @@ public class User implements UserDetails
     @Column(name = "password", nullable = false, length = 256)
     private String password;
 
-    @OneToMany(mappedBy = "user")
-    private Set<Collection> collections = new LinkedHashSet<>();
+    @ManyToOne
+    @JoinTable(
+            name = "collection",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "collection_id")
+    )
+    private Collection collection;
 
     @OneToMany(mappedBy = "user")
     private Set<Like> likes = new LinkedHashSet<>();

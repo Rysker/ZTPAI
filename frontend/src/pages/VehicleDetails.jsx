@@ -7,6 +7,8 @@ import Filter from "../components/Filter";
 import RatingInformation from "../components/RatingInformation";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import {Alert} from "@mui/material";
+import VehicleKit from "../components/VehicleKit";
 
 function VehicleDetails()
 {
@@ -14,6 +16,24 @@ function VehicleDetails()
     const [filters, setFilters] = useState([]);
     const [selectedFilters, setSelectedFilters] = useState([]);
     const { vehicle_name } = useParams();
+    const [error, setError] = useState(null);
+
+    useEffect(() =>
+    {
+        const timeout = setTimeout(() =>
+        {
+            setError(null);
+        }, 2000);
+
+        return () => clearTimeout(timeout);
+    }, [error]);
+
+    const changeObserved = async (id) =>
+    {
+        const response = await axios.post(`/api/v1/watchlist/change/${id}`);
+        if(response.status !== 200)
+            setError('Failed to change observed status.');
+    };
 
     useEffect(() =>
     {
@@ -35,7 +55,7 @@ function VehicleDetails()
         };
 
         fetchData();
-    }, [vehicle_name]);
+    }, [vehicle_name], [vehicleKits]);
 
     const handleCheckboxChange = (filterTitle, option) =>
     {
@@ -46,21 +66,26 @@ function VehicleDetails()
             setSelectedFilters([...selectedFilters, { title: filterTitle, option }]);
     };
 
-    const filteredKits = () => {
-        if (selectedFilters.length === 0) {
+    const filteredKits = () =>
+    {
+        if (selectedFilters.length === 0)
             return vehicleKits;
-        } else {
-            return vehicleKits.filter(kit => {
+        else
+        {
+            return vehicleKits.filter(kit =>
+            {
                 const filtersByTitle = {};
-                selectedFilters.forEach(filter => {
-                    if (!filtersByTitle[filter.title]) {
+                selectedFilters.forEach(filter =>
+                {
+                    if (!filtersByTitle[filter.title])
                         filtersByTitle[filter.title] = [];
-                    }
                     filtersByTitle[filter.title].push(filter.option);
                 });
 
-                return Object.entries(filtersByTitle).every(([title, options]) => {
-                    return options.some(option => {
+                return Object.entries(filtersByTitle).every(([title, options]) =>
+                {
+                    return options.some(option =>
+                    {
                         return kit[title.toLowerCase()] === option;
                     });
                 });
@@ -78,42 +103,12 @@ function VehicleDetails()
                     </div>
                     <div className="content-space-info-display-row">
                         {filteredKits().map((kit, index) => (
-                            <VehicleKit key={index} kit={kit} />
+                            <VehicleKit key={index} kit={kit} changeObserved={changeObserved}/>
                         ))}
                     </div>
                 </div>
             </div>
-        </div>
-    );
-}
-
-function VehicleKit({ kit }) {
-    return (
-        <div className="vehicle-kit">
-            <img src={kit.photo} alt={kit.name + " photo"} />
-            <div className="vehicle-kit-description">
-                <div className="vehicle-kit-description-title">
-                    {kit.name}
-                </div>
-                <div className="vehicle-kit-description-details">
-                    <div className="vehicle-kit-description-details-elements">
-                        <p>Scale: {kit.scale}</p>
-                        <p>Manufacturer: {kit.manufacturer}</p>
-                        <p>Manufacturer code: {kit.manufacturerCode}</p>
-                        <p>Variant: {kit.variant}</p>
-                    </div>
-                </div>
-            </div>
-            <div className="vehicle-kit-info">
-                <div className="vehicle-kit-info-controls">
-                    <FaCheck className="info-icon" />
-                    <FaBinoculars className="info-icon" />
-                </div>
-                <div className="vehicle-kit-info-reviews">
-                    <RatingInformation value={kit.reviewsAverage} />
-                    <p>({kit.reviewsCount})</p>
-                </div>
-            </div>
+            {error && <Alert severity="error">{error}</Alert>}
         </div>
     );
 }

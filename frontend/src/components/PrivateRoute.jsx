@@ -14,7 +14,7 @@ const PrivateRoute = ({ children }) =>
             try
             {
                 const response = await axios.get('/api/v1/auth/check', { withCredentials: true });
-                if (response.data === true)
+                if (response.status === 200)
                     setIsAuthenticated(true);
             }
             catch (error)

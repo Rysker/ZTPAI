@@ -5,12 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Set;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ModelKitShortDto
+public class ModelKitDto
 {
+    private Integer id;
     private String photo;
     private String name;
     private String manufacturerCode;
@@ -18,7 +22,12 @@ public class ModelKitShortDto
     private String manufacturer;
     private String variant;
     private String reviewsCount;
-    private String reviewsAverage;
+    private Double reviewsAverage;
     private String status;
     private boolean isOnWatchlist;
+
+    //Expanded response
+    private Set<String> photos;
+    private Set<ReviewResponseDto> reviews;
+
 }

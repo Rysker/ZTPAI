@@ -4,6 +4,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import {FaUser} from "react-icons/fa";
 import {Link} from "react-router-dom";
+import axios from "axios";
 
 export default function BasicMenu()
 {
@@ -17,10 +18,18 @@ export default function BasicMenu()
       setAnchorEl(null);
   };
 
-    const handleLogout = () =>
+    const handleLogout = async () =>
     {
-        sessionStorage.removeItem('token');
-        window.location.href = '/';
+        try
+        {
+            await axios.post('/api/v1/auth/logout');
+            window.location.href = '/';
+        }
+        catch (error)
+        {
+            console.error('Error:', error.message);
+            window.location.href = '/home';
+        }
     };
 
   return(

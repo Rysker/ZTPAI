@@ -1,6 +1,5 @@
 import React from "react";
 import '../styles/Navbar.css'
-import {FaUser} from "react-icons/fa";
 import BasicMenu from "./BasicMenu";
 
 export function DefaultNavbar()

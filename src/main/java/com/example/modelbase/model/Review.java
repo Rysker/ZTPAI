@@ -1,12 +1,16 @@
 package com.example.modelbase.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "review", schema = "public")
 public class Review
 {
@@ -44,85 +48,5 @@ public class Review
 
     @OneToMany(mappedBy = "review")
     private Set<Report> reports = new LinkedHashSet<>();
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public ModelKit getModelKit() {
-        return modelKit;
-    }
-
-    public void setModelKit(ModelKit modelKit) {
-        this.modelKit = modelKit;
-    }
-
-    public Integer getRating() {
-        return rating;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public LocalDate getWriteDate() {
-        return writeDate;
-    }
-
-    public void setWriteDate(LocalDate writeDate) {
-        this.writeDate = writeDate;
-    }
-
-    public ReviewStatus getReviewStatus() {
-        return reviewStatus;
-    }
-
-    public void setReviewStatus(ReviewStatus reviewStatus) {
-        this.reviewStatus = reviewStatus;
-    }
-
-    public Set<Like> getLikes() {
-        return likes;
-    }
-
-    public void setLikes(Set<Like> likes) {
-        this.likes = likes;
-    }
-
-    public Set<Report> getReports() {
-        return reports;
-    }
-
-    public void setReports(Set<Report> reports) {
-        this.reports = reports;
-    }
 
 }

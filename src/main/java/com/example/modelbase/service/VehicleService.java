@@ -1,11 +1,10 @@
 package com.example.modelbase.service;
 
-import com.example.modelbase.dto.response.ModelKitShortDto;
+import com.example.modelbase.dto.response.ModelKitDto;
 import com.example.modelbase.dto.response.VehicleInfoDto;
 import com.example.modelbase.mapper.ModelKitMapper;
 import com.example.modelbase.model.*;
 import com.example.modelbase.repository.*;
-import com.example.modelbase.repository.EavTableRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -41,17 +40,17 @@ public class VehicleService
         return vehicleInfoDtos;
     }
 
-    public Set<ModelKitShortDto> getVehicleKits(String token, String vehicle_name)
+    public Set<ModelKitDto> getVehicleKits(String token, String vehicle_name)
     {
         Vehicle vehicle = vehicleRepository.getVehicleByName(vehicle_name);
         Set<ModelKit> kits = new HashSet<>();
         for(Variant variant: vehicle.getVariants())
             for(ModelKit kit: variant.getModelKits())
                 kits.add(kit);
-        Set<ModelKitShortDto> modelKitShortDtos = kits.stream()
+        Set<ModelKitDto> modelKitDtos = kits.stream()
                 .map(x -> modelKitMapper.kitShortMap(token, x))
                 .collect(Collectors.toSet());
-        return modelKitShortDtos;
+        return modelKitDtos;
     }
 
     private VehicleInfoDto convertToDto(Vehicle vehicle)
