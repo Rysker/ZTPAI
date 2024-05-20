@@ -4,6 +4,8 @@ import LoginForm from "../components/LoginForm";
 import {Alert} from "@mui/material";
 import axios from "axios";
 
+const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
+
 function LoginPage ()
 {
     const [error, setError] = useState(null);
@@ -24,8 +26,9 @@ function LoginPage ()
     {
         try
         {
-                const response = await axios.post('/api/v1/auth/signin', credentials, { withCredentials: true });
-                if (response.data === "Success")
+                const response = await axios.post(`${API_ENDPOINT}/api/v1/auth/signin`, credentials, { withCredentials: true });
+                console.log(response);
+                if (response.status === 200)
                 {
                     setSuccess(true);
                     setTimeout(() =>
@@ -35,12 +38,11 @@ function LoginPage ()
                 }
                 else
                     throw new Error('Invalid credentials. Please try again.');
-            }
-            catch (error)
-            {
-                console.error('Login failed', error);
-                setError('Invalid credentials. Please try again.');
-            }
+        }
+        catch (error)
+        {
+            setError('Invalid credentials. Please try again.');
+        }
         };
 
     return (

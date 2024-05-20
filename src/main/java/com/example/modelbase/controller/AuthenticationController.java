@@ -3,14 +3,17 @@ package com.example.modelbase.controller;
 import com.example.modelbase.dto.request.SignInRequest;
 import com.example.modelbase.dto.request.SignUpRequest;
 import com.example.modelbase.dto.response.JwtAuthenticationResponse;
+import com.example.modelbase.dto.response.MessageResponseDto;
 import com.example.modelbase.service.AuthenticationService;
 
 import com.example.modelbase.service.JwtService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.annotation.Role;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -25,32 +28,32 @@ public class AuthenticationController
 
     private final JwtService jwtService;
     @PostMapping("/signup")
-    public String signup(@RequestBody SignUpRequest request)
+    public ResponseEntity<MessageResponseDto> signup(@RequestBody SignUpRequest request)
     {
         try
         {
             authenticationService.signUp(request);
-            return "User registered successfully!";
+            return ResponseEntity.ok(new MessageResponseDto("User registered successfully!"));
         }
         catch (DataIntegrityViolationException e)
         {
             if (e.getMessage().contains("constraint_name"))
-                return "Email or username already exists.";
-             else
-                return "Invalid data";
+                return  ResponseEntity.ok(new MessageResponseDto("Email or username already exists."));
+            else
+                return ResponseEntity.ok(new MessageResponseDto("Invalid data"));
         }
         catch(IllegalArgumentException e)
         {
-            return e.getMessage();
+            return ResponseEntity.ok(new MessageResponseDto(e.getMessage()));
         }
-        catch(Exception e)
+        catch (Exception e)
         {
-            return "Unknown error!";
+            return new ResponseEntity<>(new MessageResponseDto("UnknownError!"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/signin")
-    public String signin(@RequestBody SignInRequest request, HttpServletResponse res)
+    public ResponseEntity<MessageResponseDto> signin(@RequestBody SignInRequest request, HttpServletResponse res)
     {
         try
         {
@@ -60,11 +63,11 @@ public class AuthenticationController
             jwtCookie.setHttpOnly(true);
             jwtCookie.setMaxAge(3600);
             res.addCookie(jwtCookie);
-            return "Success";
+            return ResponseEntity.ok(new MessageResponseDto("Success"));
         }
         catch(Exception e)
         {
-            return "Error";
+            return new ResponseEntity<>(new MessageResponseDto("UnknownError!"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }

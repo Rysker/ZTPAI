@@ -6,6 +6,8 @@ import Filter from "../components/Filter";
 import {useLocation} from "react-router-dom";
 import axios from "axios";
 
+const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
+
 function Vehicles()
 {
     const [vehicles, setVehicles] = useState([]);
@@ -26,13 +28,13 @@ function Vehicles()
             {
                 let vehicles;
                 if(type === null)
-                    vehicles = await axios.get(`/api/v1/vehicle/all`);
+                    vehicles = await axios.get(`${API_ENDPOINT}/api/v1/vehicle/all`);
                 else
                 {
                     const typeWithoutLastChar = type.slice(0, -1);
-                    vehicles = await axios.get(`/api/v1/vehicle/type?type=${typeWithoutLastChar}`);
+                    vehicles = await axios.get(`${API_ENDPOINT}/api/v1/vehicle/type?type=${typeWithoutLastChar}`);
                 }
-                const filters = await axios.get(`/api/v1/filters/vehicles`);
+                const filters = await axios.get(`${API_ENDPOINT}/api/v1/filters/vehicles`);
                 setVehicles(vehicles.data);
                 setFilters(filters.data);
             }

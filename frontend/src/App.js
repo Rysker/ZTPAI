@@ -12,6 +12,9 @@ import HomePage from "./pages/HomePage";
 import AdminPage from "./pages/AdminPage";
 import Reports from "./pages/Reports";
 import PrivateRoute from "./components/PrivateRoute";
+import axios from "axios";
+
+axios.defaults.withCredentials = true;
 
 function App ()
 {

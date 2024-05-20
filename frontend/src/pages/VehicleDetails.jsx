@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { FaBinoculars, FaCheck } from "react-icons/fa";
 import '../App.css';
 import "../styles/VehicleDetails.css";
 import { DefaultNavbar } from "../components/DefaultNavbar";
 import Filter from "../components/Filter";
-import RatingInformation from "../components/RatingInformation";
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import {Alert} from "@mui/material";
 import VehicleKit from "../components/VehicleKit";
+import axios from "axios";
+
+const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
 function VehicleDetails()
 {
@@ -30,7 +30,7 @@ function VehicleDetails()
 
     const changeObserved = async (id) =>
     {
-        const response = await axios.post(`/api/v1/watchlist/change/${id}`);
+        const response = await axios.post(`${API_ENDPOINT}/api/v1/watchlist/change/${id}`);
         if(response.status !== 200)
             setError('Failed to change observed status.');
     };
@@ -42,8 +42,8 @@ function VehicleDetails()
             try
             {
                 const [kitsResponse, filtersResponse] = await Promise.all([
-                    axios.get(`/api/v1/vehicle/models/${vehicle_name}`),
-                    axios.get(`/api/v1/filters/vehicles/${vehicle_name}`)
+                    axios.get(`${API_ENDPOINT}/api/v1/vehicle/models/${vehicle_name}`),
+                    axios.get(`${API_ENDPOINT}/api/v1/filters/vehicles/${vehicle_name}`)
                 ]);
                 setVehicleKits(kitsResponse.data);
                 setFilters(filtersResponse.data);

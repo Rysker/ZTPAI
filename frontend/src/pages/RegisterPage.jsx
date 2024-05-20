@@ -4,6 +4,8 @@ import RegisterForm from '../components/RegisterForm';
 import {Alert} from "@mui/material";
 import axios from "axios";
 
+const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
+
 function RegisterPage()
 {
     const [message, setMessage] = useState("");
@@ -14,39 +16,35 @@ function RegisterPage()
     {
         try
         {
-            const response = await axios.post('/api/v1/auth/signup', formData,
-                {
-                    headers:
-                        {
-                            'Content-Type': 'application/json',
-                        }
-                });
-
+            const response = (await axios.post(`${API_ENDPOINT}/api/v1/auth/signup`, formData));
             const responseData = response.data;
 
-            if (response.status !== 200 || responseData !== "User registered successfully!")
+            if (response.status === 200)
             {
-                setError(responseData);
-                setTimeout(() =>
+                if (responseData.message === "User registered successfully!")
                 {
-                    setError(null);
-                }, 3000);
-            }
-            else
-            {
-                setSuccess(true);
-                setMessage(responseData);
-                setTimeout(() =>
+                    setSuccess(true);
+                    setMessage(responseData.message);
+                    setTimeout(() =>
+                    {
+                        window.location.href = '/login';
+                    }, 2000);
+                }
+                else
                 {
-                    window.location.href = '/login';
-                }, 2000);
+                    setError(responseData.message);
+                    setTimeout(() =>
+                    {
+                        setError(null);
+                    }, 3000);
+                }
             }
         }
         catch (error)
         {
-            console.error('Registration failed', error);
-            setError('Registration failed. Please try again.');
-            setTimeout(() => {
+            setError("Doesn't work");
+            setTimeout(() =>
+            {
                 setError(null);
             }, 3000);
         }

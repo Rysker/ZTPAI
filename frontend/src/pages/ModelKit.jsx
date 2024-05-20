@@ -13,6 +13,7 @@ import axios from "axios";
 import {useParams} from "react-router-dom";
 import VehicleKit from "../components/VehicleKit";
 
+const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
 function ModelKit()
 {
@@ -27,7 +28,7 @@ function ModelKit()
         {
             try
             {
-                const response = await axios.get(`/api/v1/models/${vehicle_name}/${id}`);
+                const response = await axios.get(`${API_ENDPOINT}/api/v1/models/${vehicle_name}/${id}`);
                 setVehicleKit(response.data);
                 setReviews(response.data.reviews);
             }
@@ -42,14 +43,14 @@ function ModelKit()
 
     const changeObserved = async (id) =>
     {
-        const response = await axios.post(`/api/v1/watchlist/change/${id}`);
+        const response = await axios.post(`${API_ENDPOINT}/api/v1/watchlist/change/${id}`);
         if(response.status !== 200)
             setError('Failed to change observed status.');
     };
 
     const addCollectible = async (event) =>
     {
-        const response = await axios.post(`/api/v1/collection/add/${id}`);
+        const response = await axios.post(`${API_ENDPOINT}/api/v1/collection/add/${id}`);
         if(response.status !== 200)
             setError('Failed to change observed status.');
     };
@@ -64,6 +65,7 @@ function ModelKit()
                         <PhotoGallery kit={vehicleKit}/>
                         <div className="content-space-reviews">
                             <WriteReview/>
+                            <ReviewHeader kit={vehicleKit}/>
                             {reviews.map((review, index) => (
                                 <Review key={index} review={review} />
                             ))}
@@ -121,9 +123,8 @@ function Review({review})
         {
             if ((isLiked && liked) || (!isLiked && disliked))
             {
-                const score = review.score;
                 const previousState = isLiked;
-                const response = await axios.delete(`/api/v1/review/like/${review.reviewId}`);
+                const response = await axios.delete(`${API_ENDPOINT}/api/v1/review/like/${review.reviewId}`);
                 if (response.status === 200)
                 {
                     setLiked(false);
@@ -137,7 +138,7 @@ function Review({review})
             else if((disliked && isLiked) || (liked && !isLiked))
             {
                 const previousState = isLiked
-                const response = await axios.post(`/api/v1/review/like/swap/${review.reviewId}`);
+                const response = await axios.post(`${API_ENDPOINT}/api/v1/review/like/swap/${review.reviewId}`);
                 if (response.status === 200)
                 {
                     setLiked(isLiked);
@@ -150,7 +151,7 @@ function Review({review})
             }
             else
             {
-                const response = await axios.post(`/api/v1/review/like/${review.reviewId}`, { liked: isLiked });
+                const response = await axios.post(`${API_ENDPOINT}/api/v1/review/like/${review.reviewId}`, { liked: isLiked });
                 if (response.status === 200)
                 {
                     setLiked(false);
