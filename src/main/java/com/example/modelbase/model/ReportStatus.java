@@ -1,8 +1,12 @@
 package com.example.modelbase.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "report_status", schema = "public", indexes = {
         @Index(name = "report_status_status_name_status_name1_key", columnList = "status_name", unique = true)
 })
@@ -13,22 +17,5 @@ public class ReportStatus {
     private Integer id;
 
     @Column(name = "status_name", nullable = false)
-    private Integer statusName;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getStatusName() {
-        return statusName;
-    }
-
-    public void setStatusName(Integer statusName) {
-        this.statusName = statusName;
-    }
-
+    private String statusName;
 }

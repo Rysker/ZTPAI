@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import Rating from '@mui/material/Rating';
 
-function ControlledRating() {
-    const [value, setValue] = useState(0);
-
+function ClickableRating({ value, onChange, disabled = false })
+{
     return (
         <Rating
-            name="simple-controlled"
+            name="clickable-rating"
             value={value}
-            onChange={(event, newValue) => {
-                setValue(newValue);
+            onChange={(event, newValue) =>
+            {
+                onChange(newValue);
             }}
+            disabled = {disabled}
         />
     );
 }
 
-export default ControlledRating;
+export default ClickableRating;

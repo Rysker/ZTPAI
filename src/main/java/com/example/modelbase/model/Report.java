@@ -1,8 +1,12 @@
 package com.example.modelbase.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "report", schema = "public")
 public class Report {
     @Id
@@ -25,45 +29,5 @@ public class Report {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "report_status_id", nullable = false)
     private ReportStatus reportStatus;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Review getReview() {
-        return review;
-    }
-
-    public void setReview(Review review) {
-        this.review = review;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Reason getReason() {
-        return reason;
-    }
-
-    public void setReason(Reason reason) {
-        this.reason = reason;
-    }
-
-    public ReportStatus getReportStatus() {
-        return reportStatus;
-    }
-
-    public void setReportStatus(ReportStatus reportStatus) {
-        this.reportStatus = reportStatus;
-    }
 
 }

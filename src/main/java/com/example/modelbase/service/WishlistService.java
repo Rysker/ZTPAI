@@ -21,17 +21,20 @@ public class WishlistService
     public void changeWishlist(String token, Integer modelId)
     {
         User user = userService.getUserFromToken(token);
-        ModelKit modelKit = modelKitRepository.findById(modelId.intValue());
-        Optional<Wishlist> wishlistItem = wishlistRepository.findByUserAndModelKit(user, modelKit);
-
-        if (!wishlistItem.isPresent())
+        Optional<ModelKit> modelKit = modelKitRepository.findById(modelId.intValue());
+        if(modelKit.isPresent())
         {
-            Wishlist newWishlistItem = new Wishlist();
-            newWishlistItem.setUser(user);
-            newWishlistItem.setModelKit(modelKit);
-            wishlistRepository.save(newWishlistItem);
+            Optional<Wishlist> wishlistItem = wishlistRepository.findByUserAndModelKit(user, modelKit.get());
+
+            if (wishlistItem.isEmpty())
+            {
+                Wishlist newWishlistItem = new Wishlist();
+                newWishlistItem.setUser(user);
+                newWishlistItem.setModelKit(modelKit.get());
+                wishlistRepository.save(newWishlistItem);
+            }
+            else
+                wishlistRepository.delete(wishlistItem.get());
         }
-        else
-            wishlistRepository.delete(wishlistItem.get());
     }
 }

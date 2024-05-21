@@ -1,7 +1,7 @@
 package com.example.modelbase.repository;
 
-import com.example.modelbase.model.ModelKit;
-import com.example.modelbase.model.Progress;
+import com.example.modelbase.model.Reason;
+import com.example.modelbase.model.Report;
 import com.example.modelbase.model.Review;
 import com.example.modelbase.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,9 +10,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ReviewRepository extends JpaRepository<Review, Integer>
+public interface ReasonRepository extends JpaRepository<Reason, Integer>
 {
-    Optional<Review> getReviewById(int id);
-    Optional<Review> findByUserAndModelKit(User user, ModelKit modelKit);
+    Reason findReasonByReasonName(String name);
 }
 

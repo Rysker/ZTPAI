@@ -29,7 +29,7 @@ function App ()
                 <Route path ='/vehicles/:vehicle_name' element={<PrivateRoute> <VehicleDetails /> </PrivateRoute>} />
                 <Route path ='/vehicles/:vehicle_name/:id' element={<PrivateRoute> <ModelKit/> </PrivateRoute>} />
                 <Route path ='/collection/:id' element={<PrivateRoute> <MyCollection/> </PrivateRoute>} />
-                <Route path ='/profile/:id' element={<PrivateRoute> <Profile/> </PrivateRoute>} />
+                <Route path ='/profile/:profileName' element={<PrivateRoute> <Profile/> </PrivateRoute>} />
                 <Route path ='/admin' element={<PrivateRoute> <AdminPage/> </PrivateRoute>} />
                 <Route path ='/admin/reports' element={<PrivateRoute> <Reports/> </PrivateRoute>} />
             </Routes>

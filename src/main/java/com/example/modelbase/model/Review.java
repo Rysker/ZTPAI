@@ -43,10 +43,10 @@ public class Review
     @JoinColumn(name = "review_status_id", nullable = false)
     private ReviewStatus reviewStatus;
 
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Like> likes = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "review")
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Report> reports = new LinkedHashSet<>();
 
 }

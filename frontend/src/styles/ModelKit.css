@@ -63,11 +63,24 @@
 .review-entity-description h1, h2
 {
     margin: 0 auto;
+    margin-left: 0;
 }
 
 .review-entity-description h1
 {
     font-size: calc(5px + 1.4vw);
+}
+
+.review-entity-description a
+{
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.info-icon
+{
+    cursor: pointer;
 }
 
 .review-entity-description h2
