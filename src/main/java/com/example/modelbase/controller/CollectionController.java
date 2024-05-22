@@ -1,5 +1,6 @@
 package com.example.modelbase.controller;
 
+import com.example.modelbase.dto.response.MessageResponseDto;
 import com.example.modelbase.service.CollectionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,7 @@ public class CollectionController
 {
     private final CollectionService collectionService;
     @PostMapping("/add/{id}")
-    public ResponseEntity addToColection(@CookieValue("jwtCookie") String jwtToken, @PathVariable("id") Integer modelId)
+    public ResponseEntity<MessageResponseDto> addToCollection(@CookieValue("jwtCookie") String jwtToken, @PathVariable("id") Integer modelId)
     {
         try
         {

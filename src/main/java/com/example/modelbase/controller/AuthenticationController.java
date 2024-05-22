@@ -3,21 +3,18 @@ package com.example.modelbase.controller;
 import com.example.modelbase.dto.request.SignInRequest;
 import com.example.modelbase.dto.request.SignUpRequest;
 import com.example.modelbase.dto.response.JwtAuthenticationResponse;
+import com.example.modelbase.dto.response.LoginResponseDto;
 import com.example.modelbase.dto.response.MessageResponseDto;
 import com.example.modelbase.service.AuthenticationService;
-
 import com.example.modelbase.service.JwtService;
+import com.example.modelbase.service.UserService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.context.annotation.Role;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -25,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationController
 {
     private final AuthenticationService authenticationService;
+    private final UserService userService;
 
     private final JwtService jwtService;
     @PostMapping("/signup")
@@ -53,21 +51,21 @@ public class AuthenticationController
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<MessageResponseDto> signin(@RequestBody SignInRequest request, HttpServletResponse res)
+    public ResponseEntity<LoginResponseDto> signin(@RequestBody SignInRequest request, HttpServletResponse res)
     {
         try
         {
-            JwtAuthenticationResponse token = authenticationService.signIn(request);
-            Cookie jwtCookie = new Cookie("jwtCookie", token.getToken());
+            JwtAuthenticationResponse response = authenticationService.signIn(request);
+            Cookie jwtCookie = new Cookie("jwtCookie", response.getToken());
             jwtCookie.setPath("/");
             jwtCookie.setHttpOnly(true);
             jwtCookie.setMaxAge(3600);
             res.addCookie(jwtCookie);
-            return ResponseEntity.ok(new MessageResponseDto("Success"));
+            return ResponseEntity.ok(new LoginResponseDto("Success", userService.getUserFromToken(response.getToken()).getUsername()));
         }
         catch(Exception e)
         {
-            return new ResponseEntity<>(new MessageResponseDto("UnknownError!"), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new LoginResponseDto("UnknownError!", ""), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }

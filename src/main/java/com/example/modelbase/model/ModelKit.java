@@ -44,4 +44,15 @@ public class ModelKit
 
     @OneToMany(mappedBy = "modelKit")
     private Set<Review> reviews = new LinkedHashSet<>();
+
+    public String getMainPhoto()
+    {
+        Set<Photo> photos = this.getPhotos();
+        for(Photo photo: photos)
+        {
+            if(photo.getIs_main())
+                return photo.getImage();
+        }
+        return "Error!";
+    }
 }

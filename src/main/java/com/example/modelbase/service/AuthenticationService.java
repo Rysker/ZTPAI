@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.authority.AuthorityUtils;
 
+import java.util.Date;
 import java.util.regex.Pattern;
 
 @Service
@@ -68,6 +69,7 @@ public class AuthenticationService
                 .username(request.getUsername())
                 .password(encodedPassword)
                 .accountType(defaultAccountType)
+                .created(new Date())
                 .build();
 
         // Save the user to the database

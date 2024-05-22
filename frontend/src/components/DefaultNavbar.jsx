@@ -4,6 +4,7 @@ import BasicMenu from "./BasicMenu";
 
 export function DefaultNavbar()
 {
+    const username = sessionStorage.getItem("username");
     return (
         <div className="navbar">
             <div className="title">
@@ -14,7 +15,7 @@ export function DefaultNavbar()
                     <h1><a href="/vehicles" id="a-vehicles">Vehicles</a></h1>
                 </div>
                 <div className="page-link">
-                    <h1><a href="/collection/1" id="a-collection">Collection</a></h1>
+                    <h1><a href={`/profile/${username}/collection`} id="a-collection">Collection</a></h1>
                 </div>
                 <BasicMenu></BasicMenu>
             </div>

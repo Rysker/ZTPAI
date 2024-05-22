@@ -24,33 +24,31 @@ public class VehicleService
     public List<VehicleInfoDto> getAllVehicleInfo()
     {
         List<Vehicle> vehicles = vehicleRepository.findAll();
-        List<VehicleInfoDto> vehicleInfoDtos = vehicles.stream()
+        return vehicles.stream()
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
-        return vehicleInfoDtos;
     }
 
     public List<VehicleInfoDto> getVehicleInfoByType(String vehicleType)
     {
         List<Vehicle> vehicles = vehicleRepository.findAll();
-        List<VehicleInfoDto> vehicleInfoDtos = vehicles.stream()
+        return vehicles.stream()
                 .filter(vehicle -> (vehicle.getVehicleType().getName().trim()).equals(vehicleType))
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
-        return vehicleInfoDtos;
     }
 
     public Set<ModelKitDto> getVehicleKits(String token, String vehicle_name)
     {
         Vehicle vehicle = vehicleRepository.getVehicleByName(vehicle_name);
         Set<ModelKit> kits = new HashSet<>();
+
         for(Variant variant: vehicle.getVariants())
-            for(ModelKit kit: variant.getModelKits())
-                kits.add(kit);
-        Set<ModelKitDto> modelKitDtos = kits.stream()
+            kits.addAll(variant.getModelKits());
+
+        return kits.stream()
                 .map(x -> modelKitMapper.kitShortMap(token, x))
                 .collect(Collectors.toSet());
-        return modelKitDtos;
     }
 
     private VehicleInfoDto convertToDto(Vehicle vehicle)

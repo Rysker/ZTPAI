@@ -4,7 +4,7 @@ import {FaBinoculars, FaCheck} from "react-icons/fa";
 import RatingInformation from "./RatingInformation";
 import Button from "@material-ui/core/Button";
 
-function VehicleKit({ kit, changeObserved, addCollectible })
+function VehicleKit({ kit, changeObserved, addCollectible, showCollection = false, editable = false})
 {
     const [isClicked, setIsClicked] = useState(false);
     const [statusColor, setStatusColor] = useState("");

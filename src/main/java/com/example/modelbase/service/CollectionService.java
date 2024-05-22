@@ -3,9 +3,7 @@ package com.example.modelbase.service;
 import com.example.modelbase.model.Collectible;
 import com.example.modelbase.model.ModelKit;
 import com.example.modelbase.model.User;
-import com.example.modelbase.model.Wishlist;
 import com.example.modelbase.repository.CollectibleRepository;
-import com.example.modelbase.repository.CollectionRepository;
 import com.example.modelbase.repository.ModelKitRepository;
 import com.example.modelbase.repository.ProgressRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +16,6 @@ import java.util.Optional;
 public class CollectionService
 {
     private final CollectibleRepository collectibleRepository;
-    private final CollectionRepository collectionRepository;
     private final ModelKitRepository modelKitRepository;
     private final UserService userService;
     private final ProgressRepository progressRepository;

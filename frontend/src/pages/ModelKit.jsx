@@ -52,7 +52,7 @@ function ModelKit({setError, setSuccess})
 
     const addCollectible = async () =>
     {
-        const response = await axios.post(`${API_ENDPOINT}/api/v1/collection/add/${id}`);
+        const response = await axios.post(`${API_ENDPOINT}/api/v1/collectible/add/${id}`);
         if(response.status !== 200)
             setError('Failed to change observed status.');
     };
@@ -270,7 +270,7 @@ function Review({review, setError, setSuccess})
                 <div className="review-entity-actions">
                     <div className="vehicle-kit-info-controls">
                         <FaFlag
-                            className="info-icon"
+                            className="report-icon"
                             onClick={() => reviewReport()}
                         />
                     </div>

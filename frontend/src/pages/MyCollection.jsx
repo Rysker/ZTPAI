@@ -4,26 +4,15 @@ import '../App.css';
 import  "../styles/VehicleDetails.css";
 import {DefaultNavbar} from "../components/DefaultNavbar";
 import Filter from "../components/Filter";
-import RatingInformation from "../components/RatingInformation";
 
 function MyCollection()
 {
-    const [message, setMessage] = useState("");
-
-    useEffect(() => {
-        fetch('/hello')
-            .then(response => response.text())
-            .then(message => {
-                setMessage(message);
-            });
-    },[])
     return (
         <div className="webpage">
             <DefaultNavbar></DefaultNavbar>
             <div className="content-space">
                 <div className="content-space-info">
                     <div className="content-space-info-filter">
-                        <Filter title="109"></Filter>
                     </div>
                     <div className="content-space-info-display-row">
                         <Collectible name="Leopard 1" photo={"/images/signupBackground.jpg"} completion={"12-04-2024"}></Collectible>

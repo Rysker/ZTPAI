@@ -59,7 +59,39 @@
     font-size: calc(5px + 1vw);
 }
 
-.profile-header-description-top button
+.follow-button
+{
+    background-color: #0091D0;
+    color: white;
+    margin: auto;
+    width: 20%;
+    height: 70%;
+    font-size: calc(4px + 1.5vw);
+    align-self: flex-end;
+    margin-right: 10px;
+    border-radius: 1em;
+}
+
+.follow-button:hover, .unfollow-button:hover
+{
+    transition: background-color 1s, color 1s;
+    cursor: pointer;
+}
+
+.follow-button:hover
+{
+    background-color: black;
+    color: white;
+}
+
+.unfollow-button:hover
+{
+    background-color: #0091D0;
+    color: white;
+}
+
+
+.unfollow-button
 {
     background-color: black;
     color: white;
@@ -69,12 +101,7 @@
     font-size: calc(4px + 1.5vw);
     align-self: flex-end;
     margin-right: 10px;
-}
-
-.profile-header-description-top button:hover
-{
-    background-color: #0091D0;
-    color: white;
+    border-radius: 1em;
 }
 
 h1#user-profile-name
@@ -147,6 +174,7 @@ h1#user-profile-name
 {
     color: blue;
     font-size: calc(5px + 1.2vw);
+    text-decoration: none;
 }
 
 .profile-desc-collection h2:hover
@@ -157,7 +185,7 @@ h1#user-profile-name
 .profile-desc-stats
 {
     height: 100%;
-    width: 25%;
+    width: 28%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -165,15 +193,15 @@ h1#user-profile-name
 
 .profile-desc-stats-container
 {
-    width: 80%;
-    height: 80%;
+    width: 90%;
+    height: 85%;
     border: 1px solid black;
     border-radius: 1em;
 }
 
 .profile-desc-stats-container h1
 {
-    font-size: calc(4px + 1.2vw);
+    font-size: calc(5px + 1vw);
     margin-left: 5px;
 }
 

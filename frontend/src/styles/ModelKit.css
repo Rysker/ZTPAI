@@ -78,11 +78,6 @@
     cursor: pointer;
 }
 
-.info-icon
-{
-    cursor: pointer;
-}
-
 .review-entity-description h2
 {
     font-size: calc(5px + 1.2vw);
@@ -233,4 +228,9 @@
 .thumbs.disliked
 {
     color: red;
+}
+
+.report-icon:hover
+{
+    cursor: pointer;
 }

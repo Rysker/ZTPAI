@@ -6,9 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Entity
 @Builder
@@ -39,6 +38,12 @@ public class User implements UserDetails
     @Column(name = "password", nullable = false, length = 256)
     private String password;
 
+    @Column(name = "description", length = 256)
+    private String description;
+
+    @Column(name = "created", nullable = false)
+    private Date created;
+
     @ManyToOne
     @JoinTable(
             name = "collection",
@@ -63,6 +68,12 @@ public class User implements UserDetails
             inverseJoinColumns = @JoinColumn(name = "model_kit_id")
     )
     private Set<ModelKit> modelKits = new LinkedHashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "follower_list",
+            joinColumns = @JoinColumn(name = "follower_id"),
+            inverseJoinColumns = @JoinColumn(name = "followed_id"))
+    private Set<User> follows = new LinkedHashSet<>();
 
     @Override
     public boolean isAccountNonExpired()
@@ -92,6 +103,12 @@ public class User implements UserDetails
     public java.util.Collection<? extends GrantedAuthority> getAuthorities()
     {
         return List.of(new SimpleGrantedAuthority(accountType.getName()));
+    }
+
+    public String dateToString()
+    {
+        SimpleDateFormat formatter = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+       return formatter.format(this.created);
     }
 
 }
