@@ -32,4 +32,11 @@ public class FilterContoller
         List<FilterResponseDto> filters = filterService.getKitsFilters(vehicle_name);
         return new ResponseEntity<>(filters, HttpStatus.OK);
     }
+
+    @GetMapping ("collection")
+    public ResponseEntity<List<FilterResponseDto>> getCollectionFilters(@CookieValue("jwtCookie") String jwtToken)
+    {
+        List<FilterResponseDto> filters = filterService.getCollectionFilters();
+        return new ResponseEntity<>(filters, HttpStatus.OK);
+    }
 }

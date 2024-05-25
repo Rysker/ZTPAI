@@ -1,10 +1,10 @@
 package com.example.modelbase.mapper;
 
 import com.example.modelbase.dto.response.ModelKitDto;
-import com.example.modelbase.dto.response.ReviewResponseDto;
 import com.example.modelbase.model.*;
 import com.example.modelbase.repository.CollectibleRepository;
 import com.example.modelbase.repository.EavTableRepository;
+import com.example.modelbase.repository.UserRepository;
 import com.example.modelbase.repository.WishlistRepository;
 import com.example.modelbase.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +23,8 @@ public class ModelKitMapper
     private final CollectibleRepository collectibleRepository;
     private final UserService userService;
     private final ReviewMapper reviewMapper;
+    private final UserRepository userRepository;
+
     public ModelKitDto kitShortMap(String token, ModelKit modelKit)
     {
         String scale = eavTableRepository.findByModelKitIdAndAttributeName(modelKit.getId(), "Scale")
@@ -31,6 +33,11 @@ public class ModelKitMapper
 
         User current_user = userService.getUserFromToken(token);
 
+        return getModelKitDto(modelKit, scale, current_user);
+    }
+
+    private ModelKitDto getModelKitDto(ModelKit modelKit, String scale, User current_user)
+    {
         String status = this.findStatus(current_user, modelKit);
 
         return ModelKitDto.builder()
@@ -57,6 +64,57 @@ public class ModelKitMapper
         modelKitDto.setReviews(reviewMapper.mapReviews(token, modelKit.getReviews()));
         return modelKitDto;
     }
+
+    public ModelKitDto kitCollectionMap(String token, ModelKit modelKit)
+    {
+        ModelKitDto modelKitDto = this.kitShortMap(token, modelKit);
+        User user = userService.getUserFromToken(token);
+        return getModelKitDto(modelKit, user, modelKitDto);
+    }
+
+    public ModelKitDto userShortMap(String username, ModelKit modelKit) throws Exception
+    {
+        String scale = eavTableRepository.findByModelKitIdAndAttributeName(modelKit.getId(), "Scale")
+                .map(EavTable::getValue)
+                .orElse("");
+
+        Optional<User> tmp = userRepository.findUserByUsername(username);
+        if(tmp.isPresent())
+        {
+            User current_user = tmp.get();
+            return getModelKitDto(modelKit, scale, current_user);
+        }
+        else
+            throw new IllegalArgumentException("User not found!");
+    }
+
+    public ModelKitDto userCollectionMap(String username, ModelKit modelKit) throws Exception
+    {
+        Optional<User> tmp = userRepository.findUserByUsername(username);
+        if(tmp.isPresent())
+        {
+            User user = tmp.get();
+            ModelKitDto modelKitDto = this.userShortMap(username, modelKit);
+            Set<String> photos = new HashSet<>();
+            mapPhotos(photos, modelKit.getPhotos());
+            modelKitDto.setPhotos(photos);
+            modelKitDto.setReviews(reviewMapper.mapUsernameReviews(username, modelKit.getReviews()));
+            return getModelKitDto(modelKit, user, modelKitDto);
+        }
+        else
+            throw new IllegalArgumentException("User not found!");
+    }
+
+    private ModelKitDto getModelKitDto(ModelKit modelKit, User user, ModelKitDto modelKitDto)
+    {
+        Optional<Collectible> collectible = collectibleRepository.findByCollectionAndModelKit(user.getCollection(), modelKit);
+        Collectible collectible1 = collectible.get();
+        modelKitDto.setId(collectible1.getId());
+        modelKitDto.setCompletionDate(collectible1.getCompletionDate());
+        modelKitDto.setIsPublic(collectible1.getIsPublic().toString());
+        return modelKitDto;
+    }
+
     private Double calculateReviewsAverage(Set<Review> reviews)
     {
         Double res = 0.0;
@@ -82,7 +140,7 @@ public class ModelKitMapper
         Optional<Collectible> kit = collectibleRepository.findByCollectionAndModelKit(userCollection, modelKit);
         if(kit.isPresent())
             return kit.get().getProgress().getName();
-        return "NONOWNED";
+        return "Nonowned";
     }
 
 }

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -30,4 +31,7 @@ public class ModelKitDto
     private Set<String> photos;
     private Set<ReviewResponseDto> reviews;
 
+    //More expanded response (Collection view)
+    private String isPublic;
+    private LocalDate completionDate;
 }

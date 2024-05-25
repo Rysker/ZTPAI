@@ -19,11 +19,11 @@ public class Collectible
     @Column(name = "collectible_id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "model_kit_id", nullable = false)
     private ModelKit modelKit;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "progress_id", nullable = false)
     private Progress progress;
 
@@ -36,7 +36,7 @@ public class Collectible
     @Column(name = "list_order")
     private Integer listOrder;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "collection_id", nullable = false)
     private Collection collection;
 

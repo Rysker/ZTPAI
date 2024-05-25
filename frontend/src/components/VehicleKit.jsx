@@ -1,25 +1,34 @@
 import React, {useEffect, useState} from "react";
 import '../styles/VehicleKit.css';
-import {FaBinoculars, FaCheck} from "react-icons/fa";
+import {FaBinoculars, FaCheck, FaEye, FaEyeSlash, FaTrash} from "react-icons/fa";
 import RatingInformation from "./RatingInformation";
 import Button from "@material-ui/core/Button";
+import axios from "axios";
 
-function VehicleKit({ kit, changeObserved, addCollectible, showCollection = false, editable = false})
+const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
+
+function VehicleKit({ kit, changeObserved, setError, setSuccess, addCollectible, showCollection = false, editable = false, deleteCollectible = null, finishCollectible = null})
 {
     const [isClicked, setIsClicked] = useState(false);
+    const [isPublic, setIsPublic] = useState(false);
     const [statusColor, setStatusColor] = useState("");
+    const [completionDate, setCompletionDate] = useState(kit.completionDate || "");
+    const [isEditing, setIsEditing] = useState(false);
+    const [tempCompletionDate, setTempCompletionDate] = useState(kit.completionDate || "");
     const endsWithNumber = /^\/(?:[^/]+\/)*\d+$/;
     const isLastCharacterNumber = endsWithNumber.test(window.location.pathname);
+
     const statusColorMap = {
-        OWNED: "orange",
-        FINISHED: "green",
-        NONOWNED: "black"
+        Owned: "orange",
+        Finished: "green",
+        Nonowned: "black"
     };
 
     useEffect(() =>
     {
         setStatusColor(statusColorMap[kit.status] || "black");
         setIsClicked(kit.onWatchlist);
+        setIsPublic(kit.isPublic === "true");
     }, [kit.status]);
 
     const handleClick = async (event) =>
@@ -42,7 +51,7 @@ function VehicleKit({ kit, changeObserved, addCollectible, showCollection = fals
         try
         {
             await addCollectible(kit.id);
-            setStatusColor(statusColorMap["OWNED"] || "black")
+            setStatusColor(statusColorMap["Owned"] || "black");
         }
         catch
         {
@@ -50,9 +59,107 @@ function VehicleKit({ kit, changeObserved, addCollectible, showCollection = fals
         }
     };
 
+    const finCollectible = async (event, id) =>
+    {
+        event.preventDefault()
+        try
+        {
+            await axios.post(`${API_ENDPOINT}/api/v1/collection/collectible/finish/${id}`);
+            if(finishCollectible !== null)
+            {
+                finishCollectible(id);
+                setCompletionDate(new Date().toISOString().split('T')[0]);
+            }
+        }
+        catch
+        {
+            console.log("Error!");
+        }
+    };
+
+    const changeVisible = async (event, id) =>
+    {
+        event.preventDefault()
+        try
+        {
+            await axios.post(`${API_ENDPOINT}/api/v1/collection/collectible/visibility/${id}`);
+            setIsPublic(!isPublic);
+        }
+        catch
+        {
+            console.log("Error!");
+        }
+    };
+
+    const removeCollectible = async (event, id) =>
+    {
+        event.preventDefault()
+        try
+        {
+            await axios.delete(`${API_ENDPOINT}/api/v1/collection/collectible/delete/${id}`);
+            if(deleteCollectible !== null)
+                deleteCollectible(id);
+        }
+        catch
+        {
+            console.log("Error!");
+        }
+    };
+
+    const validateDate = (dateString) =>
+    {
+        const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+        return datePattern.test(dateString);
+    };
+
+    const saveCompletionDate = async () =>
+    {
+        if (!validateDate(tempCompletionDate))
+        {
+            setError("Invalid date format");
+            return;
+        }
+        try
+        {
+            await axios.put(`${API_ENDPOINT}/api/v1/collection/collectible/edit/${kit.id}`, { completionDate: tempCompletionDate });
+            setIsEditing(false);
+            setCompletionDate(tempCompletionDate);
+            setSuccess("Date successfully changed!");
+        }
+        catch
+        {
+            setIsEditing(false);
+            setError("Date couldn't be changed!")
+        }
+    };
+
+    const handleEditing = () =>
+    {
+        setIsEditing(true);
+    };
+
+    const handleDateChange = (event) =>
+    {
+        setTempCompletionDate(event.target.value);
+    };
+
+    const handleBlur = () =>
+    {
+        if (tempCompletionDate.trim() === "")
+            setIsEditing(false);
+        else
+            saveCompletionDate();
+    };
+
+    const handleBlurOrEnter = (event) =>
+    {
+        if (event.type === "blur" || event.key === "Enter")
+            handleBlur();
+    };
+
     return (
             <div className="vehicle-kit">
-                {isLastCharacterNumber ? null : <a href={`${window.location.pathname}/${kit.id}`} className="vehicle-kit-link" />}
+                {isLastCharacterNumber || showCollection ? null : <a href={`${window.location.pathname}/${kit.id}`} className="vehicle-kit-link" />}
                     <img src={kit.photo} alt={kit.name + " photo"}/>
                     <div className="vehicle-kit-description">
                         <div className="vehicle-kit-description-title">
@@ -67,17 +174,48 @@ function VehicleKit({ kit, changeObserved, addCollectible, showCollection = fals
                             </div>
                         </div>
                         {isLastCharacterNumber ? <Button id="vehicle-kit-add" onClick={handleProgress}>Add to collection</Button> : null }
+                        {(editable && statusColor !== "green") ? <Button id="vehicle-kit-add" onClick={(event) => finCollectible(event, kit.id)}>Finish</Button> : null }
                     </div>
                     <div className="vehicle-kit-info">
                         <div className="vehicle-kit-info-controls">
+                            {showCollection && editable && (
+                                <a href="" onClick={(event) => removeCollectible(event, kit.id)}>
+                                     <FaTrash className="info-icon"/>
+                                </a>
+                            )}
+                            {showCollection && editable && (
+                                <a href="" onClick={(event) => changeVisible(event, kit.id)}>
+                                    {isPublic ? <FaEye className="info-icon" /> : <FaEyeSlash className="info-icon"/>}
+                                </a>
+                            )}
                             <FaCheck className="info-icon" style={{ color: statusColor }} />
-                            <a href="" onClick={handleClick}>
-                                <FaBinoculars className={isClicked ? "clickable-icon clicked" : "clickable-icon"} />
-                            </a>
+                            {(!showCollection || editable) && (
+                                <a href="" onClick={handleClick}>
+                                    <FaBinoculars className={isClicked ? "clickable-icon clicked" : "clickable-icon"} />
+                                </a>
+                            )}
                         </div>
                         <div className="vehicle-kit-info-reviews">
-                            <RatingInformation value={Number(kit.reviewsAverage)} />
-                            <p>({kit.reviewsCount})</p>
+                            {showCollection && (
+                                isEditing ? (
+                                    <input
+                                        type="date"
+                                        value={tempCompletionDate}
+                                        onChange={handleDateChange}
+                                        onBlur={handleBlur}
+                                        onKeyDown={handleBlurOrEnter}
+                                        autoFocus
+                                    />
+                                ) : (
+                                    <p onClick={editable ? handleEditing : undefined}>{completionDate}</p>
+                                )
+                            )}
+                            {!showCollection && (
+                                <>
+                                    <RatingInformation value={Number(kit.reviewsAverage)} />
+                                    <p>({kit.reviewsCount})</p>
+                                </>
+                            )}
                         </div>
                     </div>
             </div>

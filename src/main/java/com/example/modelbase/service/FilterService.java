@@ -3,15 +3,14 @@ package com.example.modelbase.service;
 import com.example.modelbase.dto.response.FilterResponseDto;
 import com.example.modelbase.model.Country;
 import com.example.modelbase.model.Manufacturer;
+import com.example.modelbase.model.Progress;
 import com.example.modelbase.model.Vehicle;
-import com.example.modelbase.repository.CountryRepository;
-import com.example.modelbase.repository.ManufacturerRepository;
-import com.example.modelbase.repository.VariantRepository;
-import com.example.modelbase.repository.VehicleRepository;
+import com.example.modelbase.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -22,6 +21,7 @@ public class FilterService
     private final CountryRepository countryRepository;
     private final ManufacturerRepository manufacturerRepository;
     private final VariantRepository variantRepository;
+    private final ProgressRepository progressRepository;
 
     public List<FilterResponseDto> getVehiclesFilters()
     {
@@ -33,9 +33,7 @@ public class FilterService
         FilterResponseDto generationFilter = new FilterResponseDto("generation", generations);
         FilterResponseDto countryFilter = new FilterResponseDto("country", countries);
 
-        List<FilterResponseDto> filters = List.of(generationFilter, countryFilter);
-
-        return filters;
+        return List.of(generationFilter, countryFilter);
     }
 
     public List<FilterResponseDto> getKitsFilters(String vehicle_name)
@@ -48,8 +46,20 @@ public class FilterService
 
         FilterResponseDto manufacturerFilter = new FilterResponseDto("manufacturer", manufacturers);
         FilterResponseDto variantFilter = new FilterResponseDto("variant", variants);
-        List<FilterResponseDto> filters = List.of(manufacturerFilter, variantFilter);
 
-        return filters;
+        return List.of(manufacturerFilter, variantFilter);
+    }
+
+    public List<FilterResponseDto> getCollectionFilters()
+    {
+        List<String> progressStatus = new LinkedList<>();
+        List<String> visibility = List.of("Public", "Hidden");
+        for(Progress prog : progressRepository.findAll())
+            progressStatus.add(prog.getName());
+
+        FilterResponseDto visibilityFilter = new FilterResponseDto("visibility", visibility);
+        FilterResponseDto progressFilter = new FilterResponseDto("progress", progressStatus);
+
+        return List.of(visibilityFilter, progressFilter);
     }
 }

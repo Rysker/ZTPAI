@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -17,29 +18,20 @@ public class CollectibleService
 {
     private final CollectibleRepository collectibleRepository;
     private final UserService userService;
+    private final CollectionService collectionService;
     private final ProgressRepository progressRepository;
 
-    public void changeVisibility(String token, Integer collectibleId) throws Exception
+    public void deleteCollectible(String token, Integer collectibleId) throws Exception
     {
         User user = userService.getUserFromToken(token);
-        Optional<Collectible> optionalCollectible = collectibleRepository.findById(collectibleId);
+        Optional<Collectible> optionalCollectible = collectibleRepository.getCollectibleById(collectibleId);
         if(optionalCollectible.isPresent() && user.getCollection().getCollectibles().contains(optionalCollectible.get()))
         {
-            Collectible collectible = optionalCollectible.get();
-            Boolean newStatus = !collectible.getIsPublic();
-            collectible.setIsPublic(newStatus);
-            collectibleRepository.save(collectible);
-        }
-        else
-            throw new IllegalArgumentException("No collectible found!");
-    }
-
-    public void deleteCollectible(String token, Integer collectibleId)
-    {
-        User user = userService.getUserFromToken(token);
-        Optional<Collectible> optionalCollectible = collectibleRepository.findById(collectibleId);
-        if(optionalCollectible.isPresent() && user.getCollection().getCollectibles().contains(optionalCollectible.get()))
+            Integer deleted_id = optionalCollectible.get().getListOrder();
             collectibleRepository.delete(optionalCollectible.get());
+            if(user.getCollection().getCollectibles().size() - 1 > 0)
+                collectionService.reshuffle(user.getCollection(), deleted_id);
+        }
         else
             throw new IllegalArgumentException("No collectible found!");
     }
@@ -47,11 +39,11 @@ public class CollectibleService
     public void changeProgress(String token, Integer collectibleId)
     {
         User user = userService.getUserFromToken(token);
-        Optional<Collectible> optionalCollectible = collectibleRepository.findById(collectibleId);
+        Optional<Collectible> optionalCollectible = collectibleRepository.getCollectibleById(collectibleId);
         if(optionalCollectible.isPresent() && user.getCollection().getCollectibles().contains(optionalCollectible.get()))
         {
             Collectible collectible = optionalCollectible.get();
-            Progress progress = progressRepository.findProgressByName("FINISHED");
+            Progress progress = progressRepository.findProgressByName("Finished");
             collectible.setProgress(progress);
             collectible.setCompletionDate(LocalDate.now());
             collectibleRepository.save(collectible);
@@ -63,7 +55,7 @@ public class CollectibleService
     public void changeDate(String token, Integer collectibleId, LocalDate date) throws Exception
     {
         User user = userService.getUserFromToken(token);
-        Optional<Collectible> optionalCollectible = collectibleRepository.findById(collectibleId);
+        Optional<Collectible> optionalCollectible = collectibleRepository.getCollectibleById(collectibleId);
         if(optionalCollectible.isPresent() && user.getCollection().getCollectibles().contains(optionalCollectible.get()))
         {
             LocalDate localToday = LocalDate.now().plusDays(1);

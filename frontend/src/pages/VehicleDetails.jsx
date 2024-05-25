@@ -4,29 +4,18 @@ import "../styles/VehicleDetails.css";
 import { DefaultNavbar } from "../components/DefaultNavbar";
 import Filter from "../components/Filter";
 import { useParams } from "react-router-dom";
-import {Alert} from "@mui/material";
 import VehicleKit from "../components/VehicleKit";
 import axios from "axios";
+import Webpage from "../components/Webpage";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
-function VehicleDetails()
+function VehicleDetails({ setError })
 {
     const [vehicleKits, setVehicleKits] = useState([]);
     const [filters, setFilters] = useState([]);
     const [selectedFilters, setSelectedFilters] = useState([]);
     const { vehicle_name } = useParams();
-    const [error, setError] = useState(null);
-
-    useEffect(() =>
-    {
-        const timeout = setTimeout(() =>
-        {
-            setError(null);
-        }, 2000);
-
-        return () => clearTimeout(timeout);
-    }, [error]);
 
     const changeObserved = async (id) =>
     {
@@ -94,22 +83,25 @@ function VehicleDetails()
     };
 
     return (
-        <div className="webpage">
-            <DefaultNavbar />
-            <div className="content-space">
-                <div className="content-space-info">
-                    <div className="content-space-info-filter">
-                        <Filter title={vehicle_name} filters={filters} onCheckboxChange={handleCheckboxChange} />
+        <Webpage className={"webpage"}>
+            {({ setError, setSuccess }) => (
+                <>
+                    <DefaultNavbar />
+                    <div className="content-space">
+                        <div className="content-space-info">
+                            <div className="content-space-info-filter">
+                                <Filter title={vehicle_name} filters={filters} onCheckboxChange={handleCheckboxChange} />
+                            </div>
+                            <div className="content-space-info-display-row">
+                                {filteredKits().map((kit, index) => (
+                                    <VehicleKit setError={setError} setSuccess={setSuccess} key={index} kit={kit} changeObserved={changeObserved}/>
+                                ))}
+                            </div>
+                        </div>
                     </div>
-                    <div className="content-space-info-display-row">
-                        {filteredKits().map((kit, index) => (
-                            <VehicleKit key={index} kit={kit} changeObserved={changeObserved}/>
-                        ))}
-                    </div>
-                </div>
-            </div>
-            {error && <Alert severity="error">{error}</Alert>}
-        </div>
+                </>
+            )}
+        </Webpage>
     );
 }
 

@@ -18,6 +18,7 @@ const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
 function ModelKit({setError, setSuccess})
 {
+
     const [vehicleKit, setVehicleKit] = useState([]);
     const [reviews, setReviews] = useState([])
     const { vehicle_name, id } = useParams();
@@ -52,7 +53,7 @@ function ModelKit({setError, setSuccess})
 
     const addCollectible = async () =>
     {
-        const response = await axios.post(`${API_ENDPOINT}/api/v1/collectible/add/${id}`);
+        const response = await axios.post(`${API_ENDPOINT}/api/v1/collection/collectible/add/${id}`);
         if(response.status !== 200)
             setError('Failed to change observed status.');
     };
@@ -68,7 +69,7 @@ function ModelKit({setError, setSuccess})
                                 <VehicleKit key={id} kit={vehicleKit} changeObserved={changeObserved} addCollectible={addCollectible}/>
                                 <PhotoGallery kit={vehicleKit}/>
                                 <div className="content-space-reviews">
-                                    <WriteReview setError={setError} setSuccess={setSuccess} id={id} fetchReviews={fetchReviews} />
+                                    <WriteReview setError={setError} setSuccess={setSuccess} id={id} reviews={reviews} fetchReviews={fetchReviews} />
                                     <ReviewHeader kit={vehicleKit}/>
                                     {reviews.map((review, index) => (
                                         <Review key={index} review={review} setError={setError} setSuccess={setSuccess} />
@@ -83,12 +84,26 @@ function ModelKit({setError, setSuccess})
     )
 }
 
-function WriteReview({ setError, setSuccess, id, fetchReviews })
+function WriteReview({ setError, setSuccess, id, fetchReviews, reviews })
 {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [score, setScore] = useState(0.0);
-    const [submittedReviewId, setSubmittedReviewId] = useState(null);
+    const username = localStorage.getItem("username");
+    const [submittedReviewId, setSubmittedReviewId] = useState(false);
+
+    useEffect(() =>
+    {
+        const userReview = reviews.find(review => review.username === username) || null;
+        if(userReview !== null)
+        {
+            setSubmittedReviewId(userReview.reviewId);
+            setTitle(userReview.title);
+            setDescription(userReview.content);
+            setScore(userReview.rating);
+
+        }
+    }, [reviews, username]);
 
     const handleReviewSubmit = async () =>
     {

@@ -90,7 +90,8 @@ public class ProfileMapper
         List<SmallCollectibleDto> collectibleDtos = new ArrayList<>();
 
         list.sort(Comparator.comparing(Collectible::getListOrder));
-        int topItemsCount = 5;
+
+        int topItemsCount = 3;
         for (int i = 0; i < Math.min(topItemsCount, list.size()); i++)
         {
             Collectible item = list.get(i);
@@ -113,7 +114,7 @@ public class ProfileMapper
     private SmallCollectibleDto mapToSmallCollectibleDto(Collectible collectible)
     {
         SmallCollectibleDto smallCollectibleDto = new SmallCollectibleDto();
-        smallCollectibleDto.setText(collectible.getModelKit().getName());
+        smallCollectibleDto.setText(collectible.getModelKit().getVariant().getVehicle().getName());
         smallCollectibleDto.setOrder(collectible.getListOrder());
 
         //Retrieve mainPhoto from ModelKit

@@ -20,11 +20,11 @@ public class Collection
     @Column(name = "collection_id", nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "collection")
+    @OneToMany(mappedBy = "collection", fetch = FetchType.EAGER)
     private Set<Collectible> collectibles = new LinkedHashSet<>();
 
 }

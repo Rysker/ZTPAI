@@ -44,7 +44,7 @@ public class User implements UserDetails
     @Column(name = "created", nullable = false)
     private Date created;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(
             name = "collection",
             joinColumns = @JoinColumn(name = "user_id"),

@@ -4,7 +4,7 @@ import BasicMenu from "./BasicMenu";
 
 export function DefaultNavbar()
 {
-    const username = sessionStorage.getItem("username");
+    const username = localStorage.getItem("username");
     return (
         <div className="navbar">
             <div className="title">

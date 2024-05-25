@@ -15,7 +15,7 @@ function LoginPage()
             const response = await axios.post(`${API_ENDPOINT}/api/v1/auth/signin`, credentials, { withCredentials: true });
             if (response.status === 200)
             {
-                sessionStorage.setItem('username', response.data.username);
+                localStorage.setItem('username', response.data.username);
                 setSuccess("Login successful!");
                 setTimeout(() =>
                 {

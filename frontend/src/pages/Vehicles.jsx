@@ -5,6 +5,7 @@ import { DefaultNavbar } from "../components/DefaultNavbar";
 import Filter from "../components/Filter";
 import {useLocation} from "react-router-dom";
 import axios from "axios";
+import Webpage from "../components/Webpage";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
@@ -21,7 +22,6 @@ function Vehicles()
     useEffect(() =>
     {
         setLoading(true);
-
         const fetchData = async () =>
         {
             try
@@ -88,27 +88,31 @@ function Vehicles()
     };
 
     return (
-        <div className="webpage">
-            <DefaultNavbar />
-            <div className="content-space">
-                <div className="content-space-info">
-                    <div className="content-space-info-filter">
-                        <Filter title="Filters" filters={filters} onCheckboxChange={handleCheckboxChange} />
+        <Webpage className={"webpage"}>
+            {({ setError, setSuccess }) => (
+                <>
+                    <DefaultNavbar />
+                    <div className="content-space">
+                        <div className="content-space-info">
+                            <div className="content-space-info-filter">
+                                <Filter title="Filters" filters={filters} onCheckboxChange={handleCheckboxChange} />
+                            </div>
+                            <div className="content-space-info-display">
+                                {loading ? (
+                                    <p>Loading...</p>
+                                ) : vehicles.length === 0 ? (
+                                    <p>No vehicles found</p>
+                                ) : (
+                                    filterVehicles().map(vehicle => (
+                                        <Vehicle key={vehicle.id} name={vehicle.name} photo={vehicle.vehiclePhoto} />
+                                    ))
+                                )}
+                            </div>
+                        </div>
                     </div>
-                    <div className="content-space-info-display">
-                        {loading ? (
-                            <p>Loading...</p>
-                        ) : vehicles.length === 0 ? (
-                            <p>No vehicles found</p>
-                        ) : (
-                            filterVehicles().map(vehicle => (
-                                <Vehicle key={vehicle.id} name={vehicle.name} photo={vehicle.vehiclePhoto} />
-                            ))
-                        )}
-                    </div>
-                </div>
-            </div>
-        </div>
+                </>
+            )}
+        </Webpage>
     );
 }
 

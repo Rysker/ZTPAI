@@ -10,7 +10,7 @@ const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
 export default function BasicMenu()
 {
-    const username = sessionStorage.getItem("username");
+    const username = localStorage.getItem("username");
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) =>

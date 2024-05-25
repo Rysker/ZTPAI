@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface CollectibleRepository extends JpaRepository<Collectible, Integer>
 {
     Optional<Collectible> findByCollectionAndModelKit(Collection collection, ModelKit modelKit);
+    Optional<Collectible> getCollectibleById(Integer collectibleId);
 }
