@@ -120,10 +120,10 @@ function MyCollection({setError, setSuccess})
                     <div className="content-space">
                         <div className="content-space-info">
                             <div className="content-space-info-filter">
-                                <Filter title="Collection" filters={filters} onCheckboxChange={handleCheckboxChange} />
+                                <Filter title= "Collection" filters={filters} onCheckboxChange={handleCheckboxChange} />
                             </div>
                             <div className="content-space-info-display-row">
-                                {filteredKits().map((kit, index) => (
+                                {filteredKits().map((kit) => (
                                     <VehicleKit key={kit.id} kit={kit} showCollection={true}
                                                 changeObserved={changeObserved} editable={sameUser}
                                                 deleteCollectible={deleteCollectible}

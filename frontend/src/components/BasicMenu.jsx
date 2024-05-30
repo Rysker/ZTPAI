@@ -56,9 +56,12 @@ export default function BasicMenu()
               'aria-labelledby': 'basic-button',
             }}
           >
-            <MenuItem class="menu-item" component={Link} to= {`/profile/${username}`} onClick={handleClose}>Profile</MenuItem>
-            <MenuItem class="menu-item" component={Link} to= "/admin" onClick={handleClose}>Admin</MenuItem>
-            <MenuItem class="menu-item" component={Link} to= "/" onClick={handleLogout}>Logout</MenuItem>
+                <MenuItem class="menu-item" component={Link} to= {`/profile/${username}`} onClick={handleClose}>
+                    Profile
+                </MenuItem>
+                <MenuItem class="menu-item" component={Link} to= "/" onClick={handleLogout}>
+                    Logout
+                </MenuItem>
           </Menu>
         </div>
       );

@@ -1,7 +1,9 @@
 package com.example.modelbase.service;
 
+import com.example.modelbase.dto.request.DescriptionChangeDto;
 import com.example.modelbase.dto.response.MessageResponseDto;
 import com.example.modelbase.dto.response.ProfileResponseDto;
+import com.example.modelbase.dto.response.RolesResponseDto;
 import com.example.modelbase.mapper.ProfileMapper;
 import com.example.modelbase.model.FollowerList;
 import com.example.modelbase.model.User;
@@ -46,5 +48,12 @@ public class ProfileService
         }
         else
             throw new IllegalArgumentException("User does not exist!");
+    }
+
+    public void changeDescription(String token, DescriptionChangeDto request) throws Exception
+    {
+        User currentUser = userService.getUserFromToken(token);
+        currentUser.setDescription(request.getDescription());
+        userRepository.save(currentUser);
     }
 }

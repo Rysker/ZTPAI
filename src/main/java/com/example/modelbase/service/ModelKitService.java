@@ -7,7 +7,6 @@ import com.example.modelbase.repository.ModelKitRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service

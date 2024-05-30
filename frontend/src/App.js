@@ -30,8 +30,8 @@ function App ()
                 <Route path ='/vehicles/:vehicle_name/:id' element={<PrivateRoute> <ModelKit/> </PrivateRoute>} />
                 <Route path ='/profile/:profileName/collection' element={<PrivateRoute> <MyCollection/> </PrivateRoute>} />
                 <Route path ='/profile/:profileName' element={<PrivateRoute> <Profile/> </PrivateRoute>} />
-                <Route path ='/admin' element={<PrivateRoute> <AdminPage/> </PrivateRoute>} />
-                <Route path ='/admin/reports' element={<PrivateRoute> <Reports/> </PrivateRoute>} />
+                <Route path ='/admin' element={<PrivateRoute roles={['ADMIN']}> <AdminPage/> </PrivateRoute>} />
+                <Route path ='/admin/reports' element={<PrivateRoute roles={['ADMIN']}> <Reports/> </PrivateRoute>} />
             </Routes>
         </BrowserRouter>
     )

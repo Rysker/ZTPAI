@@ -5,6 +5,7 @@ import com.example.modelbase.dto.request.SignUpRequest;
 import com.example.modelbase.dto.response.JwtAuthenticationResponse;
 import com.example.modelbase.dto.response.LoginResponseDto;
 import com.example.modelbase.dto.response.MessageResponseDto;
+import com.example.modelbase.model.User;
 import com.example.modelbase.service.AuthenticationService;
 import com.example.modelbase.service.JwtService;
 import com.example.modelbase.service.UserService;
@@ -15,6 +16,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -61,11 +64,12 @@ public class AuthenticationController
             jwtCookie.setHttpOnly(true);
             jwtCookie.setMaxAge(3600);
             res.addCookie(jwtCookie);
-            return ResponseEntity.ok(new LoginResponseDto("Success", userService.getUserFromToken(response.getToken()).getUsername()));
+            User user = userService.getUserFromToken(response.getToken());
+            return ResponseEntity.ok(new LoginResponseDto("Success", user.getUsername(), List.of(user.getAccountType().getName())));
         }
         catch(Exception e)
         {
-            return new ResponseEntity<>(new LoginResponseDto("UnknownError!", ""), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new LoginResponseDto(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
@@ -74,7 +78,7 @@ public class AuthenticationController
     public ResponseEntity<Boolean> checkAuthentication(@CookieValue("jwtCookie") String jwtToken)
     {
         boolean isAuthenticated = jwtService.checkAuthenticationStatus(jwtToken);
-        return isAuthenticated ? ResponseEntity.ok(isAuthenticated) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        return isAuthenticated ? ResponseEntity.ok(true) : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PostMapping("/logout")

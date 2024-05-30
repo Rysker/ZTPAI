@@ -207,7 +207,7 @@ function VehicleKit({ kit, changeObserved, setError, setSuccess, addCollectible,
                                         autoFocus
                                     />
                                 ) : (
-                                    <p onClick={editable ? handleEditing : undefined}>{completionDate}</p>
+                                    <p class = {editable ? "editable" : "non-editable"} onClick={editable ? handleEditing : undefined}>{completionDate}</p>
                                 )
                             )}
                             {!showCollection && (

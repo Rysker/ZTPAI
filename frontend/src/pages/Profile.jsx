@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import {Avatar, Divider} from "@material-ui/core";
 import axios from "axios";
 import {Link, useParams} from "react-router-dom";
+import {TextField} from "@mui/material";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 function Profile()
@@ -16,6 +17,8 @@ function Profile()
     const [profile, setProfile] = useState(null);
     const [isFollowed, setIsFollowed] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [editableDescription, setEditableDescription] = useState('');
+    const [isSameUser, setIsSameUser] = useState(false);
 
     useEffect(() =>
     {
@@ -27,6 +30,8 @@ function Profile()
                 const profileResponse = await axios.get(`${API_ENDPOINT}/api/v1/profile/${profileName}`);
                 setProfile(profileResponse.data);
                 setIsFollowed(profileResponse.data.isFollowed === 'true');
+                setEditableDescription(profileResponse.data.description);
+                setIsSameUser(profileResponse.data.isSameUser === 'true');
             }
             catch (error)
             {
@@ -54,15 +59,34 @@ function Profile()
         }
     };
 
-    if (loading)
+    const handleDescriptionChange = (event) =>
     {
+        setEditableDescription(event.target.value);
+    };
+
+    const handleDescriptionSave = async () =>
+    {
+        try
+        {
+            await axios.put(`${API_ENDPOINT}/api/v1/profile/description`, { description: editableDescription});
+            setEditableDescription(editableDescription);
+        }
+        catch (error)
+        {
+            console.error('Error saving description:', error);
+        }
+    };
+
+    const handleDescriptionBlur = () =>
+    {
+        handleDescriptionSave();
+    };
+
+    if (loading)
         return <div>Loading...</div>;
-    }
 
     if (!profile)
-    {
         return <div>No profile found</div>;
-    }
 
     return (
         <div className="webpage">
@@ -80,7 +104,7 @@ function Profile()
                                 <div className="profile-header-description">
                                     <div className="profile-header-description-top">
                                         <h1 id="user-profile-name">{profile.username}</h1>
-                                        {profile.isSameUser !== 'true' && (
+                                        {isSameUser !== true && (
                                             <Button
                                                 onClick={handleFollowButtonClick}
                                                 class={isFollowed ? "unfollow-button" : "follow-button"}
@@ -91,7 +115,21 @@ function Profile()
                                         )}
                                     </div>
                                     <div className="profile-header-description-bottom">
-                                        <p id="user-profile-description">{profile.description}</p>
+                                        {isSameUser ? (
+                                            <>
+                                                <TextField
+                                                    className="put-description"
+                                                    variant="outlined"
+                                                    value={editableDescription}
+                                                    onChange={handleDescriptionChange}
+                                                    onBlur={handleDescriptionBlur}
+                                                    multiline
+                                                    maxRows={2}
+                                                />
+                                            </>
+                                        ) : (
+                                            <p id="user-profile-description">{profile.description}</p>
+                                        )}
                                     </div>
                                 </div>
                             </div>

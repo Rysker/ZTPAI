@@ -39,6 +39,7 @@
 {
     display: flex;
     flex-shrink: 0;
+    cursor: context-menu;
 }
 
 .filter-content-option span.MuiTypography-root.MuiFormControlLabel-label.MuiTypography-body1

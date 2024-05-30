@@ -1,17 +1,17 @@
 package com.example.modelbase.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Data
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
-public class LoginResponseDto
+@AllArgsConstructor
+public class RolesResponseDto
 {
-    private String message;
-    private String username;
     private List<String> roles;
 }

@@ -16,6 +16,8 @@ function LoginPage()
             if (response.status === 200)
             {
                 localStorage.setItem('username', response.data.username);
+                localStorage.setItem('roles', response.data.roles);
+                console.log(response.data.roles);
                 setSuccess("Login successful!");
                 setTimeout(() =>
                 {

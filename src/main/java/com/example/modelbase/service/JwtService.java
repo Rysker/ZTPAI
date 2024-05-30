@@ -2,7 +2,6 @@ package com.example.modelbase.service;
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import io.jsonwebtoken.Claims;
@@ -21,7 +20,6 @@ public class JwtService
 {
     @Value("${token.signing.key}")
     private String jwtSigningKey;
-    private Jwts jwtsParser;
     public String extractEmail(String token)
     {
         return extractClaim(token, Claims::getSubject);
@@ -50,7 +48,7 @@ public class JwtService
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -67,7 +65,7 @@ public class JwtService
 
     private Claims extractAllClaims(String token)
     {
-        return jwtsParser.parser()
+        return Jwts.parser()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
@@ -83,8 +81,6 @@ public class JwtService
     public boolean checkAuthenticationStatus(String jwtToken)
     {
         Claims claims = this.extractAllClaims(jwtToken);
-        if (claims.getExpiration().before(new Date()))
-            return false;
-        return true;
+        return !claims.getExpiration().before(new Date());
     }
 }

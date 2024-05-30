@@ -34,7 +34,7 @@ public class AuthenticationService
     private final AuthenticationManager authenticationManager;
 
     @Transactional
-    public JwtAuthenticationResponse signUp(SignUpRequest request)
+    public void signUp(SignUpRequest request)
     {
         // Check if the email already exists
         if (userRepository.existsByEmail(request.getEmail()))
@@ -79,39 +79,15 @@ public class AuthenticationService
         Collection collection = new Collection();
         collection.setUser(user);
         collectionRepository.save(collection);
-
-        // Generate JWT token
-        String token = jwtService.generateToken(user);
-
-        // Return the JWT authentication response
-        return JwtAuthenticationResponse.builder()
-                .token(token)
-                .build();
-    }
-
-    // Validate email format
-    private boolean isValidEmail(String email)
-    {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-        return Pattern.matches(emailRegex, email);
-    }
-
-    // Validate password complexity
-    private boolean isValidPassword(String password)
-    {
-        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-        return Pattern.matches(passwordRegex, password);
     }
 
     public JwtAuthenticationResponse signIn(SignInRequest request)
     {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-
         UserDetails userDetails = loadUserByUsername(request.getEmail());
 
         String token = jwtService.generateToken(userDetails);
-
         return JwtAuthenticationResponse.builder()
                 .token(token)
                 .build();
@@ -130,5 +106,19 @@ public class AuthenticationService
                 true,
                 AuthorityUtils.createAuthorityList("USER")
         );
+    }
+
+    // Validate email format
+    private boolean isValidEmail(String email)
+    {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        return Pattern.matches(emailRegex, email);
+    }
+
+    // Validate password complexity
+    private boolean isValidPassword(String password)
+    {
+        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^!&+=])(?=\\S+$).{8,}$";
+        return Pattern.matches(passwordRegex, password);
     }
 }

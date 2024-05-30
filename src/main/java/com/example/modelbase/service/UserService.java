@@ -1,5 +1,6 @@
 package com.example.modelbase.service;
 
+import com.example.modelbase.dto.response.RolesResponseDto;
 import com.example.modelbase.repository.CollectionRepository;
 import com.example.modelbase.repository.UserRepository;
 import com.example.modelbase.model.User;
@@ -10,6 +11,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.Role;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,4 +44,13 @@ public class UserService implements UserDetailsService
         return optionalUser.orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 
+    public RolesResponseDto getRolesFromToken(String token)
+    {
+        User user = getUserFromToken(token);
+        List<String> roles = new LinkedList<>();
+        RolesResponseDto response = new RolesResponseDto();
+        roles.add(user.getAccountType().getName());
+        response.setRoles(roles);
+        return response;
+    }
 }
