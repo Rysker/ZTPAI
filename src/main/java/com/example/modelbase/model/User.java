@@ -108,7 +108,7 @@ public class User implements UserDetails
     public String dateToString()
     {
         SimpleDateFormat formatter = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
-       return formatter.format(this.created);
+        return formatter.format(this.created);
     }
 
 }

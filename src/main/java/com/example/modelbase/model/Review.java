@@ -5,8 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -46,7 +45,20 @@ public class Review
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Like> likes = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OneToMany(mappedBy = "review", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Report> reports = new LinkedHashSet<>();
 
+    public String findReason()
+    {
+        List<Report> reports = List.copyOf(this.getReports());
+        Map<String, Integer> count = new TreeMap<>();
+        for(Report report: reports)
+            count.merge(report.getReason().getReasonName(), 1, Integer::sum);
+
+        return count.entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null);
+    }
 }

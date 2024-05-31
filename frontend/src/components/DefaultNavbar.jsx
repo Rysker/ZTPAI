@@ -6,7 +6,7 @@ export function DefaultNavbar()
 {
     const username = localStorage.getItem("username");
     const roles = localStorage.getItem("roles") || [];
-    console.log(roles);
+
     return (
         <div className="navbar">
             <div className="title">

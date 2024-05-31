@@ -9,7 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageResponseDto
+public class ReportResponseDto
 {
-    private String message;
+    private Integer reviewId;
+    private String mainReason;
+    private Integer reportCount;
+    private String reviewContent;
 }

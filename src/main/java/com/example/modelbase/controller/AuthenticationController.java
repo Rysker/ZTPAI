@@ -69,7 +69,9 @@ public class AuthenticationController
         }
         catch(Exception e)
         {
-            return new ResponseEntity<>(new LoginResponseDto(), HttpStatus.INTERNAL_SERVER_ERROR);
+            LoginResponseDto responseDto = new LoginResponseDto();
+            responseDto.setMessage(e.getMessage());
+            return new ResponseEntity<>(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }

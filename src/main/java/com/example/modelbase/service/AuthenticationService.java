@@ -81,11 +81,15 @@ public class AuthenticationService
         collectionRepository.save(collection);
     }
 
-    public JwtAuthenticationResponse signIn(SignInRequest request)
+    public JwtAuthenticationResponse signIn(SignInRequest request) throws Exception
     {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         UserDetails userDetails = loadUserByUsername(request.getEmail());
+        User user = userRepository.findUserByUsername(userDetails.getUsername()).orElseThrow();
+
+        if(user.getAccountType().getName().equals("SUSPENDED"))
+            throw new IllegalArgumentException("User account is suspended!");
 
         String token = jwtService.generateToken(userDetails);
         return JwtAuthenticationResponse.builder()

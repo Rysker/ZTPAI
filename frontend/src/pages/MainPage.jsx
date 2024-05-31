@@ -1,7 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import '../App.css';
 import '../styles/MainPage.css';
-import Button from "@material-ui/core/Button";
 
 function MainPage ()
 {

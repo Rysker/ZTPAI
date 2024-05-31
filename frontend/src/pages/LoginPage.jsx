@@ -13,11 +13,11 @@ function LoginPage()
         try
         {
             const response = await axios.post(`${API_ENDPOINT}/api/v1/auth/signin`, credentials, { withCredentials: true });
+            console.log(response);
             if (response.status === 200)
             {
                 localStorage.setItem('username', response.data.username);
                 localStorage.setItem('roles', response.data.roles);
-                console.log(response.data.roles);
                 setSuccess("Login successful!");
                 setTimeout(() =>
                 {
@@ -25,13 +25,11 @@ function LoginPage()
                 }, 2000);
             }
             else
-            {
-                throw new Error('Invalid credentials. Please try again.');
-            }
+                throw new Error("Invalid credentials. Try again!");
         }
         catch (error)
         {
-            setError('Invalid credentials. Please try again.');
+            setError("Invalid credentials. Try again!");
         }
     };
 

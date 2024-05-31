@@ -4,11 +4,16 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 @Entity
 @Getter
 @Setter
 @Table(name = "report", schema = "public")
-public class Report {
+public class Report
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "report_id", nullable = false)
@@ -29,5 +34,4 @@ public class Report {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "report_status_id", nullable = false)
     private ReportStatus reportStatus;
-
 }

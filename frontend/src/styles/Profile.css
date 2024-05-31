@@ -211,8 +211,6 @@ h1#user-profile-name
 
 .profile-header-avatar-container
 {
-    border: 1px solid black;
-    border-radius: 1em;
     width: 60%;
     height: 80%;
     display: flex;

@@ -4,57 +4,103 @@ import '../styles/ModelKit.css'
 import  "../styles/VehicleDetails.css";
 import "../styles/Reports.css";
 import {DefaultNavbar} from "../components/DefaultNavbar";
-import {Avatar, Divider} from "@material-ui/core";
 import {FaBan, FaCheck} from "react-icons/fa";
+import TooltipExpanded from "../components/TooltipExpanded";
+import axios from "axios";
+import Webpage from "../components/Webpage";
 
-function Profile()
+const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
+
+function Profile({ setError, setSuccess })
 {
-    const [message, setMessage] = useState("");
-    let photo = "/images/signupBackground.jpg";
-    useEffect(() => {
-        fetch('/hello')
-            .then(response => response.text())
-            .then(message => {
-                setMessage(message);
+    const [reports, setReports] = useState([]);
+
+    useEffect(() =>
+    {
+        fetchReports();
+    }, []);
+
+    const fetchReports = () =>
+    {
+        axios.get(`${API_ENDPOINT}/api/v1/report`)
+            .then(response => {
+                setReports(response.data);
+            })
+            .catch(() => {
+                setError("Error!");
             });
-    },[])
+    };
+
+    const handleAction = (reviewId, action, setError, setSuccess) =>
+    {
+        axios.post(`${API_ENDPOINT}/api/v1/report/review/verify/${reviewId}`, { message: action })
+            .then(response => {
+                if (response.status === 200)
+                {
+                    setReports(reports.filter(report => report.reviewId !== reviewId));
+                    setSuccess(response.data.message);
+                }
+            })
+            .catch(() => {
+                setError("Error!");
+            });
+    };
+
     return (
-        <div className="webpage">
-            <DefaultNavbar></DefaultNavbar>
-            <div className="content-space-reports">
-                <div className="reports-place">
-                    <ReportEntity review_id="14534" user_name="User4" type="Language" reports_number="491"></ReportEntity>
-                    <ReportEntity review_id="14534" user_name="User4" type="Language" reports_number="491"></ReportEntity>
-                    <ReportEntity review_id="14534" user_name="User4" type="Language" reports_number="491"></ReportEntity>
-                    <ReportEntity review_id="14534" user_name="User4" type="Language" reports_number="491"></ReportEntity>
-                    <ReportEntity review_id="14534" user_name="User4" type="Language" reports_number="491"></ReportEntity>
-                    <ReportEntity review_id="14534" user_name="User4" type="Language" reports_number="491"></ReportEntity>
-                    <ReportEntity review_id="14534" user_name="User4" type="Language" reports_number="491"></ReportEntity>
-                    <ReportEntity review_id="14534" user_name="User4" type="Language" reports_number="491"></ReportEntity>
-                </div>
-            </div>
-        </div>
+        <Webpage className={"webpage"}>
+            {({ setError, setSuccess }) => (
+                <>
+                    <DefaultNavbar></DefaultNavbar>
+                    <div className="content-space-reports">
+                        <div className="reports-place">
+                            {reports.length > 0 ? (
+                                reports.map((report, index) => (
+                                    <ReportEntity
+                                        key={report.reviewId}
+                                        report={report}
+                                        type={report.mainReason}
+                                        reports_number={report.reportCount}
+                                        handleAction={handleAction}
+                                        setError={setError}
+                                        setSuccess={setSuccess}
+                                    />
+                                ))
+                            ) : (
+                                <p>No reports found!</p>
+                            )}
+                        </div>
+                    </div>
+                </>
+            )}
+        </Webpage>
     )
 }
 
-function ReportEntity({review_id, user_name, type, reports_number})
+function ReportEntity({report, handleAction, setError, setSuccess})
 {
     return(
         <div className="report-entity">
             <div className="report-entity-desc">
-                <p>{review_id}</p>
-                <p>{user_name}</p>
-                <p>{type}</p>
-                <p>{reports_number}</p>
+                <div className="report-entity-desc-info">
+                    <p>Review id: {report.reviewId}</p>
+                    <p>Main reason: {report.mainReason}</p>
+                    <p>How many reports: {report.reportCount}</p>
+                </div>
                 <div className="report-entity-buttons">
-                    <FaBan class="ban-button"></FaBan>
-                    <FaCheck class="dismiss-button"></FaCheck>
+                    <div onClick={() => handleAction(report.reviewId, 'Ban', setError, setSuccess)}>
+                        <TooltipExpanded title="Ban" className="ban-button" >
+                            <FaBan/>
+                        </TooltipExpanded>
+                    </div>
+                    <div onClick={() => handleAction(report.reviewId, 'Reject', setError, setSuccess)}>
+                        <TooltipExpanded title="Reject reports" className="dismiss-button">
+                            <FaCheck/>
+                        </TooltipExpanded>
+                    </div>
                 </div>
             </div>
             <div className="report-entity-content">
-                Forbidden text. Forbidden text. Forbidden text.Forbidden text.
-                Forbidden text. Forbidden text.Forbidden text. Forbidden text.
-                Forbidden text.Forbidden text. Forbidden text. Forbidden text.
+                {report.reviewContent}
             </div>
         </div>
     )

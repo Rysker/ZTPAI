@@ -1,5 +1,6 @@
 package com.example.modelbase.mapper;
 
+import com.example.modelbase.dto.response.ReportResponseDto;
 import com.example.modelbase.dto.response.ReviewResponseDto;
 import com.example.modelbase.model.Like;
 import com.example.modelbase.model.Review;
@@ -11,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,39 +25,40 @@ public class ReviewMapper
 
     public Set<ReviewResponseDto> mapReviews(String token, Set<Review> setReviews)
     {
-        Set<ReviewResponseDto> reviews = new HashSet<>();
         User user = userService.getUserFromToken(token);
-        return getReviewResponseDtos(setReviews, reviews, user);
+        return getReviewResponseDtos(setReviews, user);
     }
 
-    private Set<ReviewResponseDto> getReviewResponseDtos(Set<Review> setReviews, Set<ReviewResponseDto> reviews, User user)
+    private Set<ReviewResponseDto> getReviewResponseDtos(Set<Review> setReviews, User user)
     {
+        Set<ReviewResponseDto> reviews = new HashSet<>();
         for(Review review: setReviews)
         {
-            ReviewResponseDto responseDto = new ReviewResponseDto();
-            BeanUtils.copyProperties(review, responseDto);
-            responseDto.setRating(responseDto.getRating()/ 10);
-            distinguishLikes(user, responseDto, review.getLikes());
-            responseDto.setReviewId(review.getId());
-            responseDto.setUsername(review.getUser().getUsername());
-            reviews.add(responseDto);
+            if(!review.getReviewStatus().getName().equals("BLOCKED"))
+            {
+                ReviewResponseDto responseDto = new ReviewResponseDto();
+                BeanUtils.copyProperties(review, responseDto);
+                responseDto.setRating(responseDto.getRating() / 10);
+                distinguishLikes(user, responseDto, review.getLikes());
+                responseDto.setReviewId(review.getId());
+                responseDto.setUsername(review.getUser().getUsername());
+                reviews.add(responseDto);
+            }
         }
         return reviews;
     }
 
     public Set<ReviewResponseDto> mapUsernameReviews(String username, Set<Review> setReviews) throws Exception
     {
-        Set<ReviewResponseDto> reviews = new HashSet<>();
         Optional<User> tmp = userRepository.findUserByUsername(username);
         if(tmp.isPresent())
         {
             User user = tmp.get();
-            return getReviewResponseDtos(setReviews, reviews, user);
+            return getReviewResponseDtos(setReviews, user);
         }
         else
             throw new IllegalArgumentException("No user found!");
     }
-
     private void distinguishLikes(User user, ReviewResponseDto reviewDto, Set<Like> likes)
     {
         int downvotes = 0;
