@@ -59,6 +59,9 @@ export default function BasicMenu()
                 <MenuItem class="menu-item" component={Link} to= {`/profile/${username}`} onClick={handleClose}>
                     Profile
                 </MenuItem>
+                <MenuItem class="menu-item" component={Link} to= "/followers" onClick={handleClose}>
+                    Followers
+                </MenuItem>
                 <MenuItem class="menu-item" component={Link} to= "/" onClick={handleLogout}>
                     Logout
                 </MenuItem>

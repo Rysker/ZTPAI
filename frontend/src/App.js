@@ -13,6 +13,7 @@ import AdminPage from "./pages/AdminPage";
 import Reports from "./pages/Reports";
 import PrivateRoute from "./components/PrivateRoute";
 import axios from "axios";
+import FollowersPage from "./pages/FollowersPage";
 
 axios.defaults.withCredentials = true;
 
@@ -32,6 +33,7 @@ function App ()
                 <Route path ='/profile/:profileName' element={<PrivateRoute> <Profile/> </PrivateRoute>} />
                 <Route path ='/admin' element={<PrivateRoute roles={['ADMIN']}> <AdminPage/> </PrivateRoute>} />
                 <Route path ='/admin/reports' element={<PrivateRoute roles={['ADMIN']}> <Reports/> </PrivateRoute>} />
+                <Route path ='/followers' element={<PrivateRoute> <FollowersPage/> </PrivateRoute>} />
             </Routes>
         </BrowserRouter>
     )

@@ -58,8 +58,6 @@ function Profile({ setError, setSuccess })
                                     <ReportEntity
                                         key={report.reviewId}
                                         report={report}
-                                        type={report.mainReason}
-                                        reports_number={report.reportCount}
                                         handleAction={handleAction}
                                         setError={setError}
                                         setSuccess={setSuccess}

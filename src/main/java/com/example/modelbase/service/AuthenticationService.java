@@ -86,7 +86,7 @@ public class AuthenticationService
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         UserDetails userDetails = loadUserByUsername(request.getEmail());
-        User user = userRepository.findUserByUsername(userDetails.getUsername()).orElseThrow();
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow();
 
         if(user.getAccountType().getName().equals("SUSPENDED"))
             throw new IllegalArgumentException("User account is suspended!");
