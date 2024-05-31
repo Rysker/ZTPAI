@@ -27,6 +27,7 @@ export default function BasicMenu()
         try
         {
             await axios.post(`${API_ENDPOINT}/api/v1/auth/logout`);
+            localStorage.clear();
             window.location.href = '/';
         }
         catch (error)

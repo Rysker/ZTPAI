@@ -8,7 +8,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +24,7 @@ public class ReportService
     private final AccountTypeRepository accountTypeRepository;
     private final ReviewStatusRepository reviewStatusRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     public void addReport(String token, Integer reviewId) throws Exception
     {
@@ -84,6 +84,7 @@ public class ReportService
             if (request.getMessage().equals("Ban") && optionalStatus.isPresent())
             {
                 review.setReviewStatus(reviewStatus);
+                sendNotifications(List.copyOf(review.getReports()));
                 review.getReports().clear();
                 reviewRepository.save(review);
                 reviewUser.setAccountType(optionalStatus.get());
@@ -96,6 +97,15 @@ public class ReportService
             }
             else
                 throw new IllegalArgumentException("Wrong verification type!");
+        }
+    }
+
+    private void sendNotifications(List<Report> reports) throws Exception
+    {
+        for(Report report: reports)
+        {
+            User sender = report.getUser();
+            notificationService.sendNotification("Reported review was removed. Thank you for making community better!", sender.getUsername());
         }
     }
 }
