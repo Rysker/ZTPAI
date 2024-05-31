@@ -2,6 +2,8 @@ package com.example.modelbase.dto.response;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class ProfileResponseDto
 {
@@ -13,4 +15,5 @@ public class ProfileResponseDto
     private Integer reputation;
     private String memberSince;
     private ProfileCollectionDto profileCollection;
+    private List<CollectionStatisticsDto> stats;
 }

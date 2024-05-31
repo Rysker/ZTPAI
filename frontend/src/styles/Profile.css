@@ -133,7 +133,7 @@ h1#user-profile-name
 
 .profile-desc-collection
 {
-    width: 75%;
+    width: 65%;
     height: 100%;
     margin: 20px;
 
@@ -199,7 +199,7 @@ h1#user-profile-name
 .profile-desc-stats
 {
     height: 100%;
-    width: 28%;
+    width: 35%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -233,4 +233,9 @@ h1#user-profile-name
     text-decoration: none;
     color: inherit;
     cursor: pointer;
+}
+
+.recharts-responsive-container
+{
+    height: 70% !important;
 }

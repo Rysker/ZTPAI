@@ -9,6 +9,7 @@ import {Avatar, Divider} from "@material-ui/core";
 import axios from "axios";
 import {Link, useParams} from "react-router-dom";
 import {TextField} from "@mui/material";
+import CollectionPieChart from "../components/CollectionPieChart";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 function Profile()
@@ -155,6 +156,10 @@ function Profile()
                                         <h1>Reviews: {profile.reviewsCount}</h1>
                                         <h1>Reputation: {profile.reputation}</h1>
                                         <h1>Member since: {profile.memberSince}</h1>
+                                        {profile.stats.length > 0 && (
+                                            <CollectionPieChart data={profile.stats} />
+                                            )
+                                        }
                                     </div>
                                 </div>
                             </div>

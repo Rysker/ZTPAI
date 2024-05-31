@@ -1,6 +1,7 @@
 package com.example.modelbase.service;
 
 import com.example.modelbase.dto.response.CollectionResponseDto;
+import com.example.modelbase.dto.response.CollectionStatisticsDto;
 import com.example.modelbase.dto.response.ModelKitDto;
 import com.example.modelbase.mapper.ModelKitMapper;
 import com.example.modelbase.model.Collectible;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

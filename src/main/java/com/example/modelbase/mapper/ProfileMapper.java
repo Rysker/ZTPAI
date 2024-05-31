@@ -1,5 +1,6 @@
 package com.example.modelbase.mapper;
 
+import com.example.modelbase.dto.response.CollectionStatisticsDto;
 import com.example.modelbase.dto.response.ProfileCollectionDto;
 import com.example.modelbase.dto.response.ProfileResponseDto;
 import com.example.modelbase.dto.response.SmallCollectibleDto;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +49,7 @@ public class ProfileMapper
             //Additonal mapping
             mapReviews(responseDto, profileUser);
             mapCollection(responseDto, profileUser);
+            responseDto.setStats(getStatistics(List.copyOf(profileUser.getCollection().getCollectibles())));
             return responseDto;
         }
         else
@@ -124,5 +127,19 @@ public class ProfileMapper
         smallCollectibleDto.setBackgroundImage(photo);
 
         return smallCollectibleDto;
+    }
+
+    private List<CollectionStatisticsDto> getStatistics(List<Collectible> collectibles)
+    {
+        Map<String, Integer> values = new TreeMap<>();
+
+        for(Collectible collectible: collectibles)
+            values.merge(collectible.getModelKit().getUseCountry().getName(), 1, Integer::sum);
+
+        List<CollectionStatisticsDto> statistics = values.entrySet().stream()
+                .map(entry -> new CollectionStatisticsDto(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
+
+        return statistics;
     }
 }
