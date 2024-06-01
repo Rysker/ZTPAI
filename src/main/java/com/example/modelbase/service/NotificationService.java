@@ -18,7 +18,6 @@ public class NotificationService
     public void sendNotification(String message, String username) throws Exception
     {
         String queueName = "userQueue." + username;
-
         Queue queue = new Queue(queueName, false);
         amqpAdmin.declareQueue(queue);
 
@@ -29,6 +28,9 @@ public class NotificationService
     {
         User user = userService.getUserFromToken(token);
         String queueName = "userQueue." + user.getUsername();
+        Queue queue = new Queue(queueName, false);
+        amqpAdmin.declareQueue(queue);
+
         Object message = rabbitTemplate.receiveAndConvert(queueName);
         return message != null ? message.toString() : null;
     }

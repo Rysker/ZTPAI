@@ -25,7 +25,7 @@ function LoginPage()
                 }, 2000);
             }
             else
-                throw new Error("Invalid credentials. Try again!");
+                new Error("Invalid credentials. Try again!");
         }
         catch (error)
         {

@@ -45,7 +45,7 @@ function MyCollection({setError, setSuccess})
             }
             catch (error)
             {
-                console.error('Error fetching collection:', error);
+                console.error('Error!');
             }
         };
 

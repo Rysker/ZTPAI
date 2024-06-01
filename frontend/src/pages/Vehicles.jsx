@@ -6,6 +6,7 @@ import Filter from "../components/Filter";
 import {useLocation} from "react-router-dom";
 import axios from "axios";
 import Webpage from "../components/Webpage";
+import LoadingScreen from "../components/LoadingScreen";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
@@ -99,7 +100,7 @@ function Vehicles()
                             </div>
                             <div className="content-space-info-display">
                                 {loading ? (
-                                    <p>Loading...</p>
+                                    <LoadingScreen/>
                                 ) : vehicles.length === 0 ? (
                                     <p>No vehicles found</p>
                                 ) : (

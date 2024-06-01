@@ -10,6 +10,7 @@ import axios from "axios";
 import {Link, useParams} from "react-router-dom";
 import {TextField} from "@mui/material";
 import CollectionPieChart from "../components/CollectionPieChart";
+import LoadingScreen from "../components/LoadingScreen";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 function Profile()
@@ -18,6 +19,7 @@ function Profile()
     const [profile, setProfile] = useState(null);
     const [isFollowed, setIsFollowed] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [showLoadingScreen, setShowLoadingScreen] = useState(true);
     const [editableDescription, setEditableDescription] = useState('');
     const [isSameUser, setIsSameUser] = useState(false);
 
@@ -36,7 +38,7 @@ function Profile()
             }
             catch (error)
             {
-                console.error('Error fetching profile:', error);
+                console.error('Error');
             }
             finally
             {
@@ -45,6 +47,14 @@ function Profile()
         };
 
         fetchProfileData();
+
+        const timer = setTimeout(() =>
+        {
+            setShowLoadingScreen(false);
+        }, 2000);
+        return () => clearTimeout(timer);
+
+
     }, [profileName]);
 
     const handleFollowButtonClick = async () =>
@@ -83,8 +93,10 @@ function Profile()
         handleDescriptionSave();
     };
 
-    if (loading)
-        return <div>Loading...</div>;
+    if (showLoadingScreen || loading)
+    {
+        return <LoadingScreen/>;
+    }
 
     if (!profile)
         return <div>No profile found</div>;
