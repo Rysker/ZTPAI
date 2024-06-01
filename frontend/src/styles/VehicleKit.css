@@ -122,14 +122,25 @@
 
 .vehicle-kit-link
 {
-    position: absolute;
     width: 25vw;
     border-radius: 1em;
-    height: 30vh;
+    height: auto;
     overflow: hidden;
+}
+.vehicle-kit-link img
+{
+    width: 100%;
+    height: 100%;
 }
 
 .vehicle-kit-link:hover
 {
     cursor: pointer;
+}
+
+.collection-date-edit-input
+{
+    width: calc(9px + 9vw);
+    height: calc(5px + 5vh);
+    font-size: calc(2px + 1vw);
 }

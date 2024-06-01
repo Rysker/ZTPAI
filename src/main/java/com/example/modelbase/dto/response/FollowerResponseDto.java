@@ -6,6 +6,7 @@ import lombok.Data;
 public class FollowerResponseDto
 {
     private String username;
+    private String avatar;
     private String description;
     private Integer followerId;
 }

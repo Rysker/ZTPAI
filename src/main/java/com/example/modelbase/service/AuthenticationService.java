@@ -83,18 +83,26 @@ public class AuthenticationService
 
     public JwtAuthenticationResponse signIn(SignInRequest request) throws Exception
     {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        UserDetails userDetails = loadUserByUsername(request.getEmail());
-        User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow();
+        try
+        {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+            UserDetails userDetails = loadUserByUsername(request.getEmail());
+            User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow();
 
-        if(user.getAccountType().getName().equals("SUSPENDED"))
-            throw new IllegalArgumentException("User account is suspended!");
+            if(user.getAccountType().getName().equals("SUSPENDED"))
+                throw new IllegalArgumentException("User account is suspended!");
 
-        String token = jwtService.generateToken(userDetails);
-        return JwtAuthenticationResponse.builder()
-                .token(token)
-                .build();
+            String token = jwtService.generateToken(userDetails);
+            return JwtAuthenticationResponse.builder()
+                    .token(token)
+                    .build();
+        }
+        catch(Exception e)
+        {
+            throw new IllegalArgumentException("Invalid credentials. Try again.");
+        }
+
     }
 
     private UserDetails loadUserByUsername(String email)

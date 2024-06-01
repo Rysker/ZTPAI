@@ -41,12 +41,13 @@
     flex-direction: row;
     flex-wrap: wrap;
     margin: 0 auto;
-    margin-top: 15px;
+    padding-top: 15px;
     overflow: scroll;
     flex-shrink: 0;
-    overflow-x: hidden;
+    overflow-y: hidden;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    -webkit-box-sizing: border-box;
 }
 
 .vehicle-representation
@@ -89,3 +90,12 @@
     color: white;
 }
 
+.loading-info-p
+{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: calc(5px + 3vw);
+    font-weight: bold;
+}

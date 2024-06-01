@@ -7,28 +7,43 @@ import  "../styles/VehicleDetails.css";
 import "../styles/Profile.css";
 import {DefaultNavbar} from "../components/DefaultNavbar";
 import Webpage from "../components/Webpage";
+import React, {useEffect, useState} from "react";
+import LoadingScreen from "../components/LoadingScreen";
 
-function Profile()
+function HomePage()
 {
+    const [showLoadingScreen, setShowLoadingScreen] = useState(true);
+
+    useEffect(() =>
+    {
+        const timer = setTimeout(() => {
+            setShowLoadingScreen(false);
+        }, 2000);
+        return () => clearTimeout(timer);
+    })
+
+    if (showLoadingScreen)
+        return <LoadingScreen/>;
+
     return (
         <Webpage className={"webpage"}>
             {({ setError, setSuccess }) => (
                 <>
-                    <DefaultNavbar></DefaultNavbar>
+                    <DefaultNavbar/>
                     <div className="content-space-home">
                         <div className="vehicle-pick">
                             <a href="/vehicles?type=Tanks">
-                                <TbTank></TbTank>
+                                <TbTank/>
                             </a>
                         </div>
                         <div className="vehicle-pick">
                             <a href="/vehicles?type=Planes">
-                                <FaFighterJet></FaFighterJet>
+                                <FaFighterJet/>
                             </a>
                         </div>
                         <div className="vehicle-pick">
                             <a href="/vehicles?type=Ships">
-                                <GiBattleship></GiBattleship>
+                                <GiBattleship/>
                             </a>
                         </div>
                     </div>
@@ -37,4 +52,4 @@ function Profile()
         </Webpage>
     )
 }
-export default Profile;
+export default HomePage;

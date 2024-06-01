@@ -38,7 +38,7 @@ public class VehicleService
                 .collect(Collectors.toList());
     }
 
-    public Set<ModelKitDto> getVehicleKits(String token, String vehicle_name)
+    public Set<ModelKitDto> getVehicleKits(String token, String vehicle_name) throws Exception
     {
         Vehicle vehicle = vehicleRepository.getVehicleByName(vehicle_name);
         Set<ModelKit> kits = new HashSet<>();

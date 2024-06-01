@@ -70,7 +70,13 @@ function Profile({follower, setError, setSuccess, setFollowers})
         <div className="profile-header2">
             <div className="profile-header-avatar">
                 <div className="profile-header-avatar-container">
-                    <Avatar className="profile-header-avatar-entity">A</Avatar>
+                    <Avatar className="profile-header-avatar-entity">
+                        {follower.avatar ? (
+                            <img src={follower.avatar} alt="User Avatar" />
+                        ) : (
+                            follower.username.charAt(0).toUpperCase()
+                        )}
+                    </Avatar>
                 </div>
             </div>
             <div className="profile-header-description">

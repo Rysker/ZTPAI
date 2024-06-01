@@ -26,8 +26,8 @@ public class AuthenticationController
 {
     private final AuthenticationService authenticationService;
     private final UserService userService;
-
     private final JwtService jwtService;
+
     @PostMapping("/signup")
     public ResponseEntity<MessageResponseDto> signup(@RequestBody SignUpRequest request)
     {
@@ -67,10 +67,14 @@ public class AuthenticationController
             User user = userService.getUserFromToken(response.getToken());
             return ResponseEntity.ok(new LoginResponseDto("Success", user.getUsername(), List.of(user.getAccountType().getName())));
         }
+        catch(IllegalArgumentException e)
+        {
+            return ResponseEntity.ok(new LoginResponseDto(e.getMessage(), null, null));
+        }
         catch(Exception e)
         {
             LoginResponseDto responseDto = new LoginResponseDto();
-            responseDto.setMessage(e.getMessage());
+            responseDto.setMessage("Error!");
             return new ResponseEntity<>(responseDto, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

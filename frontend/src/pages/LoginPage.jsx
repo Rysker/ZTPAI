@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import '../styles/LoginPage.css';
 import LoginForm from "../components/LoginForm";
 import axios from "axios";
@@ -8,28 +8,47 @@ const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
 function LoginPage()
 {
+    useEffect(() =>
+    {
+        localStorage.clear();
+    })
+
     const handleLogin = async (credentials, setError, setSuccess) =>
     {
         try
         {
             const response = await axios.post(`${API_ENDPOINT}/api/v1/auth/signin`, credentials, { withCredentials: true });
-            console.log(response);
+            const responseData = response.data;
+
             if (response.status === 200)
             {
-                localStorage.setItem('username', response.data.username);
-                localStorage.setItem('roles', response.data.roles);
-                setSuccess("Login successful!");
-                setTimeout(() =>
+                if (responseData.message === "Success")
                 {
-                    window.location.href = '/home';
-                }, 2000);
+                    localStorage.setItem('username', response.data.username);
+                    localStorage.setItem('roles', response.data.roles);
+                    setSuccess("Login successful!");
+                    setTimeout(() =>
+                    {
+                        window.location.href = '/home';
+                    }, 2000);
+                }
+                else
+                {
+                    setError(responseData.message);
+                    setTimeout(() =>
+                    {
+                        setError(null);
+                    }, 3000);
+                }
             }
-            else
-                new Error("Invalid credentials. Try again!");
         }
         catch (error)
         {
-            setError("Invalid credentials. Try again!");
+            setError("Doesn't work");
+            setTimeout(() =>
+            {
+                setError(null);
+            }, 3000);
         }
     };
 

@@ -124,8 +124,11 @@ function MyCollection({setError, setSuccess})
                             </div>
                             <div className="content-space-info-display-row">
                                 {filteredKits().map((kit) => (
-                                    <VehicleKit key={kit.id} kit={kit} showCollection={true}
-                                                changeObserved={changeObserved} editable={sameUser}
+                                    <VehicleKit key={kit.collectibleId}
+                                                kit={kit}
+                                                showCollection={true}
+                                                changeObserved={changeObserved}
+                                                editable={sameUser}
                                                 deleteCollectible={deleteCollectible}
                                                 finishCollectible={finishCollectible}
                                                 setError={setError}

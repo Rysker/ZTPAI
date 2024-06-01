@@ -110,7 +110,7 @@ public class ModelKitMapper
     {
         Optional<Collectible> collectible = collectibleRepository.findByCollectionAndModelKit(user.getCollection(), modelKit);
         Collectible collectible1 = collectible.get();
-        modelKitDto.setId(collectible1.getId());
+        modelKitDto.setCollectibleId(collectible1.getId());
         modelKitDto.setCompletionDate(collectible1.getCompletionDate());
         modelKitDto.setIsPublic(collectible1.getIsPublic().toString());
         return modelKitDto;

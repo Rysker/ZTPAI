@@ -1,17 +1,12 @@
 package com.example.modelbase.service;
 
 import com.example.modelbase.dto.response.FilterResponseDto;
-import com.example.modelbase.model.Country;
-import com.example.modelbase.model.Manufacturer;
-import com.example.modelbase.model.Progress;
-import com.example.modelbase.model.Vehicle;
+import com.example.modelbase.model.*;
 import com.example.modelbase.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +14,6 @@ public class FilterService
 {
     private final VehicleRepository vehicleRepository;
     private final CountryRepository countryRepository;
-    private final ManufacturerRepository manufacturerRepository;
     private final VariantRepository variantRepository;
     private final ProgressRepository progressRepository;
 
@@ -27,35 +21,45 @@ public class FilterService
     {
         List<String> generations = vehicleRepository.findDistinctGenerations();
         List<String> countries = new ArrayList<>();
+        List<FilterResponseDto> filters = new LinkedList<>();
         for(Country x : countryRepository.findAll())
             countries.add(x.getName());
 
-        FilterResponseDto generationFilter = new FilterResponseDto("generation", generations);
-        FilterResponseDto countryFilter = new FilterResponseDto("country", countries);
+        if(!generations.isEmpty())
+            filters.add(new FilterResponseDto("generation", generations));
+        if(!countries.isEmpty())
+            filters.add(new FilterResponseDto("country", countries));
 
-        return List.of(generationFilter, countryFilter);
+        return filters;
     }
 
     public List<FilterResponseDto> getKitsFilters(String vehicle_name)
     {
         Vehicle vehicle = vehicleRepository.getVehicleByName(vehicle_name);
+        List<Variant> variants1 = List.copyOf(vehicle.getVariants());
         List<String> variants = variantRepository.findDistinctByVehicleId(vehicle.getId());
-        List<String> manufacturers = new ArrayList<>();
-        for(Manufacturer x : manufacturerRepository.findAll())
-            manufacturers.add(x.getName());
+        Set<String> manufacturers = new TreeSet<>();
+        List<FilterResponseDto> filters = new LinkedList<>();
 
-        FilterResponseDto manufacturerFilter = new FilterResponseDto("manufacturer", manufacturers);
-        FilterResponseDto variantFilter = new FilterResponseDto("variant", variants);
+        for(Variant variant: variants1)
+        {
+            for(ModelKit x : variant.getModelKits())
+                manufacturers.add(x.getManufacturer().getName());
+        }
+        if(!manufacturers.isEmpty())
+            filters.add(new FilterResponseDto("manufacturer", List.copyOf(manufacturers)));
+        if(!variants.isEmpty())
+            filters.add(new FilterResponseDto("variant", variants));
 
-        return List.of(manufacturerFilter, variantFilter);
+        return filters;
     }
 
     public List<FilterResponseDto> getCollectionFilters()
     {
         List<String> progressStatus = new LinkedList<>();
         List<String> visibility = List.of("Public", "Hidden");
-        for(Progress prog : progressRepository.findAll())
-            progressStatus.add(prog.getName());
+        for(Progress progress : progressRepository.findAll())
+            progressStatus.add(progress.getName());
 
         FilterResponseDto visibilityFilter = new FilterResponseDto("visibility", visibility);
         FilterResponseDto progressFilter = new FilterResponseDto("progress", progressStatus);

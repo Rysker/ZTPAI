@@ -71,6 +71,7 @@ function ModelKit({setError, setSuccess})
                                 <div className="content-space-reviews">
                                     <WriteReview setError={setError} setSuccess={setSuccess} id={id} reviews={reviews} fetchReviews={fetchReviews} />
                                     <ReviewHeader kit={vehicleKit}/>
+                                    <Divider/>
                                     {reviews.map((review, index) => (
                                         <Review key={index} review={review} setError={setError} setSuccess={setSuccess} />
                                     ))}

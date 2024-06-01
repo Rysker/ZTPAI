@@ -100,9 +100,9 @@ function Vehicles()
                             </div>
                             <div className="content-space-info-display">
                                 {loading ? (
-                                    <p>Looking for vehicles</p>
+                                    <p className="loading-info-p">Looking for vehicles</p>
                                 ) : vehicles.length === 0 ? (
-                                    <p>No vehicles found</p>
+                                    <p className="loading-info-p">No vehicles found</p>
                                 ) : (
                                     filterVehicles().map(vehicle => (
                                         <Vehicle key={vehicle.id} name={vehicle.name} photo={vehicle.vehiclePhoto} />

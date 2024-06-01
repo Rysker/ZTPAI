@@ -34,4 +34,5 @@ public class ModelKitDto
     //More expanded response (Collection view)
     private String isPublic;
     private LocalDate completionDate;
+    private Integer collectibleId;
 }

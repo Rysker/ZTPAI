@@ -50,7 +50,7 @@ function VehicleKit({ kit, changeObserved, setError, setSuccess, addCollectible,
         event.preventDefault()
         try
         {
-            await addCollectible(kit.id);
+            await addCollectible(kit.collectibleId);
             setStatusColor(statusColorMap["Owned"] || "black");
         }
         catch
@@ -59,15 +59,15 @@ function VehicleKit({ kit, changeObserved, setError, setSuccess, addCollectible,
         }
     };
 
-    const finCollectible = async (event, id) =>
+    const finCollectible = async (event) =>
     {
         event.preventDefault()
         try
         {
-            await axios.post(`${API_ENDPOINT}/api/v1/collection/collectible/finish/${id}`);
+            await axios.post(`${API_ENDPOINT}/api/v1/collection/collectible/finish/${kit.collectibleId}`);
             if(finishCollectible !== null)
             {
-                finishCollectible(id);
+                finishCollectible(kit.id);
                 setCompletionDate(new Date().toISOString().split('T')[0]);
             }
         }
@@ -77,12 +77,12 @@ function VehicleKit({ kit, changeObserved, setError, setSuccess, addCollectible,
         }
     };
 
-    const changeVisible = async (event, id) =>
+    const changeVisible = async (event) =>
     {
         event.preventDefault()
         try
         {
-            await axios.post(`${API_ENDPOINT}/api/v1/collection/collectible/visibility/${id}`);
+            await axios.post(`${API_ENDPOINT}/api/v1/collection/collectible/visibility/${kit.collectibleId}`);
             setIsPublic(!isPublic);
         }
         catch
@@ -91,14 +91,14 @@ function VehicleKit({ kit, changeObserved, setError, setSuccess, addCollectible,
         }
     };
 
-    const removeCollectible = async (event, id) =>
+    const removeCollectible = async (event) =>
     {
         event.preventDefault()
         try
         {
-            await axios.delete(`${API_ENDPOINT}/api/v1/collection/collectible/delete/${id}`);
+            await axios.delete(`${API_ENDPOINT}/api/v1/collection/collectible/delete/${kit.collectibleId}`);
             if(deleteCollectible !== null)
-                deleteCollectible(id);
+                deleteCollectible(kit.id);
         }
         catch
         {
@@ -121,7 +121,7 @@ function VehicleKit({ kit, changeObserved, setError, setSuccess, addCollectible,
         }
         try
         {
-            await axios.put(`${API_ENDPOINT}/api/v1/collection/collectible/edit/${kit.id}`, { completionDate: tempCompletionDate });
+            await axios.put(`${API_ENDPOINT}/api/v1/collection/collectible/edit/${kit.collectibleId}`, { completionDate: tempCompletionDate });
             setIsEditing(false);
             setCompletionDate(tempCompletionDate);
             setSuccess("Date successfully changed!");
@@ -159,8 +159,7 @@ function VehicleKit({ kit, changeObserved, setError, setSuccess, addCollectible,
 
     return (
             <div className="vehicle-kit">
-                {isLastCharacterNumber || showCollection ? null : <a href={`${window.location.pathname}/${kit.id}`} className="vehicle-kit-link" />}
-                    <img src={kit.photo} alt={kit.name + " photo"}/>
+                {isLastCharacterNumber || showCollection ? <img src={kit.photo} alt={kit.name + " photo"}/> : <a href={`${window.location.pathname}/${kit.id}`} className="vehicle-kit-link"> <img src={kit.photo} alt={kit.name + " photo"}/> </a>}
                     <div className="vehicle-kit-description">
                         <div className="vehicle-kit-description-title">
                             {kit.name}
@@ -174,17 +173,17 @@ function VehicleKit({ kit, changeObserved, setError, setSuccess, addCollectible,
                             </div>
                         </div>
                         {isLastCharacterNumber ? <Button id="vehicle-kit-add" onClick={handleProgress}>Add to collection</Button> : null }
-                        {(editable && statusColor !== "green") ? <Button id="vehicle-kit-add" onClick={(event) => finCollectible(event, kit.id)}>Finish</Button> : null }
+                        {(editable && statusColor !== "green") ? <Button id="vehicle-kit-add" onClick={(event) => finCollectible(event, kit.collectibleId)}>Finish</Button> : null }
                     </div>
                     <div className="vehicle-kit-info">
                         <div className="vehicle-kit-info-controls">
                             {showCollection && editable && (
-                                <a href="" onClick={(event) => removeCollectible(event, kit.id)}>
+                                <a href="" onClick={(event) => removeCollectible(event)}>
                                      <FaTrash className="info-icon"/>
                                 </a>
                             )}
                             {showCollection && editable && (
-                                <a href="" onClick={(event) => changeVisible(event, kit.id)}>
+                                <a href="" onClick={(event) => changeVisible(event)}>
                                     {isPublic ? <FaEye className="info-icon" /> : <FaEyeSlash className="info-icon"/>}
                                 </a>
                             )}
@@ -199,6 +198,7 @@ function VehicleKit({ kit, changeObserved, setError, setSuccess, addCollectible,
                             {showCollection && (
                                 isEditing ? (
                                     <input
+                                        className="collection-date-edit-input"
                                         type="date"
                                         value={tempCompletionDate}
                                         onChange={handleDateChange}

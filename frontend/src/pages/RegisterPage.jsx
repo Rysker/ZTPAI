@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, {useEffect} from 'react';
 import '../styles/LoginPage.css';
 import RegisterForm from '../components/RegisterForm';
-import {Alert} from "@mui/material";
 import axios from "axios";
+import Webpage from "../components/Webpage";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 
 function RegisterPage()
 {
-    const [message, setMessage] = useState("");
-    const [error, setError] = useState(null);
-    const [success, setSuccess] = useState(false);
-
-    const handleRegister = async (formData) =>
+    useEffect(() =>
+    {
+        localStorage.clear();
+    })
+    const handleRegister = async (formData, setError, setSuccess) =>
     {
         try
         {
@@ -24,7 +24,6 @@ function RegisterPage()
                 if (responseData.message === "User registered successfully!")
                 {
                     setSuccess(true);
-                    setMessage(responseData.message);
                     setTimeout(() =>
                     {
                         window.location.href = '/login';
@@ -51,18 +50,20 @@ function RegisterPage()
     };
 
     return(
-        <div className="login-webpage">
-            <div className="login-navbar">
-                <div className="login-title">
-                    ModelBase
-                </div>
-            </div>
-            <div className="login-content">
-                <RegisterForm onRegister={handleRegister}></RegisterForm>
-            </div>
-            {error && <Alert severity="error">{error}</Alert>}
-            {success && <Alert severity="success">Account created successfully!</Alert>}
-        </div>
+        <Webpage className={"login-webpage"}>
+            {({ setError, setSuccess }) => (
+                <>
+                    <div className="login-navbar">
+                        <div className="login-title">
+                            ModelBase
+                        </div>
+                    </div>
+                    <div className="login-content">
+                        <RegisterForm onRegister={(formData) =>handleRegister(formData, setError, setSuccess)}></RegisterForm>
+                    </div>
+                </>
+            )}
+        </Webpage>
     )
 }
 

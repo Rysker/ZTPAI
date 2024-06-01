@@ -24,6 +24,7 @@ public class FollowersService
         {
             FollowerResponseDto followerDto = new FollowerResponseDto();
             followerDto.setFollowerId(follow.getId());
+            followerDto.setAvatar(follow.getAvatar());
             followerDto.setUsername(follow.getUsername());
             followerDto.setDescription(follow.getDescription());
             response.add(followerDto);

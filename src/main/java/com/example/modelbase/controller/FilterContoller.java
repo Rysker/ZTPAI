@@ -22,21 +22,42 @@ public class FilterContoller
     @GetMapping("/vehicles")
     public ResponseEntity<List<FilterResponseDto>> getVehicleFilters(@CookieValue("jwtCookie") String jwtToken)
     {
-        List<FilterResponseDto> filters = filterService.getVehiclesFilters();
-        return new ResponseEntity<>(filters, HttpStatus.OK);
+        try
+        {
+            List<FilterResponseDto> filters = filterService.getVehiclesFilters();
+            return new ResponseEntity<>(filters, HttpStatus.OK);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("vehicles/{vehicle_name}")
     public ResponseEntity<List<FilterResponseDto>> getKitsFilters(@CookieValue("jwtCookie") String jwtToken, @PathVariable("vehicle_name") String vehicle_name)
     {
-        List<FilterResponseDto> filters = filterService.getKitsFilters(vehicle_name);
-        return new ResponseEntity<>(filters, HttpStatus.OK);
+        try
+        {
+            List<FilterResponseDto> filters = filterService.getKitsFilters(vehicle_name);
+            return new ResponseEntity<>(filters, HttpStatus.OK);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping ("collection")
     public ResponseEntity<List<FilterResponseDto>> getCollectionFilters(@CookieValue("jwtCookie") String jwtToken)
     {
-        List<FilterResponseDto> filters = filterService.getCollectionFilters();
-        return new ResponseEntity<>(filters, HttpStatus.OK);
+        try
+        {
+            List<FilterResponseDto> filters = filterService.getCollectionFilters();
+            return new ResponseEntity<>(filters, HttpStatus.OK);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

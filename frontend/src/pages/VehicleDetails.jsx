@@ -14,6 +14,7 @@ function VehicleDetails({ setError })
 {
     const [vehicleKits, setVehicleKits] = useState([]);
     const [filters, setFilters] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [selectedFilters, setSelectedFilters] = useState([]);
     const { vehicle_name } = useParams();
 
@@ -26,6 +27,7 @@ function VehicleDetails({ setError })
 
     useEffect(() =>
     {
+        setLoading(true);
         const fetchData = async () =>
         {
             try
@@ -40,6 +42,10 @@ function VehicleDetails({ setError })
             catch (error)
             {
                 console.error('Error fetching data:', error);
+            }
+            finally
+            {
+                setLoading(false);
             }
         };
 
@@ -93,9 +99,16 @@ function VehicleDetails({ setError })
                                 <Filter title={vehicle_name} filters={filters} onCheckboxChange={handleCheckboxChange} />
                             </div>
                             <div className="content-space-info-display-row">
-                                {filteredKits().map((kit, index) => (
-                                    <VehicleKit setError={setError} setSuccess={setSuccess} key={index} kit={kit} changeObserved={changeObserved}/>
-                                ))}
+                                {loading ? (
+                                    <p className="loading-info-p">Looking for vehicles</p>
+                                ) : vehicleKits.length === 0 ? (
+                                    <p className="loading-info-p">No vehicles found</p>
+                                ) : (
+                                    filteredKits().map((kit, index) => (
+                                        <VehicleKit setError={setError} setSuccess={setSuccess} key={index} kit={kit} changeObserved={changeObserved}/>
+                                    ))
+                                )}
+
                             </div>
                         </div>
                     </div>

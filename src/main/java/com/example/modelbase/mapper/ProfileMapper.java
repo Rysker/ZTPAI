@@ -47,7 +47,7 @@ public class ProfileMapper
             //Require additional functions
             responseDto.setIsSameUser(isSameUser(user, profileUser));
 
-            //Additonal mapping
+            //Additional mapping
             mapReviews(responseDto, profileUser);
             mapCollection(responseDto, profileUser);
             responseDto.setStats(getStatistics(List.copyOf(profileUser.getCollection().getCollectibles())));
@@ -92,15 +92,19 @@ public class ProfileMapper
         List<Collectible> list = new ArrayList<>(collection.getCollectibles());
         List<Collectible> topList = new ArrayList<>();
         List<SmallCollectibleDto> collectibleDtos = new ArrayList<>();
-
         list.sort(Comparator.comparing(Collectible::getListOrder));
 
         int topItemsCount = 3;
-        for (int i = 0; i < Math.min(topItemsCount, list.size()); i++)
+        int i = 0;
+        for (int j = 0; j < list.size(); j++)
         {
-            Collectible item = list.get(i);
+            Collectible item = list.get(j);
             if(item.getIsPublic())
-                topList.add(list.get(i));
+            {
+                topList.add(list.get(j));
+                if(++i >= topItemsCount)
+                    break;
+            }
         }
 
         for(Collectible collectible: topList)
@@ -137,10 +141,9 @@ public class ProfileMapper
         for(Collectible collectible: collectibles)
             values.merge(collectible.getModelKit().getUseCountry().getName(), 1, Integer::sum);
 
-        List<CollectionStatisticsDto> statistics = values.entrySet().stream()
+        return values.entrySet().stream()
                 .map(entry -> new CollectionStatisticsDto(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
 
-        return statistics;
     }
 }
