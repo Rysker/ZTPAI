@@ -44,6 +44,9 @@ public class User implements UserDetails
     @Column(name = "created", nullable = false)
     private Date created;
 
+    @Column(name = "avatar", length = 256)
+    private String avatar;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(
             name = "collection",
@@ -111,4 +114,8 @@ public class User implements UserDetails
         return formatter.format(this.created);
     }
 
+    public String extractFileNameFromUrl()
+    {
+        return avatar.substring(avatar.lastIndexOf('/') + 1);
+    }
 }

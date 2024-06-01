@@ -41,6 +41,7 @@ public class ProfileMapper
             //Simple mapping
             responseDto.setDescription(profileUser.getDescription());
             responseDto.setUsername(profileUser.getUsername());
+            responseDto.setAvatar(profileUser.getAvatar());
             responseDto.setIsFollowed(followerListRepository.existsByFollowerAndFollowed(user, profileUser).toString());
             responseDto.setMemberSince(profileUser.dateToString());
             //Require additional functions

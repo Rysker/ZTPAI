@@ -61,4 +61,16 @@ public class Review
                 .map(Map.Entry::getKey)
                 .orElse(null);
     }
+
+    public Integer getLikeScore()
+    {
+        int downvotes = 0;
+        for(Like like: this.getLikes())
+        {
+            if(!like.getIsLike())
+                downvotes++;
+        }
+        return likes.size() - 2 * downvotes;
+    }
+
 }

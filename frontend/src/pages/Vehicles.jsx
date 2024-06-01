@@ -100,7 +100,7 @@ function Vehicles()
                             </div>
                             <div className="content-space-info-display">
                                 {loading ? (
-                                    <LoadingScreen/>
+                                    <p>Looking for vehicles</p>
                                 ) : vehicles.length === 0 ? (
                                     <p>No vehicles found</p>
                                 ) : (

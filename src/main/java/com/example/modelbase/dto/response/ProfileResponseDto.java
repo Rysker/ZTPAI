@@ -9,6 +9,7 @@ public class ProfileResponseDto
 {
     private String username;
     private String description;
+    private String avatar;
     private String isSameUser;
     private String isFollowed;
     private Integer reviewsCount;

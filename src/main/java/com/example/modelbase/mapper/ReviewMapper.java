@@ -1,6 +1,5 @@
 package com.example.modelbase.mapper;
 
-import com.example.modelbase.dto.response.ReportResponseDto;
 import com.example.modelbase.dto.response.ReviewResponseDto;
 import com.example.modelbase.model.Like;
 import com.example.modelbase.model.Review;
@@ -11,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -23,16 +19,18 @@ public class ReviewMapper
     private final UserService userService;
     private final UserRepository userRepository;
 
-    public Set<ReviewResponseDto> mapReviews(String token, Set<Review> setReviews)
+    public List<ReviewResponseDto> mapReviews(String token, Set<Review> setReviews)
     {
         User user = userService.getUserFromToken(token);
         return getReviewResponseDtos(setReviews, user);
     }
 
-    private Set<ReviewResponseDto> getReviewResponseDtos(Set<Review> setReviews, User user)
+    private List<ReviewResponseDto> getReviewResponseDtos(Set<Review> setReviews, User user)
     {
-        Set<ReviewResponseDto> reviews = new HashSet<>();
-        for(Review review: setReviews)
+        List<Review> listReviews = new ArrayList<>(setReviews);
+        List<ReviewResponseDto> reviews = new LinkedList<>();
+        listReviews.sort((review1, review2) -> Integer.compare(review2.getLikeScore(), review1.getLikeScore()));
+        for(Review review: listReviews)
         {
             if(!review.getReviewStatus().getName().equals("BLOCKED"))
             {
@@ -42,13 +40,14 @@ public class ReviewMapper
                 distinguishLikes(user, responseDto, review.getLikes());
                 responseDto.setReviewId(review.getId());
                 responseDto.setUsername(review.getUser().getUsername());
+                responseDto.setFollowedUser(setFollowedUser(user, review));
                 reviews.add(responseDto);
             }
         }
         return reviews;
     }
 
-    public Set<ReviewResponseDto> mapUsernameReviews(String username, Set<Review> setReviews) throws Exception
+    public List<ReviewResponseDto> mapUsernameReviews(String username, Set<Review> setReviews) throws Exception
     {
         Optional<User> tmp = userRepository.findUserByUsername(username);
         if(tmp.isPresent())
@@ -72,5 +71,10 @@ public class ReviewMapper
         }
         reviewDto.setScore((likes.size() - 2 * downvotes));
         reviewDto.setUserLike(userLike);
+    }
+
+    private boolean setFollowedUser(User originUser, Review review)
+    {
+        return originUser.getFollows().contains(review.getUser());
     }
 }

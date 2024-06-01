@@ -272,7 +272,7 @@ function Review({review, setError, setSuccess})
             <div className="review-entity">
                 <div className="review-entity-description">
                     <RatingInformation value={review.rating}></RatingInformation>
-                    <Link to={`/profile/${review.username}`} className="profile-link">
+                    <Link to={`/profile/${review.username}`} className="profile-link" style={{ color: review.followedUser ? 'gold' : 'inherit' }}>
                         <h1>{review.username}</h1>
                     </Link>
                     <h2>{review.writeDate}</h2>

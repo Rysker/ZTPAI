@@ -43,8 +43,15 @@
 
 .profile-header-avatar .MuiAvatar-root.MuiAvatar-circular.profile-header-avatar-entity.MuiAvatar-colorDefault
 {
-    width: calc(5px + 6vw);
-    height: calc(5px + 6vw);
+    width: calc(7px + 7vw);
+    height: calc(7px + 7vw);
+    border: 1px solid black;
+}
+
+.MuiAvatar-root.MuiAvatar-circular.profile-header-avatar-entity.MuiAvatar-colorDefault img
+{
+    width: 100%;
+    height: 100%;
 }
 
 .profile-header-description
@@ -221,8 +228,8 @@ h1#user-profile-name
 
 .profile-header-avatar-container
 {
-    width: 60%;
-    height: 80%;
+    width: 80%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;

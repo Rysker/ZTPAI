@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -54,5 +55,11 @@ public class ModelKit
                 return photo.getImage();
         }
         return "Error!";
+    }
+
+    public Set<Review> getReviews()
+    {
+        return this.reviews.stream().filter(review -> !review.getReviewStatus().getName().equals("BLOCKED")).collect(Collectors.toSet());
+
     }
 }

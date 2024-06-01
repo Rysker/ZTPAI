@@ -1,5 +1,6 @@
 package com.example.modelbase.controller;
 
+import com.example.modelbase.dto.request.AvatarChangeDto;
 import com.example.modelbase.dto.request.DescriptionChangeDto;
 import com.example.modelbase.dto.response.MessageResponseDto;
 import com.example.modelbase.dto.response.ProfileResponseDto;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -68,6 +70,22 @@ public class ProfileController
         {
             RolesResponseDto response = userService.getRolesFromToken(jwtToken);
             return ResponseEntity.ok(response);
+        }
+        catch(Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping(headers = {"Content-Type=multipart/form-data"},
+            value = "avatar")
+    public ResponseEntity<MessageResponseDto> changeAvatar(@CookieValue("jwtCookie") String jwtToken,
+                                                           @ModelAttribute AvatarChangeDto avatarChangeDto)
+    {
+        try
+        {
+            String fileName = profileService.changeAvatar(jwtToken, avatarChangeDto);
+            return ResponseEntity.ok(new MessageResponseDto(fileName));
         }
         catch(Exception e)
         {

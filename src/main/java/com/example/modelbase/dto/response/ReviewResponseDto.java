@@ -21,5 +21,6 @@ public class ReviewResponseDto
     private LocalDate writeDate;
     private Integer score;
     private String userLike;
+    private boolean followedUser;
 
 }

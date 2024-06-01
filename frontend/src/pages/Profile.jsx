@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import '../App.css';
 import '../styles/ModelKit.css'
-import  "../styles/VehicleDetails.css";
-import "../styles/Profile.css";
+import  '../styles/VehicleDetails.css';
+import '../styles/Profile.css';
+import '../styles/AvatarSelectionModal.css';
 import {DefaultNavbar} from "../components/DefaultNavbar";
 import Button from "@material-ui/core/Button";
 import {Avatar, Divider} from "@material-ui/core";
 import axios from "axios";
 import {Link, useParams} from "react-router-dom";
-import {TextField} from "@mui/material";
+import {Modal, TextField} from "@mui/material";
 import CollectionPieChart from "../components/CollectionPieChart";
 import LoadingScreen from "../components/LoadingScreen";
 
@@ -22,6 +23,8 @@ function Profile()
     const [showLoadingScreen, setShowLoadingScreen] = useState(true);
     const [editableDescription, setEditableDescription] = useState('');
     const [isSameUser, setIsSameUser] = useState(false);
+    const [selectedAvatar, setSelectedAvatar] = useState(null);
+    const [avatarModalOpen, setAvatarModalOpen] = useState(false);
 
     useEffect(() =>
     {
@@ -93,10 +96,63 @@ function Profile()
         handleDescriptionSave();
     };
 
-    if (showLoadingScreen || loading)
+    const handleAvatarSelect = (avatar) =>
     {
+        setSelectedAvatar(avatar);
+        setAvatarModalOpen(false);
+    };
+
+    const handleAvatarUpload = (event) =>
+    {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = () =>
+        {
+            const image = new Image();
+            image.onload = () =>
+            {
+                if (image.width >= 125 && image.height >= 125)
+                    setSelectedAvatar(file);
+                else
+                    alert('Uploaded image must be at least 125px x 125px');
+            };
+            image.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const handleChangeAvatar = async () =>
+    {
+        if (!selectedAvatar)
+        {
+            alert('Please select an image to upload');
+            return;
+        }
+        try
+        {
+            const formData = new FormData();
+            formData.append('avatar', selectedAvatar);
+            const response = await axios({
+                method: 'put',
+                url: `${API_ENDPOINT}/api/v1/profile/avatar`,
+                data: formData,
+                headers: {
+                    'Content-Type': `multipart/form-data; boundary=${formData._boundary}`,
+                },
+            });
+            setAvatarModalOpen(false);
+            profile.avatar = response.data.message;
+        }
+        catch (error)
+        {
+            console.error('Error!');
+            alert('Failed to upload avatar. Please try again later.');
+        }
+    };
+
+
+    if (showLoadingScreen || loading)
         return <LoadingScreen/>;
-    }
 
     if (!profile)
         return <div>No profile found</div>;
@@ -110,9 +166,28 @@ function Profile()
                         <div className="profile">
                             <div className="profile-header">
                                 <div className="profile-header-avatar">
-                                    <div className="profile-header-avatar-container">
-                                        <Avatar className="profile-header-avatar-entity">A</Avatar>
+                                    <div className="profile-header-avatar-container"
+                                         onClick={() => isSameUser && setAvatarModalOpen(true)}
+                                         style = {isSameUser ? { cursor: 'pointer' } : {}}
+                                    >
+                                        <Avatar className="profile-header-avatar-entity">
+                                            {profile.avatar ? (
+                                                <img src={profile.avatar} alt="User Avatar" />
+                                            ) : (
+                                                profile.username.charAt(0).toUpperCase()
+                                            )}
+                                        </Avatar>
                                     </div>
+                                    <Modal open={avatarModalOpen} onClose={() => setAvatarModalOpen(false)}>
+                                        <div className="avatar-selection-modal">
+                                            <h2 id="modal-title">Change Avatar</h2>
+                                            <input className="avatar-selection-modal-input" type="file" accept="image/*" onChange={handleAvatarUpload} />
+                                            <div className="avatar-selection-modal-buttons" style={{ marginTop: '10px'}}>
+                                                <Button className="avatar-selection-modal-change" onClick={handleChangeAvatar}>Change</Button>
+                                                <Button className="avatar-selection-modal-cancel" onClick={() => setAvatarModalOpen(false)}>Cancel</Button>
+                                            </div>
+                                        </div>
+                                    </Modal>
                                 </div>
                                 <div className="profile-header-description">
                                     <div className="profile-header-description-top">

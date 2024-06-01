@@ -29,7 +29,7 @@ public class ModelKitDto
 
     //Expanded response
     private Set<String> photos;
-    private Set<ReviewResponseDto> reviews;
+    private List<ReviewResponseDto> reviews;
 
     //More expanded response (Collection view)
     private String isPublic;
