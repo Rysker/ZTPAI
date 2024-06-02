@@ -12,8 +12,40 @@ function RegisterPage()
     {
         localStorage.clear();
     })
+
+    const isValidEmail = (email) =>
+    {
+        const emailRegex = /^[a-zA-Z0-9_+&*-]+(?:\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$/;
+        return emailRegex.test(email);
+    };
+
+    const isValidPassword = (password) =>
+    {
+        const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^!&+=])(?=\S+$).{8,}$/;
+        return passwordRegex.test(password);
+    };
+
     const handleRegister = async (formData, setError, setSuccess) =>
     {
+        const { email, username, password, confirmPassword } = formData;
+        if (!isValidEmail(email))
+        {
+            setError("Invalid email format!");
+            return;
+        }
+
+        if (!isValidPassword(password))
+        {
+            setError("Password does not meet the requirements!");
+            return;
+        }
+
+        if (password !== confirmPassword)
+        {
+            setError("Passwords do not match!");
+            return;
+        }
+
         try
         {
             const response = (await axios.post(`${API_ENDPOINT}/api/v1/auth/signup`, formData));
@@ -23,7 +55,7 @@ function RegisterPage()
             {
                 if (responseData.message === "User registered successfully!")
                 {
-                    setSuccess(true);
+                    setSuccess(responseData.message);
                     setTimeout(() =>
                     {
                         window.location.href = '/login';

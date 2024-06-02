@@ -22,6 +22,10 @@ const titleMap = {
     "progress": "status"
 };
 
+const guestFilters = [{
+        "title": "progress",
+        "options": ["Owned", "Finished"]
+}]
 
 function MyCollection({setError, setSuccess})
 {
@@ -120,7 +124,7 @@ function MyCollection({setError, setSuccess})
                     <div className="content-space">
                         <div className="content-space-info">
                             <div className="content-space-info-filter">
-                                <Filter title= "Collection" filters={filters} onCheckboxChange={handleCheckboxChange} />
+                                <Filter title= "Collection" filters={sameUser ? filters : guestFilters} onCheckboxChange={handleCheckboxChange} />
                             </div>
                             <div className="content-space-info-display-row">
                                 {filteredKits().map((kit) => (

@@ -15,12 +15,9 @@ public class ModelKitService
 {
     private final ModelKitRepository modelKitRepository;
     private final ModelKitMapper modelKitMapper;
-    public ModelKitDto getModelKitByVehicleNameAndId(String token, String vehicleName, Integer id) throws Exception
+    public ModelKitDto getModelKitById(String token,Integer id) throws Exception
     {
         Optional<ModelKit> kit = modelKitRepository.findById(id);
-        if(kit.isPresent())
-            return modelKitMapper.kitLongMap(token, kit.get());
-        else
-            return null;
+        return kit.map(modelKit -> modelKitMapper.kitLongMap(token, modelKit)).orElse(null);
     }
 }

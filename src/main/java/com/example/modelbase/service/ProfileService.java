@@ -12,11 +12,9 @@ import com.example.modelbase.repository.FollowerListRepository;
 import com.example.modelbase.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.util.Optional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -68,7 +66,19 @@ public class ProfileService
     {
         MultipartFile imageFile = request.getAvatar();
         User currentUser = userService.getUserFromToken(token);
-        String fileName = currentUser.getUsername() + "_" + System.currentTimeMillis() + ".jpg";
+
+        String originalFileName = imageFile.getOriginalFilename();
+
+        if (originalFileName == null || originalFileName.isEmpty())
+            throw new RuntimeException("The file name is invalid.");
+
+        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+
+        if (!List.of(".jpg", ".jpeg", ".png").contains(fileExtension.toLowerCase()))
+            throw new RuntimeException("The file must be a JPEG or PNG image.");
+
+        String fileName = currentUser.getUsername() + "_" + System.currentTimeMillis() + fileExtension;
+
         try
         {
             byte[] image = imageFile.getBytes();

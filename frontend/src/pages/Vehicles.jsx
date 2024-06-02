@@ -6,7 +6,6 @@ import Filter from "../components/Filter";
 import {useLocation} from "react-router-dom";
 import axios from "axios";
 import Webpage from "../components/Webpage";
-import LoadingScreen from "../components/LoadingScreen";
 
 const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT;
 

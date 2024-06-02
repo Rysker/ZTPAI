@@ -18,7 +18,7 @@ public class KitController
     {
         try
         {
-            ModelKitDto kit = modelKitService.getModelKitByVehicleNameAndId(jwtToken, vehicleName, id);
+            ModelKitDto kit = modelKitService.getModelKitById(jwtToken, id);
             return new ResponseEntity<>(kit, HttpStatus.OK);
         }
         catch(Exception e)

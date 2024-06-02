@@ -26,10 +26,10 @@ public class CollectibleService
         Optional<Collectible> optionalCollectible = collectibleRepository.getCollectibleById(collectibleId);
         if(optionalCollectible.isPresent() && user.getCollection().getCollectibles().contains(optionalCollectible.get()))
         {
-            Integer deleted_id = optionalCollectible.get().getListOrder();
+            Integer deletedOrder = optionalCollectible.get().getListOrder();
             collectibleRepository.delete(optionalCollectible.get());
             if(user.getCollection().getCollectibles().size() - 1 > 0)
-                collectionService.reshuffle(user.getCollection(), deleted_id);
+                collectionService.reshuffle(user.getCollection(), deletedOrder);
         }
         else
             throw new IllegalArgumentException("No collectible found!");

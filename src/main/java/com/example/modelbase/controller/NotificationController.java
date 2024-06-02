@@ -15,7 +15,7 @@ public class NotificationController
     private final NotificationService notificationService;
 
     @GetMapping
-    public ResponseEntity<MessageResponseDto> pollNotification(@CookieValue("jwtCookie") String jwtToken) throws InterruptedException
+    public ResponseEntity<MessageResponseDto> pollNotification(@CookieValue("jwtCookie") String jwtToken)
     {
         try
         {

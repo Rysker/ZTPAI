@@ -13,8 +13,39 @@ function LoginPage()
         localStorage.clear();
     })
 
+    const isValidEmail = (email) =>
+    {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const isValidPassword = (password) =>
+    {
+        const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,}$/;
+        return passwordRegex.test(password);
+    };
+
     const handleLogin = async (credentials, setError, setSuccess) =>
     {
+        const { email, password } = credentials;
+        if (!isValidEmail(email))
+        {
+            setError("Invalid email format.");
+            setTimeout(() => {
+                setError(null);
+            }, 3000);
+            return;
+        }
+
+        if (!isValidPassword(password))
+        {
+            setError("Password does not meet requirements!");
+            setTimeout(() => {
+                setError(null);
+            }, 3000);
+            return;
+        }
+
         try
         {
             const response = await axios.post(`${API_ENDPOINT}/api/v1/auth/signin`, credentials, { withCredentials: true });

@@ -96,13 +96,12 @@ public class ProfileMapper
 
         int topItemsCount = 3;
         int i = 0;
-        for (int j = 0; j < list.size(); j++)
+        for (Collectible item : list)
         {
-            Collectible item = list.get(j);
-            if(item.getIsPublic())
+            if (item.getIsPublic())
             {
-                topList.add(list.get(j));
-                if(++i >= topItemsCount)
+                topList.add(item);
+                if (++i >= topItemsCount)
                     break;
             }
         }

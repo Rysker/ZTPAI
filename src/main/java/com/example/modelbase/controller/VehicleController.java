@@ -1,11 +1,8 @@
 package com.example.modelbase.controller;
 
-import com.example.modelbase.dto.response.MessageResponseDto;
 import com.example.modelbase.dto.response.ModelKitDto;
 import com.example.modelbase.dto.response.VehicleInfoDto;
 import java.util.List;
-import java.util.Set;
-
 import com.example.modelbase.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,11 +45,11 @@ public class VehicleController
     }
 
     @GetMapping("/models/{vehicle_name}")
-    public ResponseEntity<Set<ModelKitDto>> getModelKits(@CookieValue("jwtCookie") String jwtToken, @PathVariable("vehicle_name") String vehicleName)
+    public ResponseEntity<List<ModelKitDto>> getModelKits(@CookieValue("jwtCookie") String jwtToken, @PathVariable("vehicle_name") String vehicleName)
     {
         try
         {
-            Set<ModelKitDto> kits = vehicleService.getVehicleKits(jwtToken, vehicleName);
+            List<ModelKitDto> kits = vehicleService.getVehicleKits(jwtToken, vehicleName);
             return new ResponseEntity<>(kits, HttpStatus.OK);
         }
         catch(Exception e)

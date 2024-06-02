@@ -172,7 +172,7 @@ function VehicleKit({ kit, changeObserved, setError, setSuccess, addCollectible,
                                 <p>Variant: {kit.variant}</p>
                             </div>
                         </div>
-                        {isLastCharacterNumber ? <Button id="vehicle-kit-add" onClick={handleProgress}>Add to collection</Button> : null }
+                        {isLastCharacterNumber && statusColor === "black" ? <Button id="vehicle-kit-add" onClick={handleProgress}>Add to collection</Button> : null }
                         {(editable && statusColor !== "green") ? <Button id="vehicle-kit-add" onClick={(event) => finCollectible(event, kit.collectibleId)}>Finish</Button> : null }
                     </div>
                     <div className="vehicle-kit-info">

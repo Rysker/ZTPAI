@@ -1,5 +1,6 @@
 package com.example.modelbase.controller;
 
+import com.example.modelbase.dto.response.MessageResponseDto;
 import com.example.modelbase.service.WishlistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,12 +16,12 @@ public class WishlistController
     private final WishlistService wishlistService;
 
     @PostMapping("/change/{id}")
-    public ResponseEntity changeObserved(@CookieValue("jwtCookie") String jwtToken, @PathVariable("id") Integer kitId)
+    public ResponseEntity<MessageResponseDto> changeObserved(@CookieValue("jwtCookie") String jwtToken, @PathVariable("id") Integer kitId)
     {
         try
         {
             wishlistService.changeWishlist(jwtToken, kitId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ResponseEntity.ok(new MessageResponseDto("Success"));
         }
         catch(Exception e)
         {

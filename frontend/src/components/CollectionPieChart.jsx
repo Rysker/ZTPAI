@@ -1,18 +1,42 @@
 import React, {useCallback, useState} from 'react';
-import {PieChart, Pie, Cell, ResponsiveContainer, XAxis} from 'recharts';
+import {PieChart, Pie, Cell, ResponsiveContainer} from 'recharts';
+
+const countryMap = {
+    "Russia" : "RU",
+    "Germany" : "GER",
+    "United States" : "USA",
+    "United Kingdom" : "UK",
+    "France" : "FRA",
+    "Japan": "JPN",
+    "Poland": "PL",
+    "Sweden" : "SWE",
+};
+
+const countryColors = {
+    "Russia": '#00C49F',
+    "Germany": '#0088FE',
+    "United States": '#FFBB28',
+    "United Kingdom": '#FF8042',
+    "France": '#8A2BE2',
+    "Japan": '#FF6347',
+    "Poland": '#20B2AA',
+    "Sweden": '#FFD700',
+};
+
 
 const CollectionPieChart = ({ data }) =>
 {
     const[animation, setAnimation] = useState(true);
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
     const RADIAN = Math.PI / 180;
     const duration = 1600;
-    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+
+    const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, index }) =>
+    {
         const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
         const x = cx + radius * Math.cos(-midAngle * RADIAN);
         const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-        const shortName = data[index].country.substring(0, 3).toUpperCase();
+        const shortName = countryMap[data[index].country];
 
         return (
             <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
@@ -21,10 +45,13 @@ const CollectionPieChart = ({ data }) =>
         );
     };
 
-    const onAnimationStart = useCallback(() => {
-        setTimeout(() => {
+    const onAnimationStart = useCallback(() =>
+    {
+        setTimeout(() =>
+        {
             setAnimation(false)
         }, duration + 150)
+
     }, [])
 
     return (
@@ -49,7 +76,7 @@ const CollectionPieChart = ({ data }) =>
                     {data.map((entry, index) => (
                         <Cell
                             key={`cell-${entry.country}`}
-                            fill={COLORS[index % COLORS.length]}
+                            fill={countryColors[entry.country]}
                         />
                     ))}
                 </Pie>

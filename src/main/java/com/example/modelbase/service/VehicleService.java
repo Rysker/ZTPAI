@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,17 +38,17 @@ public class VehicleService
                 .collect(Collectors.toList());
     }
 
-    public Set<ModelKitDto> getVehicleKits(String token, String vehicle_name) throws Exception
+    public List<ModelKitDto> getVehicleKits(String token, String vehicle_name) throws Exception
     {
         Vehicle vehicle = vehicleRepository.getVehicleByName(vehicle_name);
-        Set<ModelKit> kits = new HashSet<>();
+        Set<ModelKit> kits = new LinkedHashSet<>();
 
         for(Variant variant: vehicle.getVariants())
             kits.addAll(variant.getModelKits());
 
         return kits.stream()
                 .map(x -> modelKitMapper.kitShortMap(token, x))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     private VehicleInfoDto convertToDto(Vehicle vehicle)

@@ -13,9 +13,11 @@ import LoadingScreen from "../components/LoadingScreen";
 function HomePage()
 {
     const [showLoadingScreen, setShowLoadingScreen] = useState(true);
+    const [username, setUsername] = useState(null);
 
     useEffect(() =>
     {
+        setUsername(localStorage.getItem("username"));
         const timer = setTimeout(() => {
             setShowLoadingScreen(false);
         }, 2000);
@@ -33,17 +35,26 @@ function HomePage()
                     <div className="content-space-home">
                         <div className="vehicle-pick">
                             <a href="/vehicles?type=Tanks">
-                                <TbTank/>
+                                <img src={'/images/Tanks.jpg'} alt="Tanks" />
+                                <div className="homepage-representation-bar">
+                                    <h1>Tanks</h1>
+                                </div>
                             </a>
                         </div>
                         <div className="vehicle-pick">
                             <a href="/vehicles?type=Planes">
-                                <FaFighterJet/>
+                                <img src={'/images/Planes.jpg'} alt="Planes"/>
+                                <div className="homepage-representation-bar">
+                                    <h1>Planes</h1>
+                                </div>
                             </a>
                         </div>
                         <div className="vehicle-pick">
                             <a href="/vehicles?type=Ships">
-                                <GiBattleship/>
+                                <img src={'/images/Ships.jpg'} alt="Ships" />
+                                <div className="homepage-representation-bar">
+                                    <h1>Ships</h1>
+                                </div>
                             </a>
                         </div>
                     </div>

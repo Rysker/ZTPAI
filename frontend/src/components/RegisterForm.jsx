@@ -9,6 +9,7 @@ const RegisterForm = ({ onRegister }) =>
         password: "",
         confirmPassword: "",
     });
+
     const [error, setError] = useState(null);
 
     const handleChange = (e) => {
@@ -18,9 +19,12 @@ const RegisterForm = ({ onRegister }) =>
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
+        try
+        {
             await onRegister(formData);
-        } catch (error) {
+        }
+        catch (error)
+        {
             setError(error.message);
         }
     };

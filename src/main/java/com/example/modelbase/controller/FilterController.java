@@ -1,8 +1,6 @@
 package com.example.modelbase.controller;
 
 import com.example.modelbase.dto.response.FilterResponseDto;
-import com.example.modelbase.repository.CountryRepository;
-import com.example.modelbase.repository.VehicleRepository;
 import com.example.modelbase.service.FilterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,12 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Filter;
 
 @RestController
 @RequestMapping("/api/v1/filters")
 @RequiredArgsConstructor
-public class FilterContoller
+public class FilterController
 {
     private final FilterService filterService;
 

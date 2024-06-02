@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Rating from '@mui/material/Rating';
 
 function ClickableRating({ value, onChange, disabled = false })

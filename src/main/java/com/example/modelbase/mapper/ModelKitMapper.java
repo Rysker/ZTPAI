@@ -2,6 +2,7 @@ package com.example.modelbase.mapper;
 
 import com.example.modelbase.dto.response.ModelKitDto;
 import com.example.modelbase.model.*;
+import com.example.modelbase.model.Collection;
 import com.example.modelbase.repository.CollectibleRepository;
 import com.example.modelbase.repository.EavTableRepository;
 import com.example.modelbase.repository.UserRepository;
@@ -10,10 +11,7 @@ import com.example.modelbase.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +41,7 @@ public class ModelKitMapper
 
         return ModelKitDto.builder()
                 .id(modelKit.getId())
-                .photo(modelKit.getPhotos().stream().findFirst().get().getImage())
+                .photo(modelKit.getPhotos().stream().filter(photo -> photo.getIs_main() == Boolean.TRUE).findFirst().get().getImage())
                 .name(modelKit.getName())
                 .manufacturerCode(modelKit.getManufacturerCode())
                 .scale(scale)
@@ -59,18 +57,11 @@ public class ModelKitMapper
     public ModelKitDto kitLongMap(String token, ModelKit modelKit)
     {
         ModelKitDto modelKitDto = this.kitShortMap(token, modelKit);
-        Set<String> photos = new HashSet<>();
+        Set<String> photos = new LinkedHashSet();
         mapPhotos(photos, modelKit.getPhotos());
         modelKitDto.setPhotos(photos);
         modelKitDto.setReviews(reviewMapper.mapReviews(token, modelKit.getReviews()));
         return modelKitDto;
-    }
-
-    public ModelKitDto kitCollectionMap(String token, ModelKit modelKit)
-    {
-        ModelKitDto modelKitDto = this.kitShortMap(token, modelKit);
-        User user = userService.getUserFromToken(token);
-        return getModelKitDto(modelKit, user, modelKitDto);
     }
 
     public ModelKitDto userShortMap(String username, ModelKit modelKit) throws Exception
@@ -96,7 +87,7 @@ public class ModelKitMapper
         {
             User user = tmp.get();
             ModelKitDto modelKitDto = this.userShortMap(username, modelKit);
-            Set<String> photos = new HashSet<>();
+            Set<String> photos = new LinkedHashSet<>();
             mapPhotos(photos, modelKit.getPhotos());
             modelKitDto.setPhotos(photos);
             modelKitDto.setReviews(reviewMapper.mapUsernameReviews(username, modelKit.getReviews()));
@@ -131,7 +122,8 @@ public class ModelKitMapper
 
     private void mapPhotos(Set<String> photos, Set<Photo> setPhotos)
     {
-        for(Photo photo: setPhotos)
+        List<Photo> photoList = setPhotos.stream().sorted((p1, p2) -> Boolean.compare(p2.getIs_main(), p1.getIs_main())).toList();
+        for(Photo photo: photoList)
             photos.add(photo.getImage());
     }
 

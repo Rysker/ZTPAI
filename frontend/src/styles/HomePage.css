@@ -11,6 +11,7 @@
 
 .vehicle-pick
 {
+    position: relative;
     width: 25%;
     height: 40%;
     display: flex;
@@ -22,16 +23,38 @@
 
 .vehicle-pick a
 {
+    position: absolute;
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid black;
+    border-radius: 1em;
+    overflow: hidden;
 }
 
-.vehicle-pick a > svg
+.vehicle-pick a > img
 {
-    width: 50%;
-    height: 50%;
-    color: #211f1f;
+    position: absolute;
+    background: center/cover no-repeat;
+    width: 100%;
+    height: 100%;
+}
+
+.homepage-representation-bar
+{
+    position: absolute;
+    width: 100%;
+    height: 20%;
+    bottom: 0;
+    font-size: calc(3px + 1.1vw);
+    color: white;
+    background-color: #0091D0;
+    text-align: center;
+}
+
+.homepage-representation-bar > h1
+{
+    margin: auto;
 }

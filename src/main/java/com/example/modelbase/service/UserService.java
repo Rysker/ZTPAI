@@ -1,17 +1,14 @@
 package com.example.modelbase.service;
 
 import com.example.modelbase.dto.response.RolesResponseDto;
-import com.example.modelbase.repository.CollectionRepository;
 import com.example.modelbase.repository.UserRepository;
 import com.example.modelbase.model.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;

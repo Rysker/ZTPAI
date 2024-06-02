@@ -91,7 +91,7 @@ public class AuthenticationService
             User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow();
 
             if(user.getAccountType().getName().equals("SUSPENDED"))
-                throw new IllegalArgumentException("User account is suspended!");
+                throw new IllegalArgumentException("This account is suspended!");
 
             String token = jwtService.generateToken(userDetails);
             return JwtAuthenticationResponse.builder()
@@ -100,6 +100,8 @@ public class AuthenticationService
         }
         catch(Exception e)
         {
+            if(e.getMessage().equals("This account is suspended!"))
+                throw e;
             throw new IllegalArgumentException("Invalid credentials. Try again.");
         }
 
