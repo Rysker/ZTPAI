@@ -86,6 +86,9 @@ public class ReviewService
 
     public Integer addReview(String token, Integer kitId, ReviewRequestDto request) throws Exception
     {
+        if(request.getTitle().isBlank() || request.getDescription().isBlank())
+            throw new IllegalArgumentException("Cannot create review with empty fields!");
+
         User currentUser = userService.getUserFromToken(token);
         Optional<ModelKit> kit = modelKitRepository.findById(kitId);
         if(kit.isPresent())

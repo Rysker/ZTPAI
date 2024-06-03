@@ -32,6 +32,7 @@ function MyCollection({setError, setSuccess})
     const { profileName } = useParams();
     const [collection, setCollection] = useState([]);
     const [sameUser, setSameUser] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [filters, setFilters] = useState([]);
     const [selectedFilters, setSelectedFilters] = useState([]);
 
@@ -50,6 +51,10 @@ function MyCollection({setError, setSuccess})
             catch (error)
             {
                 console.error('Error!');
+            }
+            finally
+            {
+                setLoading(false);
             }
         };
 
@@ -120,14 +125,19 @@ function MyCollection({setError, setSuccess})
         <Webpage className={"webpage"}>
             {({ setError, setSuccess }) => (
                 <>
-                    <DefaultNavbar></DefaultNavbar>
+                    <DefaultNavbar/>
                     <div className="content-space">
                         <div className="content-space-info">
                             <div className="content-space-info-filter">
                                 <Filter title= "Collection" filters={sameUser ? filters : guestFilters} onCheckboxChange={handleCheckboxChange} />
                             </div>
                             <div className="content-space-info-display-row">
-                                {filteredKits().map((kit) => (
+                                {loading ? (
+                                        <p className="loading-info-p">Looking for vehicles</p>
+                                    ) : collection.length === 0 ? (
+                                        <p className="loading-info-p">Your collection is empty</p>
+                                    ) : (
+                                filteredKits().map((kit) => (
                                     <VehicleKit key={kit.collectibleId}
                                                 kit={kit}
                                                 showCollection={true}
@@ -138,7 +148,8 @@ function MyCollection({setError, setSuccess})
                                                 setError={setError}
                                                 setSuccess={setSuccess}
                                     />
-                                ))}
+                                    ))
+                                )}
                             </div>
                         </div>
                     </div>

@@ -19,4 +19,10 @@ public class GcsConfiguration
         GoogleCredentials credentials = GoogleCredentials.fromStream(resource.getInputStream());
         return StorageOptions.newBuilder().setCredentials(credentials).build().getService();
     }
+
+    @Bean
+    public Storage googleCloudStorage()
+    {
+        return StorageOptions.getDefaultInstance().getService();
+    }
 }

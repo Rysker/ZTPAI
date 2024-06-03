@@ -108,6 +108,12 @@ function WriteReview({ setError, setSuccess, id, fetchReviews, reviews })
 
     const handleReviewSubmit = async () =>
     {
+        if (!title.trim() || !description.trim())
+        {
+            setError('All fields must be filled in before submitting a review.');
+            return;
+        }
+
         try
         {
             const response = await axios.post(`${API_ENDPOINT}/api/v1/review/add/${id}`, {
@@ -174,6 +180,7 @@ function WriteReview({ setError, setSuccess, id, fetchReviews, reviews })
                     label="Review text"
                     variant="outlined"
                     value={description}
+
                     onChange={(e) => setDescription(e.target.value)}
                     maxRows={3}
                     multiline
