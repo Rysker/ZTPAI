@@ -1,9 +1,28 @@
-# Model Base
+# 🛡️ Model Base ✈️
+
+## Badges
+
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 
 ## Description
 
-Model Base is an web application that allows you to browse database of various model kits of planes, tanks and ships. Users can write reviews for selected models, add them to their wishlist, and to their collection.
-Users can also customize their profile, and browse profile of other users.
+Model Base is a web application that allows users to browse a database of various model kits of planes, tanks, and ships. Users can write reviews for selected models, add them to their wishlist and collection, customize their profile, and browse the profiles of other users.
+
+
+## Table of Contents
+- [Screenshots](#screenshots)
+- [Technology Stack](#technology-stack)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Collaborators](#collaborators)
+- [License](#license)
+
+
+## Screenshots
 
 Login Page
 ![image](https://github.com/Rysker/ZTPAI/assets/101675696/d189f4b7-3bc1-4200-a9cc-09730ee80aa0)
@@ -21,11 +40,25 @@ Profile Page
 ![image](https://github.com/Rysker/ZTPAI/assets/101675696/27082ccf-e8ef-4144-b7a1-cda0b4e7d69c)
 
 
-## Table of Contents
+## Technology Stack
 
-- [Installation](#installation)
-- [Usage](#usage)
-- [License](#license)
+This application uses listed technologies to provide functionalities:
+
+| Technology          | Description                                          | Link ↘️           |
+|---------------------|------------------------------------------------------|-------------------|
+| React               | JavaScript library for building user interfaces      | [React](https://reactjs.org/) |
+| Spring Boot         | Framework for building Java-based web applications   | [Spring Boot](https://spring.io/projects/spring-boot) |
+| Google Cloud Storage| Object storage service on Google Cloud Platform      | [Google Cloud Storage](https://cloud.google.com/storage) |
+| RabbitMQ            | Message broker for asynchronous communication        | [RabbitMQ](https://www.rabbitmq.com/) |
+
+## Features
+
+- Browse a wide range of model kits (planes, tanks, ships)
+- Write and rate reviews for model kits
+- Add models to wishlist and collection
+- Customize user profile and browse other user profiles
+- Manage collection visibility and status
+- Follow other users and distinguish their reviews
 
 ## Installation
 
@@ -58,6 +91,14 @@ Profile Page
 4. User Profiles: Customize your profile by changing your description or avatar. Browse the profiles of others users.
 5. Collection Management: View and manage the models in your collection. Update the status of your models and control which part of your collection would be visible to others.
 6. Follow Users: You can add user's to your list of followed users. Their reviews would be distinguished from reviews of other users.
+
+
+## Collaborators
+
+| Username   | Link ↘️                |
+|------------|-----------------------|
+| Rysker | [github.com/your-username](https://github.com/Rysker) |
+
 
 ## License
 
