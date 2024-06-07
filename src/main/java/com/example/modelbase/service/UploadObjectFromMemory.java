@@ -12,30 +12,30 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UploadObjectFromMemory
 {
-  @Value("${google.bucket.name}")
-  String bucketName;
-  private final Storage storage;
-  @PostConstruct
-  public void init()
-  {
-      warmUp();
-  }
+    @Value("${google.bucket.name}")
+    String bucketName;
+    private final Storage storage;
+    @PostConstruct
+    public void init()
+    {
+        warmUp();
+    }
 
-  public void uploadImageToGCS(String fileName, byte[] imageData)
-  {
+    public void uploadImageToGCS(String fileName, byte[] imageData)
+    {
 
-      BlobId blobId = BlobId.of(bucketName, fileName);
-      BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-      storage.create(blobInfo, imageData);
-  }
+        BlobId blobId = BlobId.of(bucketName, fileName);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+        storage.create(blobInfo, imageData);
+    }
 
-  public void removeImageFromGCS(String fileName)
-  {
-      BlobId blobId = BlobId.of(bucketName, fileName);
-      boolean deleted = storage.delete(blobId);
-      if (!deleted)
-          throw new RuntimeException("Failed to delete file");
-  }
+    public void removeImageFromGCS(String fileName)
+    {
+        BlobId blobId = BlobId.of(bucketName, fileName);
+        boolean deleted = storage.delete(blobId);
+        if (!deleted)
+            throw new RuntimeException("Failed to delete file");
+    }
 
     private void warmUp()
     {
