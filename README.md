@@ -97,7 +97,7 @@ This application uses listed technologies to provide functionalities:
 
 | Username   | Link ↘️                |
 |------------|-----------------------|
-| Rysker | [github.com/your-username](https://github.com/Rysker) |
+| Rysker | [github.com/Rysker](https://github.com/Rysker) |
 
 
 ## License
